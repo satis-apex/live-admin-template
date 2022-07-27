@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import path from 'path';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite'
@@ -23,7 +24,23 @@ export default defineConfig({
             resolvers: [ElementPlusResolver()],
         }),
         Components({
-            resolvers: [ElementPlusResolver()],
+            resolvers: [ElementPlusResolver({
+                importStyle: 'sass',
+            })],
         }),
     ],
+    resolve: {
+        alias: {
+            '@': path.resolve('./resources/js'),
+            '~': path.resolve('./resources'),
+        },
+        extensions: ['.js', '.vue', '.json'],
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@use "~/sass/app.scss" as *;`,
+            },
+        },
+    },
 });
