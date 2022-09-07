@@ -4,6 +4,17 @@ import '../css/app.css';
 //element ui 
 import 'element-plus/theme-chalk/display.css'
 
+/* import the fontawesome core */
+import { library } from '@fortawesome/fontawesome-svg-core'
+/* import font awesome icon component */
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+/* import all icons */
+import { fas } from '@fortawesome/free-solid-svg-icons'
+// import { fab } from '@fortawesome/free-brands-svg-icons'
+// import { far } from '@fortawesome/free-regular-svg-icons'
+/* add icons to the library */
+library.add(fas);
+
 import { createApp, h } from 'vue';
 import { createInertiaApp, Link } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
@@ -24,29 +35,30 @@ createInertiaApp({
         const comps = import.meta.glob('./Pages/**/*.vue');
         const match = comps[`./Pages/${name}.vue`];
         if (match == undefined) {
-            console.log('vue file not created');
             return import('./Errors/404page.vue');
         }
         const page = (await match()).default;
 
-        if (page.layout === undefined) {
+        if (page.layout === 'admin') {
             page.layout = Admin
         }
         else if (page.layout == 'auth') {
             page.layout = Auth
         }
         else {
-            page.layout = Admin
+            //page.layout = Admin
         }
+        page.layout = Admin
         return page
     },
     setup({ el, app, props, plugin }) {
-        return createApp({ render: () => h(app, props) })
-            .use(plugin)
-            .component("Link", Link)
-            .component("NavLink", NavLink)
-            .mixin({ methods: { appRoute: window.route } })
-            .mount(el);
+        const App = createApp({ render: () => h(app, props) })
+        App.use(plugin)
+        App.component("Link", Link)
+        App.component("NavLink", NavLink)
+        App.component('fa', FontAwesomeIcon)
+        App.mixin({ methods: { appRoute: window.route } })
+        App.mount(el);
     },
 });
 
