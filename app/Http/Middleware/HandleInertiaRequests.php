@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ApplicationInfo;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -43,6 +44,7 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'app_info' => ApplicationInfo::first(),
         ]);
     }
 }
