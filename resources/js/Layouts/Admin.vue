@@ -6,8 +6,11 @@
             ></side-nav>
             <el-container>
                 <heads></heads>
-                <el-main><slot /></el-main>
-                <el-footer>Footer</el-footer>
+                <el-main class="main-container-wrapper"><slot /></el-main>
+                <el-footer
+                    >&copy; {{ moment(date).format("YYYY") }},
+                    {{ propsValue("app_info", "title") }}
+                </el-footer>
             </el-container>
         </el-container>
     </div>
@@ -15,17 +18,24 @@
 <script setup>
 import SideNav from "@/Layouts/SideNav.vue";
 import heads from "@/Layouts/Head.vue";
+
+import moment from "moment";
+import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
+
+let { propsValue } = useInertiaPropsUtility();
+const isCollapse = false;
+const isMobile = navigator.userAgentData.mobile;
 </script>
 
-<script>
-export default {
-    data() {
-        return {
-            isCollapse: false,
-            isMobile: navigator.userAgentData.mobile,
-        };
-    },
-    methods: {},
-    components: {},
-};
-</script>
+<script></script>
+<style scoped>
+.el-footer {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.main-container-wrapper {
+    min-height: calc(100vh - 102px); /* (head + footer height)*/
+}
+</style>

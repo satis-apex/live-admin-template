@@ -1,9 +1,9 @@
 import './bootstrap';
 import '../css/app.css';
 
+
 //element ui 
 import 'element-plus/theme-chalk/display.css'
-
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
 /* import font awesome icon component */
@@ -42,13 +42,12 @@ createInertiaApp({
         if (page.layout === 'admin') {
             page.layout = Admin
         }
-        else if (page.layout == 'auth') {
+        else if (page.layout === 'auth') {
             page.layout = Auth
         }
         else {
-            //page.layout = Admin
+            // page.layout = Admin
         }
-        page.layout = Admin
         return page
     },
     setup({ el, app, props, plugin }) {

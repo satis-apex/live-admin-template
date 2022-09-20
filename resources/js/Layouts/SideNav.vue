@@ -30,12 +30,31 @@
             :collapse="isCollapse"
             :collapse-transition="false"
         >
-            <!-- <el-menu-item-group title="Group Two">
-                    <el-menu-item index="1-3">item three</el-menu-item>
-                </el-menu-item-group> -->
+            <!-- <li class="el-menu-group-title">
+                <span v-show="!isCollapse">Dashboard</span>
+            </li> 
+            <el-menu-item index="a">
+                <el-icon><fa icon="chalkboard" /></el-icon>
+                <nav-link
+                    title="Dashboard"
+                    href="/"
+                    :set="
+                        (currentActive = appRoute().current()
+                            ? 'a'
+                            : currentActive)
+                    "
+                >
+                    home
+                </nav-link>
+            </el-menu-item>-->
+
             <template v-for="(menu, key) in menus">
                 <template v-if="menu.link != '#'">
-                    <el-menu-item class="text-lg" :key="key" :index="key">
+                    <el-menu-item
+                        class="text-lg"
+                        :key="key"
+                        :index="key.toString()"
+                    >
                         <el-icon><fa :icon="menu.icon" /></el-icon>
                         <template #title>
                             <nav-link
@@ -49,7 +68,7 @@
                                     (currentActive = appRoute().current(
                                         menu.link
                                     )
-                                        ? key
+                                        ? key.toString()
                                         : currentActive)
                                 "
                             >
@@ -65,7 +84,11 @@
                         menu.children.length != 0
                     "
                 >
-                    <el-sub-menu class="text-lg" :key="key" :index="key">
+                    <el-sub-menu
+                        class="text-lg"
+                        :key="key"
+                        :index="key.toString()"
+                    >
                         <template #title>
                             <el-icon><fa :icon="menu.icon" /> </el-icon>
                             <span :title="menu.name">{{ menu.name }}</span>
@@ -77,7 +100,7 @@
                             :key="key + '-' + subKey"
                         >
                             <template #title
-                                ><el-icon>
+                                ><el-icon v-show="!isCollapse">
                                     <span class="bullet-dot"></span>
                                 </el-icon>
                                 <nav-link
@@ -102,7 +125,11 @@
                     </el-sub-menu>
                 </template>
                 <template v-else>
-                    <el-menu-item class="text-lg" :key="key" :index="key">
+                    <el-menu-item
+                        class="text-lg"
+                        :key="key"
+                        :index="key.toString()"
+                    >
                         <el-icon><fa :icon="menu.icon" /></el-icon>
                         <template #title>
                             <nav-link
@@ -116,7 +143,7 @@
                                     (currentActive = appRoute().current(
                                         menu.link
                                     )
-                                        ? key
+                                        ? key.toString()
                                         : currentActive)
                                 "
                             >
@@ -129,58 +156,53 @@
         </el-menu>
     </div>
 </template>
-<script setup></script>
-<script>
-export default {
-    props: { parentIsCollapse: Boolean },
-    watch: {
-        parentIsCollapse() {
-            this.isCollapse = this.parentIsCollapse;
-        },
+<script setup>
+import { reactive } from "@vue/reactivity";
+const isMobile = navigator.userAgentData.mobile;
+let currentActive = $ref("");
+let isCollapse = $ref(props.parentIsCollapse);
+const props = defineProps({
+    parentIsCollapse: Boolean,
+});
+let menus = reactive([
+    {
+        link: "user.dashboard",
+        name: "home",
+        icon: "chalkboard",
     },
-    data() {
-        return {
-            iconName: "Location",
-            currentActive: "",
-            isCollapse: this.parentIsCollapse,
-            isMobile: navigator.userAgentData.mobile,
-            menus: [
-                {
-                    link: "#",
-                    name: "home",
-                    icon: "pen",
-                },
-                {
-                    link: "#",
-                    name: "manage Organization",
-                    icon: "key",
-                    children: [
-                        {
-                            link: "#",
-                            name: "Organization Group",
-                            icon: "fa-minus",
-                        },
-                        {
-                            link: "login",
-                            name: "login",
-                            icon: "folder",
-                        },
-                        {
-                            link: "#",
-                            name: "Organization Member",
-                            icon: "eye",
-                        },
-                    ],
-                },
-            ],
-        };
+    {
+        link: "#",
+        name: "Manage Menu",
+        icon: "chalkboard",
     },
-    methods: {},
-};
+    {
+        link: "#",
+        name: "manage Organization",
+        icon: "key",
+        children: [
+            {
+                link: "#",
+                name: "Organization Group",
+                icon: "fa-minus",
+            },
+            {
+                link: "login",
+                name: "login",
+                icon: "folder",
+            },
+            {
+                link: "#",
+                name: "Organization Member",
+                icon: "eye",
+            },
+        ],
+    },
+]);
 </script>
+<script></script>
 <style scoped>
 .brand-logo {
-    height: 64px;
+    height: 60px;
     background: #f3f3f3;
     display: flex;
     align-items: center; /* Vertical */
@@ -188,7 +210,7 @@ export default {
 }
 .el-menu-vertical:not(.el-menu--collapse) {
     width: 250px;
-    min-height: 100%;
+    min-height: calc(100% - 60px); /* 60px header */
 }
 .el-menu--collapse {
     min-height: 100%;
@@ -236,6 +258,18 @@ div.menu-toggler {
 }
 .el-sub-menu ul .el-icon {
     width: 16px;
+}
+.el-menu-group-title {
+    padding-left: calc(
+        var(--el-menu-base-level-padding) + var(--el-menu-level) *
+            var(--el-menu-level-padding)
+    );
+    font-size: 14px;
+    font-weight: bold;
+    color: #9b9999;
+    height: 32px;
+    display: flex;
+    align-items: center;
 }
 </style>
 <style>

@@ -1,8 +1,8 @@
 <template>
     <div class="common-layout">
         <el-container>
-            <el-header>auth Header</el-header>
-            <el-main> <slot /></el-main>
+            <!-- <el-header>auth Header</el-header> -->
+            <el-main class="!p-0"> <slot /></el-main>
         </el-container>
     </div>
 </template>

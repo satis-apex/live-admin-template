@@ -1,6 +1,5 @@
 <template>
     <el-row class="mb-4">
-        <el-button>Default</el-button>
         <el-button type="primary">Primary</el-button>
         <el-button type="success">Success</el-button>
         <el-button type="info">Info</el-button>
@@ -9,13 +8,14 @@
         <el-button>中文</el-button>
     </el-row>
 </template>
+<script setup>
+// import customMixins from "@/Includes/customMixins";
+</script>
 <script>
 export default {
     layout: "admin",
     data() {
-        return {
-            // registerBg2: "img/register_bg_2.png",
-        };
+        return {};
     },
 };
 </script>

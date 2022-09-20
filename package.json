@@ -29,6 +29,7 @@
         "@fortawesome/free-solid-svg-icons": "^6.2.0",
         "@fortawesome/vue-fontawesome": "^3.0.1",
         "element-plus": "^2.2.11",
+        "moment": "^2.29.4",
         "sass": "^1.54.0"
     }
 }

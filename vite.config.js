@@ -13,6 +13,7 @@ export default defineConfig({
             refresh: true,
         }),
         vue({
+            reactivityTransform: true,//experimintal
             template: {
                 transformAssetUrls: {
                     base: null,
