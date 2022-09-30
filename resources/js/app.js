@@ -1,7 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
 
-
 //element ui 
 import 'element-plus/theme-chalk/display.css'
 /* import the fontawesome core */

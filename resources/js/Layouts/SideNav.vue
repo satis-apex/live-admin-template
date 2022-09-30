@@ -30,25 +30,7 @@
             :collapse="isCollapse"
             :collapse-transition="false"
         >
-            <!-- <li class="el-menu-group-title">
-                <span v-show="!isCollapse">Dashboard</span>
-            </li> 
-            <el-menu-item index="a">
-                <el-icon><fa icon="chalkboard" /></el-icon>
-                <nav-link
-                    title="Dashboard"
-                    href="/"
-                    :set="
-                        (currentActive = appRoute().current()
-                            ? 'a'
-                            : currentActive)
-                    "
-                >
-                    home
-                </nav-link>
-            </el-menu-item>-->
-
-            <template v-for="(menu, key) in menus">
+            <template v-for="(menu, key) in menuList">
                 <template v-if="menu.link != '#'">
                     <el-menu-item
                         class="text-lg"
@@ -157,49 +139,27 @@
     </div>
 </template>
 <script setup>
-import { reactive } from "@vue/reactivity";
+import { reactive, watch, computed } from "vue";
+import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 const isMobile = navigator.userAgentData.mobile;
 let currentActive = $ref("");
 let isCollapse = $ref(props.parentIsCollapse);
+let { iPropsValue } = useInertiaPropsUtility();
 const props = defineProps({
     parentIsCollapse: Boolean,
 });
-let menus = reactive([
-    {
-        link: "user.dashboard",
-        name: "home",
-        icon: "chalkboard",
-    },
-    {
-        link: "#",
-        name: "Manage Menu",
-        icon: "chalkboard",
-    },
-    {
-        link: "#",
-        name: "manage Organization",
-        icon: "key",
-        children: [
-            {
-                link: "#",
-                name: "Organization Group",
-                icon: "fa-minus",
-            },
-            {
-                link: "login",
-                name: "login",
-                icon: "folder",
-            },
-            {
-                link: "#",
-                name: "Organization Member",
-                icon: "eye",
-            },
-        ],
-    },
-]);
+
+let menus = $ref(iPropsValue("app_menu", "menu_list"));
+watch(
+    () => iPropsValue("app_menu", "menu_list"),
+    () => {
+        menus = iPropsValue("app_menu", "menu_list");
+    }
+);
+const menuList = computed(() => {
+    return JSON.parse(menus);
+});
 </script>
-<script></script>
 <style scoped>
 .brand-logo {
     height: 60px;

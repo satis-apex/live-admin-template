@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\ApplicationInfo;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -45,6 +46,7 @@ class HandleInertiaRequests extends Middleware
                 ]);
             },
             'app_info' => ApplicationInfo::first(),
+            "app_menu" => Menu::first('menu_list')
         ]);
     }
 }

@@ -61,6 +61,9 @@ export function useAppUtility() {
 		return check;
 	}
 
+	const getMenuKey = function (object, key) {
+
+	}
 	return {
 		ifUrlExist,
 		isAuthorize,

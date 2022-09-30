@@ -75,5 +75,23 @@ export function useObjectUtility() {
 		});
 		return filteredObj;
 	}
-	return { getKeyByValue, getObjectIndex, getObjectRow, getObjectIndex, objectToArray, groupBy, filterObject };
+	const populateObject = function (objToPopulate, objSource) {
+		// let objToPop = Object.assign({}, objToPopulate)
+		//let newObj = {};
+		_.forEach(objToPopulate, (value, key) => {
+			objToPopulate[key] = objSource[key];
+		});
+		return objToPopulate;
+	}
+
+	const sanitizeObject = function (jsObj) {
+		return _.omitBy(jsObj, (v) => v === null || v === undefined)
+	}
+
+	const resetObjectKey = function (jsObj) {
+		return _.filter(jsObj, function (value) {
+			return value
+		});
+	}
+	return { getKeyByValue, getObjectIndex, getObjectRow, getObjectIndex, objectToArray, groupBy, filterObject, populateObject, sanitizeObject, resetObjectKey };
 }

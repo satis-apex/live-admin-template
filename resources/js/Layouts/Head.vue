@@ -16,7 +16,7 @@
                                 <div class="flex items-center">
                                     <span class="hidden-xs-only pl-2">
                                         {{
-                                            propsValue(
+                                            iPropsValue(
                                                 "auth",
                                                 "user.first_name"
                                             )
@@ -75,7 +75,7 @@ import {
 } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 
-let { propsValue } = useInertiaPropsUtility();
+let { iPropsValue } = useInertiaPropsUtility();
 </script>
 <script>
 export default {

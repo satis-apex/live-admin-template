@@ -8,8 +8,8 @@
                 <heads></heads>
                 <el-main class="main-container-wrapper"><slot /></el-main>
                 <el-footer
-                    >&copy; {{ moment(date).format("YYYY") }},
-                    {{ propsValue("app_info", "title") }}
+                    >&copy; {{ moment().year() }},
+                    {{ iPropsValue("app_info", "title") }}
                 </el-footer>
             </el-container>
         </el-container>
@@ -22,7 +22,7 @@ import heads from "@/Layouts/Head.vue";
 import moment from "moment";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 
-let { propsValue } = useInertiaPropsUtility();
+let { iPropsValue } = useInertiaPropsUtility();
 const isCollapse = false;
 const isMobile = navigator.userAgentData.mobile;
 </script>

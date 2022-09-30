@@ -1,8 +1,13 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\MenuLinkController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,17 +20,28 @@ use Inertia\Inertia;
 |
 */
 
+// Auth::routes([
+//     'register' => false, // Registration Routes...
+//     'reset' => false, // Password Reset Routes...
+//     'verify' => false,
+// ]);
+
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Redirect::to('/dashboard');
+    // return Inertia::render('Welcome', [
+    //     'canLogin' => Route::has('login'),
+    //     'canRegister' => Route::has('register'),
+    //     'laravelVersion' => Application::VERSION,
+    //     'phpVersion' => PHP_VERSION,
+    // ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.user');
 
-require __DIR__.'/auth.php';
+Route::resource('menu', MenuController::class);
+Route::resource('menu-link', MenuLinkController::class);
+
+require __DIR__ . '/auth.php';
+Route::fallback(function () {
+    return abort('404');
+});
