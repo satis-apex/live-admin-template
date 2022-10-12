@@ -2,11 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\ApplicationInfo;
 use App\Models\Menu;
-use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
+use Illuminate\Http\Request;
+use App\Models\ApplicationInfo;
+use Hamcrest\Arrays\IsArray;
+use Illuminate\Support\Facades\Session;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -36,6 +38,48 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        $flashMessage = [];
+        if ($message = Session::get('success')) {
+            $flashMessage = ['message' => '', 'type' => 'success', 'title' => 'Success', 'hasHtML' => false];
+            if (is_array($message)) {
+                $flashMessage = [...$flashMessage, ...$message];
+            } else {
+                $flashMessage['message'] = $message;
+                $flashMessage['type'] = 'success';
+                $flashMessage['title'] = 'Success';
+                $flashMessage['hasHTML'] = false;
+            }
+        } else if ($message = Session::get('info')) {
+            $flashMessage = ['message' => '', 'type' => 'info', 'title' => 'Info', 'hasHtML' => false];
+            if (is_array($message)) {
+                $flashMessage = [...$flashMessage, ...$message];
+            } else {
+                $flashMessage['message'] = $message;
+                $flashMessage['type'] = 'info';
+                $flashMessage['title'] = 'Info';
+                $flashMessage['hasHTML'] = false;
+            }
+        } else if ($message = Session::get('warning')) {
+            $flashMessage = ['message' => '', 'type' => 'warning', 'title' => 'Warning', 'hasHtML' => false];
+            if (is_array($message)) {
+                $flashMessage = [...$flashMessage, ...$message];
+            } else {
+                $flashMessage['message'] = $message;
+                $flashMessage['type'] = 'warning';
+                $flashMessage['title'] = 'Warning';
+                $flashMessage['hasHTML'] = false;
+            }
+        } else if ($message = Session::get('error')) {
+            $flashMessage = ['message' => '', 'type' => 'error', 'title' => 'Error', 'hasHtML' => false];
+            if (is_array($message)) {
+                $flashMessage = [...$flashMessage, ...$message];
+            } else {
+                $flashMessage['message'] = $message;
+                $flashMessage['type'] = 'error';
+                $flashMessage['title'] = 'Error';
+                $flashMessage['hasHTML'] = false;
+            }
+        }
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
@@ -46,7 +90,8 @@ class HandleInertiaRequests extends Middleware
                 ]);
             },
             'app_info' => ApplicationInfo::first(),
-            "app_menu" => Menu::first('menu_list')
+            'app_menu' => Menu::first('menu_list'),
+            'flash' => $flashMessage
         ]);
     }
 }
