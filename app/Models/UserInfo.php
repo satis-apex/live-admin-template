@@ -6,13 +6,13 @@ use Carbon\Carbon;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
-// use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class userInfo extends Model //implements HasMedia
+class userInfo extends Model implements HasMedia
 {
-	use HasFactory; //, InteractsWithMedia;
+	use HasFactory, InteractsWithMedia;
 	protected $hidden = ['created_at', 'updated_at'];
 	protected $appends = ['fullName', 'getAvatarAttribute'];
 	protected $fillable = [
@@ -44,37 +44,37 @@ class userInfo extends Model //implements HasMedia
 	/**
 	 * Single File uploading
 	 */
-	// public function registerMediaCollections(): void
-	// {
-	// 	$this->addMediaCollection('avatar')
-	// 		->acceptsMimeTypes(['image/jpeg'])
-	// 		->singleFile();
-	// }
+	public function registerMediaCollections(): void
+	{
+		$this->addMediaCollection('avatar')
+			->acceptsMimeTypes(['image/jpeg'])
+			->singleFile();
+	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getAvatarAttribute()
 	{
-		// if ($this->getFirstMedia('avatar') != null) {
-		// 	$fullPath = $this->getFirstMedia('avatar')->getPath('thumb');
-		// 	if (file_exists($fullPath)) {
-		// 		return $this->getFirstMedia('avatar')->getUrl('thumb');
-		// 	}
-		// }
-		return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+		if ($this->getFirstMedia('avatar') != null) {
+			$fullPath = $this->getFirstMedia('avatar')->getPath('thumb');
+			if (file_exists($fullPath)) {
+				return $this->getFirstMedia('avatar')->getUrl('thumb');
+			}
+		}
+		// return "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
 		return null;
 	}
 
-	// public function registerMediaConversions(Media $media = null): void
-	// {
-	// 	$this->addMediaConversion('thumb')
-	// 		->width(368)
-	// 		->height(232)
-	// 		->sharpen(10);
+	public function registerMediaConversions(Media $media = null): void
+	{
+		$this->addMediaConversion('thumb')
+			->width(368)
+			->height(232)
+			->sharpen(10);
 
-	// 	$this->addMediaConversion('medium')
-	// 		->width(600)
-	// 		->height(600);
-	// }
+		$this->addMediaConversion('medium')
+			->width(600)
+			->height(600);
+	}
 }

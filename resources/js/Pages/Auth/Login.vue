@@ -7,13 +7,11 @@ import BreezeLabel from "@/Components/Label.vue";
 import BreezeValidationErrors from "@/Components/ValidationErrors.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 // import customMixins from "@/Includes/customMixins";
-import { useStringUtility } from "@/Composables/stringUtility";
 defineProps({
     canResetPassword: Boolean,
     status: String,
 });
 
-let { camelToWord } = useStringUtility();
 const form = useForm({
     email: "",
     password: "",
@@ -73,9 +71,7 @@ export default {
                         name="remember"
                         v-model:checked="form.remember"
                     />
-                    <span class="ml-2 text-sm text-gray-600"
-                        >Remember me {{ camelToWord("isThisNotCorrect") }}</span
-                    >
+                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
                 </label>
             </div>
 
