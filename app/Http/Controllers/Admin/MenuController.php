@@ -14,20 +14,20 @@ class MenuController
 	public function index()
 	{
 	}
-
 	public function store()
 	{
-		$menus = Menu::first();
-		$menus->menu_list = request('menus');
-		$menus->save();
-
-
-		foreach (request('changedMenu') as $id => $parent) {
-			$menuLink = MenuLink::Find($id);
-			$menuLink->parent_id = $parent;
-			$menuLink->save();
+		try {
+			$menus = Menu::first();
+			$menus->menu_list = request('menus');
+			$menus->save();
+			foreach (request('changedMenu') as $id => $parent) {
+				$menuLink = MenuLink::Find($id);
+				$menuLink->parent_id = $parent;
+				$menuLink->save();
+			}
+		} catch (\Exception $e) {
+			return Redirect::route('menu-link.index')->with('error', $e->getMessage());
 		}
-
-		return Redirect::route('menu-link.index');
+		return Redirect::route('menu-link.index')->with('success', "Menu Updated Successfully");
 	}
 }
