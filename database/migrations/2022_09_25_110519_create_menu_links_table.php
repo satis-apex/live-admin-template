@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->string('type');
             $table->string('parent_id')->nullable();
-            $table->json('access');
+            $table->string('access')->default('Su-Admin');
             $table->timestamps();
         });
     }
