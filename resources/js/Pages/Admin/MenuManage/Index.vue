@@ -5,78 +5,93 @@
                 <el-row class="mb-2">
                     <el-col :span="24">
                         <div class="flex justify-between">
-                            <el-button
-                                data-action="expand-all"
-                                type="success"
-                                size="default"
-                                rounded
-                                @click="addForm"
-                                :icon="Plus"
-                            >
-                                Add Menu
-                            </el-button>
-                            <el-button
-                                type="success"
-                                size="default"
-                                rounded
-                                @click="saveMenuChanges()"
-                                v-if="menuChangedStatus"
-                            >
-                                Save changes
-                            </el-button>
-                            <menu-action-button />
+                            <el-button-group>
+                                <el-tooltip
+                                    class="box-item"
+                                    effect="dark"
+                                    content="Add Menu"
+                                    placement="top"
+                                >
+                                    <el-button
+                                        data-action="expand-all"
+                                        type="success"
+                                        size="default"
+                                        rounded
+                                        @click="addForm"
+                                        :icon="Plus"
+                                    >
+                                    </el-button>
+                                </el-tooltip>
+                                <el-tooltip
+                                    class="box-item"
+                                    effect="dark"
+                                    content="Save Changes"
+                                    placement="top"
+                                    v-if="menuChangedStatus"
+                                >
+                                    <el-button
+                                        type="success"
+                                        size="default"
+                                        rounded
+                                        @click="saveMenuChanges()"
+                                        :loading="saveMenuLoading"
+                                        v-if="menuChangedStatus"
+                                    >
+                                        <fa icon="floppy-disk" />
+                                    </el-button>
+                                </el-tooltip>
+                            </el-button-group>
+                            <MenuActionButton />
                         </div>
                     </el-col>
                 </el-row>
-                <div id="nestable-menu-list" class="dd">
-                    <SortableMenu
-                        :key="nestableComponentKey"
-                        :parentMenus="menus"
-                        @edit-menu="editForm"
-                        @delete-menu="deleteMenu"
-                    />
-                </div>
+                <NestableMenu
+                    :key="nestableComponentKey"
+                    :parentMenus="menus"
+                    @edit-menu="editForm"
+                    @delete-menu="deleteMenu"
+                    @render-nestable="renderNestable"
+                    @update-nestable="updateNestable"
+                />
             </div>
         </el-col>
-        <el-col :span="12" class="pl-4 pt-4"
-            ><div class="grid-content" />
-            role menu view
+        <el-col :span="12" class="pl-4 pt-4">
+            <RoleMenuList />
         </el-col>
     </el-row>
-
-    <add-edit-menu-form ref="addEditMenuForm" />
+    <AddEditMenuForm ref="addEditMenuForm" />
 </template>
 <script setup>
-import "~/css/nestable.css";
-
-import "/node_modules/nestable2/jquery.nestable.js";
 //library import
-import { reactive, watch, ref, onMounted } from "vue";
+import { watch } from "vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { Plus } from "@element-plus/icons-vue";
 // component import
 import MenuActionButton from "./Components/MenuActionButton.vue";
-import SortableMenu from "./Components/SortableMenu.vue";
+import NestableMenu from "./Components/NestableMenu.vue";
 import AddEditMenuForm from "./Components/AddEditMenuForm.vue";
+import RoleMenuList from "./Components/RoleMenuList.vue";
 // composable import
 import { useObjectUtility } from "@/Composables/objectUtility";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 // declaration
-let { populateObject, sanitizeObject, resetObjectKey } = useObjectUtility();
+const nestableComponentKey = $ref(0);
+const menuChangedStatus = $ref(false);
+const addEditMenuForm = $ref(null);
+const saveMenuLoading = $ref(false);
+let { resetObjectKey } = useObjectUtility();
 let { iPropsValue } = useInertiaPropsUtility();
 let menus = $ref(iPropsValue("app_menu", "menu_list"));
-const nestableComponentKey = $ref(0);
-let menuChangedStatus = $ref(false);
-let addEditMenuForm = $ref(null);
 let changedMenus = $ref({});
 watch(
     () => iPropsValue("app_menu", "menu_list"),
     () => {
         menus = iPropsValue("app_menu", "menu_list");
-        forceNestableRerender();
+        renderNestable();
     }
 );
-const forceNestableRerender = (timeOut = 0) => {
+
+const renderNestable = (timeOut = 0) => {
     return new Promise((resolve) =>
         setTimeout(() => {
             nestableComponentKey += 1;
@@ -84,40 +99,10 @@ const forceNestableRerender = (timeOut = 0) => {
         }, timeOut)
     );
 };
-
-let setEditFormVisible = function () {
+const setEditFormVisible = function () {
     editFormVisible = false;
 };
-let addForm = function () {
-    addEditMenuForm.showForm("Add");
-};
-let editForm = function (menuData) {
-    addEditMenuForm.showForm("Edit", menuData);
-};
-
-let deleteMenu = async function (menuId) {
-    const app = this;
-    let menuObj = JSON.parse(menus);
-    const filteredMenu = filterMenu(menuObj, menuId);
-    menus = JSON.stringify(filteredMenu);
-    await forceNestableRerender();
-    const deleteForm = useForm({
-        menuList: menus,
-        deletedId: menuId,
-    });
-    deleteForm.delete("/menu-link/" + menuId, {
-        preserveScroll: true,
-        onSuccess: () => {
-            ElNotification({
-                title: "Success",
-                message: "Menu Deleted Successfully",
-                type: "success",
-            });
-        },
-    });
-};
-
-let filterMenu = function (menuObj, menuId) {
+const filterMenu = function (menuObj, menuId) {
     let filteredObj = [];
     _.forEach(menuObj, (menu, key) => {
         if (menu.id == menuId) {
@@ -139,50 +124,36 @@ let filterMenu = function (menuObj, menuId) {
     });
     return resetObjectKey(filteredObj);
 };
-let initiateSortable = function () {
-    const app = this;
-    jQuery("#nestable-menu-list").nestable({
-        beforeDragStop: function (l, e, p) {
-            let type = jQuery(e).data("type");
-            let type2 = jQuery(p).data("type");
-            if (type == "parent") {
-                if (type2 != "root") {
-                    forceNestableRerender();
-                    return false;
-                }
-                forceNestableRerender();
-                return true;
-            } else if (type == "child") {
-                if (type2 == undefined) {
-                } else if (type2 != "parent" || type2 == "root") {
-                    forceNestableRerender();
-                    return false;
-                }
-                forceNestableRerender();
-                return true;
-            }
-        },
-        callback: function (l, e) {
-            if (jQuery(e).data("type") == "child") {
-                const id = jQuery(e).data("id");
-                const parent = jQuery(e)
-                    .closest("li[data-type^='parent']")
-                    .data("id");
-                changedMenus[id] = parent;
-                jQuery(e).data("parent_id", parent);
-            }
-            updateOutput();
-            forceNestableRerender();
-            menuChangedStatus = true;
-        },
-        group: 1,
-        maxDepth: 2,
-    });
+const addForm = function () {
+    addEditMenuForm.showForm("Add");
 };
-let updateOutput = function () {
+const editForm = function (menuData) {
+    addEditMenuForm.showForm("Edit", menuData);
+};
+const updateNestable = function (changedMenuLists) {
+    menuChangedStatus = true;
+    changedMenus = changedMenuLists;
     menus = JSON.stringify(jQuery("#nestable-menu-list").nestable("serialize"));
 };
-let saveMenuChanges = function () {
+const deleteMenu = async function (menuId) {
+    const app = this;
+    let menuObj = JSON.parse(menus);
+    const filteredMenu = filterMenu(menuObj, menuId);
+    menus = JSON.stringify(filteredMenu);
+    await renderNestable();
+    const deleteForm = useForm({
+        menuList: menus,
+        deletedId: menuId,
+    });
+    deleteForm.delete("/menu-link/" + menuId, {
+        preserveScroll: true,
+        onSuccess: () => {
+            deleteForm.reset();
+        },
+    });
+};
+const saveMenuChanges = function () {
+    saveMenuLoading = true;
     const updatedMenu = window.JSON.stringify(
         jQuery("#nestable-menu-list").nestable("serialize")
     );
@@ -190,23 +161,14 @@ let saveMenuChanges = function () {
         menus: updatedMenu,
         changedMenu: changedMenus,
     });
-
     formData.post("/menu", {
         preserveScroll: true,
         onSuccess: () => {
             menuChangedStatus = false;
-            ElNotification({
-                title: "Success",
-                message: "Menu Updated Successfully",
-                type: "success",
-            });
+            saveMenuLoading = false;
         },
     });
 };
-
-onMounted(() => {
-    initiateSortable();
-});
 </script>
 <script>
 export default {

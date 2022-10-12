@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Menu;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -40,6 +41,27 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        // adds user info to session after successful login
+        Inertia::share([
+            'config' => [
+                'a' => 'aaa',
+                'b' => 'bbb'
+            ]
+        ]);
+
+
+        Inertia::share(
+            'auth',
+            fn (Request $request) => $request->user()
+                ? ["user" => $request->user()->only('id', 'email'), "profile" => $request->user()->profile]
+                : null
+        );
+        Inertia::share(
+            'app_menu',
+            fn (Request $request) => $request->user()
+                ? Menu::first('menu_list')
+                : null
+        );
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

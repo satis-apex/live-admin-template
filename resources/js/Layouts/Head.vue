@@ -12,7 +12,13 @@
                     <el-col :span="14" class="content-center text-right">
                         <el-dropdown class="" trigger="click">
                             <span class="el-dropdown-link flex">
-                                <el-avatar> user </el-avatar>
+                                <el-avatar
+                                    :src="iPropsValue('auth', 'user.avatar')"
+                                >
+                                    <img
+                                        src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
+                                    />
+                                </el-avatar>
                                 <div class="flex items-center">
                                     <span class="hidden-xs-only pl-2">
                                         {{
@@ -29,8 +35,13 @@
                             </span>
                             <template #dropdown>
                                 <el-dropdown-menu>
-                                    <el-dropdown-item divided :icon="Plus"
-                                        >super admin</el-dropdown-item
+                                    <el-dropdown-item divided :icon="Plus">
+                                        {{
+                                            iPropsValue(
+                                                "auth",
+                                                "user.account.role"
+                                            )
+                                        }}</el-dropdown-item
                                     >
                                     <el-dropdown-item :icon="CirclePlusFilled">
                                         Action 2

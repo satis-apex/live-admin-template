@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MenuLinkController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MenuLinkPermissionController;
+use Facades\App\Services\Menu\MenuLinkService;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,11 +37,13 @@ Route::get('/', function () {
     //     'phpVersion' => PHP_VERSION,
     // ]);
 });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.user');
+    Route::resource('menu', MenuController::class);
+    Route::resource('menu-link', MenuLinkController::class);
+    Route::resource('menu-link-permission', MenuLinkPermissionController::class)->only(['destroy', 'update']);
+});
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.user');
-
-Route::resource('menu', MenuController::class);
-Route::resource('menu-link', MenuLinkController::class);
 
 require __DIR__ . '/auth.php';
 Route::fallback(function () {

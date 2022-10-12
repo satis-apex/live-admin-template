@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
 use App\Models\Menu;
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Roles;
 use App\Models\MenuLink;
-use Facades\App\Services\Menu\MenuLinkService;
-use Exception;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redirect;
-use Spatie\Permission\Models\Role;
+use Facades\App\Services\Menu\MenuLinkService;
 
-class MenuLinkController
+class MenuLinkController extends Controller
 {
+	public function __construct()
+	{
+		$this->implementMethodPermission('manage-menu');
+	}
 	public function index()
 	{
 		$menuRoutes = MenuLinkService::listableMenu();

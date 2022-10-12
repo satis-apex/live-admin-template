@@ -1,5 +1,9 @@
 <template>
-    <el-dialog v-model="FormVisible" :title="FormType + ' Menu'">
+    <el-dialog
+        v-model="FormVisible"
+        :before-close="closeForm"
+        :title="FormType + ' Menu'"
+    >
         <template #default>
             <el-form :model="formData" :rules="rules" ref="ruleFormRef">
                 <el-form-item label="Menu Type" :label-width="formLabelWidth">
@@ -39,7 +43,17 @@
                     :label-width="formLabelWidth"
                     prop="name"
                 >
-                    <el-input v-model="formData.name" autocomplete="off" />
+                    <el-input
+                        v-model="formData.name"
+                        :formatter="
+                            (value) =>
+                                value.replace(
+                                    /(^\w{1})|(\s+\w{1})/g,
+                                    (letter) => letter.toUpperCase()
+                                )
+                        "
+                        autocomplete="off"
+                    />
                 </el-form-item>
                 <el-form-item
                     label="Route Name"
@@ -71,7 +85,7 @@
                     :label-width="formLabelWidth"
                     prop="icon"
                 >
-                    <el-input v-model="formData.icon" autocomplete="off">
+                    <el-input v-model="menuIcon" autocomplete="off">
                         <template #prepend>
                             <el-button
                                 :icon="Search"
@@ -91,12 +105,11 @@
                             v-for="role in roles"
                             :key="role"
                             :label="role"
-                            :disabled="role == 'su_admin' ? true : false"
+                            :disabled="role == 'Su-Admin' ? true : false"
                             >{{ role }}</el-checkbox
                         >
                     </el-checkbox-group>
                 </el-form-item>
-
                 <el-form-item
                     label="Parent"
                     v-show="linkToParent"
@@ -119,6 +132,7 @@
                     </el-select>
                 </el-form-item>
             </el-form>
+            <!-- modal for select icon from -->
             <el-dialog
                 v-model="iconDialogVisible"
                 width="30%"
@@ -142,7 +156,7 @@
                 <el-button @click="closeForm()">Cancel</el-button>
                 <el-button
                     type="primary"
-                    :disabled="formData.processing"
+                    :loading="formData.processing"
                     @click="submitForm(ruleFormRef)"
                     >{{ FormType == "Add" ? "Add" : "Update" }}</el-button
                 >
@@ -166,29 +180,36 @@
 </style>
 <script setup>
 //library import
-import { reactive, ref, markRaw, watch } from "vue";
-import { Plus, Edit, Search } from "@element-plus/icons-vue";
-import { Inertia } from "@inertiajs/inertia";
+import { reactive, markRaw, watch } from "vue";
+import { Edit, Search } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
-import { ElNotification } from "element-plus";
+import debounce from "lodash/debounce";
 //composable import
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 //variable declaration
-let { iPropsValue } = useInertiaPropsUtility();
-let dialogTableVisible = $ref(false);
-let FormVisible = $ref(false);
-let iconDialogVisible = $ref(false);
-let ruleFormRef = $ref();
+const FormVisible = $ref(false);
+const iconDialogVisible = $ref(false);
+const linkToParent = $ref(false);
 const formLabelWidth = "140px";
-let linkToParent = $ref(false);
+const menuIcon = $ref();
+let { iPropsValue } = useInertiaPropsUtility();
+let ruleFormRef = $ref();
 let FormType = $ref("Add");
 let menuRoutes = $ref(iPropsValue("menuRoutes"));
 let parentLinks = $ref(iPropsValue("parentLinks"));
 let roles = iPropsValue("userRoles");
+let menuLinkLists = iPropsValue("menuLinkLists");
+let editFormData = $ref(); //default edit form data
 watch(
     () => iPropsValue("menuRoutes"),
     () => {
         menuRoutes = iPropsValue("menuRoutes");
+    }
+);
+watch(
+    () => iPropsValue("menuLinkLists"),
+    () => {
+        menuLinkLists = iPropsValue("menuLinkLists");
     }
 );
 watch(
@@ -197,6 +218,12 @@ watch(
         parentLinks = iPropsValue("parentLinks");
     }
 );
+watch(
+    () => menuIcon,
+    debounce((value) => {
+        formData.icon = value != "" ? value : null;
+    }, 600)
+);
 
 const formData = useForm({
     name: "",
@@ -204,8 +231,16 @@ const formData = useForm({
     parentId: null,
     link: "#",
     icon: null,
-    access: ["su_admin"],
+    access: ["Su-Admin"],
 });
+const validateExists = (rule, value, callback) => {
+    if (value !== "") {
+        if (isMenuExist(value)) {
+            callback(new Error("Please Assign Unique Menu Name"));
+        }
+    }
+    callback();
+};
 const rules = reactive({
     name: [
         {
@@ -213,8 +248,8 @@ const rules = reactive({
             message: "Please input Menu name",
             trigger: "blur",
         },
+        { validator: validateExists, trigger: "blur" },
     ],
-
     icon: [
         {
             required: true,
@@ -281,7 +316,6 @@ const iconList = [
     "university",
     "sitemap",
 ];
-
 let changedMenuType = function () {
     formData.reset("icon", "link", "parentId");
     switch (formData.type) {
@@ -293,7 +327,6 @@ let changedMenuType = function () {
             rules.icon[0].required = false;
             formData.link = "";
             break;
-
         case "parent":
             linkToParent =
                 rules.parentId[0].required =
@@ -302,13 +335,11 @@ let changedMenuType = function () {
             rules.icon[0].required = true;
             formData.link = "#";
             break;
-
         case "parent-single":
             linkToParent = rules.parentId[0].required = false;
             rules.icon[0].required = rules.link[0].required = true;
             formData.link = "";
             break;
-
         default:
             break;
     }
@@ -316,11 +347,20 @@ let changedMenuType = function () {
         ruleFormRef.clearValidate();
     }, 100);
 };
-let selectIcon = function (iconName) {
-    formData.icon = iconName;
-    iconDialogVisible = false;
+let isMenuExist = function (newMenu) {
+    if (FormType == "Edit") {
+        if (editFormData.name == newMenu) return false;
+    }
+    if (menuLinkLists.indexOf(newMenu) != -1) {
+        return true;
+    }
+    return false;
 };
-
+let selectIcon = function (iconName) {
+    menuIcon = iconName;
+    iconDialogVisible = false;
+    ruleFormRef.clearValidate("icon");
+};
 const submitForm = async (formEl) => {
     if (!formEl) return;
     await formEl.validate((valid, fields) => {
@@ -331,6 +371,11 @@ const submitForm = async (formEl) => {
                 updateMenu();
             }
         } else {
+            ElNotification({
+                title: "Warning",
+                message: "error submit!",
+                type: "warning",
+            });
             console.log("error submit!", fields);
         }
     });
@@ -342,6 +387,7 @@ const resetForm = (formEl) => {
 };
 const closeForm = () => {
     FormVisible = false;
+    menuIcon = null;
     resetForm(ruleFormRef);
     formData.reset();
 };
@@ -350,11 +396,6 @@ const insertMenu = async function () {
         preserveScroll: true,
         onSuccess: () => {
             closeForm();
-            ElNotification({
-                title: "Success",
-                message: "Menu Added Successfully",
-                type: "success",
-            });
         },
     });
 };
@@ -368,11 +409,6 @@ const updateMenu = function () {
                     preserveScroll: true,
                     onSuccess: () => {
                         closeForm();
-                        ElNotification({
-                            title: "Success",
-                            message: "Menu Updated Successfully",
-                            type: "success",
-                        });
                     },
                 });
             }
@@ -387,9 +423,8 @@ const showForm = function (formType, data = "") {
     if (formType === "Add") {
     }
     if (formType === "Edit") {
+        editFormData = data;
         populateFormData(data);
-
-        // formData.defaults("name", data.name);
     }
 };
 let populateFormData = function (data) {
@@ -402,6 +437,7 @@ let populateFormData = function (data) {
         linkToParent = true;
     } else {
         formData.icon = data.icon;
+        menuIcon = data.icon;
     }
     formData.access = data.access?.split(",");
 };
