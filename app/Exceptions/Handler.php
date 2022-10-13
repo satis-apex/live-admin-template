@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Inertia\Inertia;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -13,7 +13,6 @@ class Handler extends ExceptionHandler
      * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
      */
     protected $levels = [
-        //
     ];
 
     /**
@@ -22,7 +21,6 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
     ];
 
     /**
@@ -44,7 +42,23 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        $response = parent::render($request, $e);
+        //!app()->environment(['local', 'testing']) &&
+        if (\in_array($response->status(), [500, 503, 404, 403])) {
+            return back()->with(['pageException' => $response->status()]);
+        // return Inertia::render('Admin/Home', ['status' => $response->status()])
+            // ->toResponse($request)
+            // ->setStatusCode($response->status());
+        } elseif ($response->status() === 419) {
+            return back()->with([
+                'pageException' => 419,
+            ]);
+        }
+        return $response;
     }
 }

@@ -9,7 +9,6 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MenuLinkController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuLinkPermissionController;
-use Facades\App\Services\Menu\MenuLinkService;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,13 +38,10 @@ Route::get('/', function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.user');
-    Route::resource('menu', MenuController::class);
+    Route::resource('menu', MenuController::class)->only(['store']);
     Route::resource('menu-link', MenuLinkController::class);
     Route::resource('menu-link-permission', MenuLinkPermissionController::class)->only(['destroy', 'update']);
 });
 
-
 require __DIR__ . '/auth.php';
-Route::fallback(function () {
-    return abort('404');
-});
+Route::fallback(fn () => abort('404'));
