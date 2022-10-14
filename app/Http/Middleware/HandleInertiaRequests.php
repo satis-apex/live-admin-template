@@ -55,7 +55,7 @@ class HandleInertiaRequests extends Middleware
                 $flashMessage['hasHTML'] = false;
             }
         } elseif ($message = Session::get('info')) {
-            $flashMessage = ['message' => '', 'type' => 'info', 'title' => 'Info', 'hasHtML' => false];
+            $flashMessage = ['token' => md5(date('Y-m-d H:i:s')), 'message' => '', 'type' => 'info', 'title' => 'Info', 'hasHTML' => false];
             if (\is_array($message)) {
                 $flashMessage = [...$flashMessage, ...$message];
             } else {

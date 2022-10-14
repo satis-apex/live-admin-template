@@ -18,9 +18,8 @@
 <script setup>
 import SideNav from "@/Layouts/SideNav.vue";
 import heads from "@/Layouts/Head.vue";
-
 import moment from "moment";
-import { watch } from "vue";
+import { onMounted, watch } from "vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 
 let { iPropsValue } = useInertiaPropsUtility();
@@ -47,36 +46,44 @@ let description = function (status) {
 watch(
     () => iPropsValue("page_exception"),
     () => {
-        if (
-            iPropsValue("page_exception", "statusCode") != undefined &&
-            iPropsValue("page_exception", "statusCode") != ""
-        ) {
-            ElNotification({
-                title: title(iPropsValue("page_exception", "statusCode")),
-                message: description(
-                    iPropsValue("page_exception", "statusCode")
-                ),
-                type: "error",
-            });
-        }
+        displayException();
     }
 );
 watch(
     () => iPropsValue("flash"),
     () => {
-        if (
-            iPropsValue("flash", "message") != undefined &&
-            iPropsValue("flash", "message") != ""
-        ) {
-            ElNotification({
-                title: iPropsValue("flash", "title"),
-                message: iPropsValue("flash", "message"),
-                dangerouslyUseHTMLString: iPropsValue("flash", "hasHTML"),
-                type: iPropsValue("flash", "type"),
-            });
-        }
+        displayFlash();
     }
 );
+let displayFlash = function () {
+    if (
+        iPropsValue("flash", "message") != undefined &&
+        iPropsValue("flash", "message") != ""
+    ) {
+        ElNotification({
+            title: iPropsValue("flash", "title"),
+            message: iPropsValue("flash", "message"),
+            dangerouslyUseHTMLString: iPropsValue("flash", "hasHTML"),
+            type: iPropsValue("flash", "type"),
+        });
+    }
+};
+let displayException = function () {
+    if (
+        iPropsValue("page_exception", "statusCode") != undefined &&
+        iPropsValue("page_exception", "statusCode") != ""
+    ) {
+        ElNotification({
+            title: title(iPropsValue("page_exception", "statusCode")),
+            message: description(iPropsValue("page_exception", "statusCode")),
+            type: "error",
+        });
+    }
+};
+onMounted(() => {
+    displayFlash();
+    displayException();
+});
 </script>
 
 <script></script>

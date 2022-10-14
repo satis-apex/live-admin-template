@@ -36,6 +36,7 @@
                         class="text-lg"
                         :key="key"
                         :index="key.toString()"
+                        v-if="hasMenuAccess(menu)"
                     >
                         <el-icon><fa :icon="menu.icon" /></el-icon>
                         <template #title>
@@ -75,35 +76,36 @@
                             <el-icon><fa :icon="menu.icon" /> </el-icon>
                             <span :title="menu.name">{{ menu.name }}</span>
                         </template>
-
-                        <el-menu-item
+                        <template
                             v-for="(sub_menu, subKey) in menu.children"
                             :index="key + '-' + subKey"
                             :key="key + '-' + subKey"
                         >
-                            <template #title
-                                ><el-icon v-show="!isCollapse">
-                                    <span class="bullet-dot"></span>
-                                </el-icon>
-                                <nav-link
-                                    v-if="sub_menu.link != '#'"
-                                    :title="sub_menu.name"
-                                    :href="appRoute(sub_menu.link)"
-                                    :set="
-                                        (currentActive = appRoute().current(
-                                            sub_menu.link
-                                        )
-                                            ? key + '-' + subKey
-                                            : currentActive)
-                                    "
-                                >
-                                    {{ sub_menu.name }}
-                                </nav-link>
-                                <span :title="sub_menu.name" v-else>
-                                    {{ sub_menu.name }}</span
-                                >
-                            </template>
-                        </el-menu-item>
+                            <el-menu-item v-if="hasMenuAccess(sub_menu)">
+                                <template #title
+                                    ><el-icon v-show="!isCollapse">
+                                        <span class="bullet-dot"></span>
+                                    </el-icon>
+                                    <nav-link
+                                        v-if="sub_menu.link != '#'"
+                                        :title="sub_menu.name"
+                                        :href="appRoute(sub_menu.link)"
+                                        :set="
+                                            (currentActive = appRoute().current(
+                                                sub_menu.link
+                                            )
+                                                ? key + '-' + subKey
+                                                : currentActive)
+                                        "
+                                    >
+                                        {{ sub_menu.name }}
+                                    </nav-link>
+                                    <span :title="sub_menu.name" v-else>
+                                        {{ sub_menu.name }}</span
+                                    >
+                                </template>
+                            </el-menu-item>
+                        </template>
                     </el-sub-menu>
                 </template>
                 <template v-else>
@@ -148,7 +150,14 @@ let { iPropsValue } = useInertiaPropsUtility();
 const props = defineProps({
     parentIsCollapse: Boolean,
 });
-
+let hasMenuAccess = function (menu) {
+    const role = iPropsValue("auth", "user.account.role");
+    const accessList = menu.access?.split(",");
+    if (accessList.indexOf(role) != -1) {
+        return true;
+    }
+    return false;
+};
 let menus = $ref(iPropsValue("app_menu", "menu_list"));
 watch(
     () => iPropsValue("app_menu", "menu_list"),

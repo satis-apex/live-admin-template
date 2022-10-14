@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -19,13 +18,12 @@ class RoleAndPermissionSeeder extends Seeder
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
         // create permissions
         $permissions = [
-            'home-access',
+            'Home-access',
 
-            'manage-menu-access',
-            'manage-menu-create',
-            'manage-menu-edit',
-            'manage-menu-delete',
-
+            'MenuLink-access',
+            'MenuLink-create',
+            'MenuLink-edit',
+            'MenuLink-delete',
         ];
 
         foreach ($permissions as $permission) {

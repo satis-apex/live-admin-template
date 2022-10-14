@@ -25,6 +25,7 @@ class MenuLink extends Authenticatable
         'type',
         'parent_id',
         'access',
+        'controller_name'
     ];
 
     /**

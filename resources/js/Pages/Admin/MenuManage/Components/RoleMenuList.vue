@@ -56,6 +56,7 @@
                                         effect="dark"
                                         content="Delete Menu Permission"
                                         placement="top"
+                                        v-if="role != 'Su-Admin'"
                                     >
                                         <el-button
                                             type="danger"
