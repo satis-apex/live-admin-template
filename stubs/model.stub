@@ -1,0 +1,21 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }} extends Authenticatable
+{
+    use HasFactory;
+
+    public $guarded = [];
+
+ 	protected $fillable = [];
+	
+	protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+}

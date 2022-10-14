@@ -1,0 +1,52 @@
+<?php
+
+namespace {{ namespace }};
+
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
+use Facades\App\Services\{{ class }}Service;
+
+class {{ class }}Controller extends Controller
+{
+	public function __construct()
+    {
+        $this->implementMethodPermission('{{ class }}');
+    }
+
+    public function index()
+    {
+		return Inertia::render();
+    }
+
+    public function store()
+    {
+		try {
+           {{ class }}Service::add();
+        } catch (\Exception $e) {
+            return Redirect::route('.index')->with('error', $e->getMessage());
+        }
+        return Redirect::route('.index')->with('success', ' Added Successfully');
+    }
+
+    public function update(int $id)
+    {
+		 try {
+           {{ class }}Service::update($id);
+        } catch (\Exception $e) {
+            return Redirect::route('.index')->with('error', $e->getMessage());
+        }
+        return Redirect::route('.index')->with('success', ' Added Successfully');
+    }
+
+    public function destroy(int $id)
+    {
+		 try {
+            {{ class }}Service::remove($id);
+        } catch (\Exception $e) {
+            return Redirect::route('.index')->with('error', $e->getMessage());
+        }
+        return Redirect::route('.index')->with('success', ' Deleted Successfully');
+    }
+}

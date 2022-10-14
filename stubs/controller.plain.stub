@@ -1,0 +1,16 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Facades\App\Services\{{ class }}Service;
+
+class {{ class }}Controller extends Controller
+{
+	public function __construct()
+    {
+        $this->implementMethodPermission('{{ class }}');
+    }
+
+}
