@@ -17,7 +17,16 @@ class {{ class }}Controller extends Controller
 
     public function index()
     {
-		return Inertia::render();
+		return Inertia::render(
+			'',
+			[
+				'userCan' => [
+                    'create' => request()->user()->hasPermissionTo('{{ class }}-create'),
+                    'edit' => request()->user()->hasPermissionTo('{{ class }}-edit'),
+                    'delete' => request()->user()->hasPermissionTo('{{ class }}-delete'),
+                ]
+			]
+		);
     }
 
     public function store()

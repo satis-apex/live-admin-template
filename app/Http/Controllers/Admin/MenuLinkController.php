@@ -6,13 +6,13 @@ use App\Models\MenuLink;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
-use Facades\App\Services\Menu\MenuLinkService;
+use Facades\App\Services\MenuLinkService;
 
 class MenuLinkController extends Controller
 {
     public function __construct()
     {
-        $this->implementMethodPermission('manage-menu');
+        $this->implementMethodPermission('MenuLink');
     }
 
     public function index()

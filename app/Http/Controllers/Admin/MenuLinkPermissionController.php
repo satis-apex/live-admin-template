@@ -1,11 +1,17 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use Facades\App\Services\Menu\MenuLinkService;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
+use Facades\App\Services\MenuLinkService;
 
-class MenuLinkPermissionController
+class MenuLinkPermissionController extends Controller
 {
+    public function __construct()
+    {
+        $this->implementMethodPermission('MenuLink');
+    }
+
     public function update($menuId)
     {
         try {

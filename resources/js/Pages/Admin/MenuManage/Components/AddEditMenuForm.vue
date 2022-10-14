@@ -67,7 +67,13 @@
                     <el-select
                         v-model="formData.link"
                         placeholder="Please select Menu Link"
+                        @change="checkGeneratorOption()"
                     >
+                        <el-option
+                            v-if="FormType == 'Add'"
+                            label="Auto Generate"
+                            value="auto-generate"
+                        />
                         <template
                             v-for="(menuRoute, key) in menuRoutes"
                             :key="key"
@@ -75,6 +81,27 @@
                             <el-option :label="menuRoute" :value="menuRoute" />
                         </template>
                     </el-select>
+                </el-form-item>
+                <el-form-item
+                    v-if="FormType == 'Add' && formData.link == 'auto-generate'"
+                    label="Controller Path"
+                    :label-width="formLabelWidth"
+                    prop="controllerPath"
+                >
+                    <el-input
+                        v-model="formData.controllerPath"
+                        @keydown.space.prevent
+                        autocomplete="off"
+                        :formatter="
+                            (value) => {
+                                const converted = value.replace('\\', '/');
+                                return converted.replace(
+                                    /(^\w{1})|(\/+\w{1})/g,
+                                    (letter) => letter.toUpperCase()
+                                );
+                            }
+                        "
+                    />
                 </el-form-item>
                 <el-form-item
                     label="Menu Icon"
@@ -231,6 +258,7 @@ const formData = useForm({
     parentId: null,
     link: "#",
     icon: null,
+    controllerPath: "",
     access: ["Su-Admin"],
 });
 const validateExists = (rule, value, callback) => {
@@ -245,7 +273,7 @@ const rules = reactive({
     name: [
         {
             required: true,
-            message: "Please input Menu name",
+            message: "Please Input Menu Name",
             trigger: "blur",
         },
         { validator: validateExists, trigger: "blur" },
@@ -262,6 +290,13 @@ const rules = reactive({
             required: false,
             message: "Please Assign Menu link",
             trigger: "change",
+        },
+    ],
+    controllerPath: [
+        {
+            required: false,
+            message: "Please Input Controller Name",
+            trigger: "blur",
         },
     ],
     parentId: [
@@ -347,6 +382,14 @@ let changedMenuType = function () {
         ruleFormRef.clearValidate();
     }, 100);
 };
+let checkGeneratorOption = function () {
+    console.log("calld");
+    if (FormType == "Add" && formData.link == "auto-generate") {
+        rules.controllerPath[0].required = true;
+    } else {
+        rules.controllerPath[0].required = true;
+    }
+};
 let isMenuExist = function (newMenu) {
     if (FormType == "Edit") {
         if (editFormData.name == newMenu) return false;
@@ -373,7 +416,8 @@ const submitForm = async (formEl) => {
         } else {
             ElNotification({
                 title: "Warning",
-                message: "error submit!",
+                message:
+                    "Form validation Error, please check before submitting!",
                 type: "warning",
             });
             console.log("error submit!", fields);
@@ -392,12 +436,24 @@ const closeForm = () => {
     formData.reset();
 };
 const insertMenu = async function () {
-    formData.post("/menu-link", {
-        preserveScroll: true,
-        onSuccess: () => {
-            closeForm();
-        },
-    });
+    ElMessageBox.confirm(
+        "You are trying to Add New menu. Continue?",
+        "Warning",
+        {
+            type: "warning",
+            icon: markRaw(Edit),
+            callback: (action) => {
+                if (action == "confirm") {
+                    formData.post("/menu-link", {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            closeForm();
+                        },
+                    });
+                }
+            },
+        }
+    );
 };
 const updateMenu = function () {
     ElMessageBox.confirm("You are trying to edit menu. Continue?", "Warning", {

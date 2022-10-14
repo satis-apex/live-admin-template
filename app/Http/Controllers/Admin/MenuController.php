@@ -10,7 +10,7 @@ class MenuController extends Controller
 {
     public function __construct()
     {
-        $this->implementMethodPermission('manage-menu');
+        $this->implementMethodPermission('MenuLink');
     }
 
     public function store()
