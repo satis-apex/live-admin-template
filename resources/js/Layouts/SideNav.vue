@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="brand-logo">
+        <div class="brand-logo bg-primary text-white">
             <div
                 class="menu-toggler"
                 @click="this.isCollapse = !this.isCollapse"
@@ -23,125 +23,130 @@
             </div>
             <div class="logo" v-if="!isCollapse">Brand Logo</div>
         </div>
-
-        <el-menu
-            :default-active="currentActive"
-            class="el-menu-vertical"
-            :collapse="isCollapse"
-            :collapse-transition="false"
-        >
-            <template v-for="(menu, key) in menuList">
-                <template v-if="menu.link != '#'">
-                    <el-menu-item
-                        class="text-lg"
-                        :key="key"
-                        :index="key.toString()"
-                        v-if="hasMenuAccess(menu)"
-                    >
-                        <el-icon><fa :icon="menu.icon" /></el-icon>
-                        <template #title>
-                            <nav-link
-                                :title="menu.name"
-                                :href="
-                                    menu.link == '#'
-                                        ? menu.link
-                                        : appRoute(menu.link)
-                                "
-                                :set="
-                                    (currentActive = appRoute().current(
-                                        menu.link
-                                    )
-                                        ? key.toString()
-                                        : currentActive)
-                                "
-                            >
-                                {{ menu.name }}
-                            </nav-link>
-                        </template>
-                    </el-menu-item>
-                </template>
-                <template
-                    v-else-if="
-                        menu.link == '#' &&
-                        menu.children != undefined &&
-                        menu.children.length != 0
-                    "
-                >
-                    <el-sub-menu
-                        class="text-lg"
-                        :key="key"
-                        :index="key.toString()"
-                    >
-                        <template #title>
-                            <el-icon><fa :icon="menu.icon" /> </el-icon>
-                            <span :title="menu.name">{{ menu.name }}</span>
-                        </template>
-                        <template
-                            v-for="(sub_menu, subKey) in menu.children"
-                            :index="key + '-' + subKey"
-                            :key="key + '-' + subKey"
+        <SimpleBar id="menubar" :class="this.isCollapse ? 'is-collapsed' : ''">
+            <el-menu
+                :default-active="currentActive"
+                class="el-menu-vertical"
+                :collapse="isCollapse"
+                :collapse-transition="false"
+            >
+                <template v-for="(menu, key) in menuList">
+                    <template v-if="menu.link != '#'">
+                        <el-menu-item
+                            class="text-lg"
+                            :key="key"
+                            :index="key.toString()"
+                            v-if="hasMenuAccess(menu)"
                         >
-                            <el-menu-item v-if="hasMenuAccess(sub_menu)">
-                                <template #title
-                                    ><el-icon v-show="!isCollapse">
-                                        <span class="bullet-dot"></span>
-                                    </el-icon>
-                                    <nav-link
-                                        v-if="sub_menu.link != '#'"
-                                        :title="sub_menu.name"
-                                        :href="appRoute(sub_menu.link)"
-                                        :set="
-                                            (currentActive = appRoute().current(
-                                                sub_menu.link
-                                            )
-                                                ? key + '-' + subKey
-                                                : currentActive)
-                                        "
-                                    >
-                                        {{ sub_menu.name }}
-                                    </nav-link>
-                                    <span :title="sub_menu.name" v-else>
-                                        {{ sub_menu.name }}</span
-                                    >
-                                </template>
-                            </el-menu-item>
-                        </template>
-                    </el-sub-menu>
-                </template>
-                <template v-else>
-                    <el-menu-item
-                        class="text-lg"
-                        :key="key"
-                        :index="key.toString()"
+                            <el-icon><fa :icon="menu.icon" /></el-icon>
+                            <template #title>
+                                <nav-link
+                                    :title="menu.name"
+                                    :href="
+                                        menu.link == '#'
+                                            ? menu.link
+                                            : appRoute(menu.link)
+                                    "
+                                    :set="
+                                        (currentActive = appRoute().current(
+                                            menu.link
+                                        )
+                                            ? key.toString()
+                                            : currentActive)
+                                    "
+                                >
+                                    {{ menu.name }}
+                                </nav-link>
+                            </template>
+                        </el-menu-item>
+                    </template>
+                    <template
+                        v-else-if="
+                            menu.link == '#' &&
+                            menu.children != undefined &&
+                            menu.children.length != 0
+                        "
                     >
-                        <el-icon><fa :icon="menu.icon" /></el-icon>
-                        <template #title>
-                            <nav-link
-                                :title="menu.name"
-                                :href="
-                                    menu.link == '#'
-                                        ? menu.link
-                                        : appRoute(menu.link)
-                                "
-                                :set="
-                                    (currentActive = appRoute().current(
-                                        menu.link
-                                    )
-                                        ? key.toString()
-                                        : currentActive)
-                                "
+                        <el-sub-menu
+                            class="text-lg"
+                            :key="key"
+                            :index="key.toString()"
+                        >
+                            <template #title>
+                                <el-icon><fa :icon="menu.icon" /> </el-icon>
+                                <span :title="menu.name">{{ menu.name }}</span>
+                            </template>
+                            <template
+                                v-for="(sub_menu, subKey) in menu.children"
+                                :key="key + '-' + subKey"
                             >
-                                {{ menu.name }}
-                            </nav-link>
-                        </template>
-                    </el-menu-item>
+                                <el-menu-item
+                                    :index="key + '-' + subKey"
+                                    v-if="hasMenuAccess(sub_menu)"
+                                >
+                                    <template #title
+                                        ><el-icon v-show="!isCollapse">
+                                            <span class="bullet-dot"></span>
+                                        </el-icon>
+                                        <nav-link
+                                            v-if="sub_menu.link != '#'"
+                                            :title="sub_menu.name"
+                                            :href="appRoute(sub_menu.link)"
+                                            :set="
+                                                (currentActive =
+                                                    appRoute().current(
+                                                        sub_menu.link
+                                                    )
+                                                        ? key + '-' + subKey
+                                                        : currentActive)
+                                            "
+                                        >
+                                            {{ sub_menu.name }}
+                                        </nav-link>
+                                        <span :title="sub_menu.name" v-else>
+                                            {{ sub_menu.name }}</span
+                                        >
+                                    </template>
+                                </el-menu-item>
+                            </template>
+                        </el-sub-menu>
+                    </template>
+                    <template v-else>
+                        <el-menu-item
+                            class="text-lg"
+                            :key="key"
+                            :index="key.toString()"
+                        >
+                            <el-icon><fa :icon="menu.icon" /></el-icon>
+                            <template #title>
+                                <nav-link
+                                    :title="menu.name"
+                                    :href="
+                                        menu.link == '#'
+                                            ? menu.link
+                                            : appRoute(menu.link)
+                                    "
+                                    :set="
+                                        (currentActive = appRoute().current(
+                                            menu.link
+                                        )
+                                            ? key.toString()
+                                            : currentActive)
+                                    "
+                                >
+                                    {{ menu.name }}
+                                </nav-link>
+                            </template>
+                        </el-menu-item>
+                    </template>
                 </template>
-            </template>
-        </el-menu>
+            </el-menu>
+        </SimpleBar>
     </div>
 </template>
 <script setup>
-import { reactive, watch, computed } from "vue";
+import { SimpleBar } from "simplebar-vue3";
+import { reactive, watch, computed, onUpdated, inject, unref } from "vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 const isMobile = navigator.userAgentData.mobile;
 let currentActive = $ref("");
@@ -172,33 +177,37 @@ const menuList = computed(() => {
 <style scoped>
 .brand-logo {
     height: 60px;
-    background: #f3f3f3;
     display: flex;
     align-items: center; /* Vertical */
     justify-content: center; /* Horizontal */
 }
-.el-menu-vertical:not(.el-menu--collapse) {
-    width: 250px;
-    min-height: calc(100% - 60px); /* 60px header */
+#menubar {
+    height: calc(100vh - 60px); /* 60px header */
+    overflow-y: auto;
 }
+#menubar:not(.is-collapsed) {
+    width: 250px;
+}
+.el-menu-vertical,
 .el-menu--collapse {
-    min-height: 100%;
+    min-height: calc(100vh - 60px); /* 60px header */
 }
 div.menu-toggler {
     padding: 10px;
     margin: 10px;
 }
 .menu-toggler:hover {
-    background: #c1c1c1;
+    background: #fff;
     border-radius: 50%;
     cursor: pointer;
+    color: #000;
 }
 .logo {
     width: 100%;
 }
 
 .el-sub-menu.is-active {
-    background: var(--active-highlight);
+    background: var(--menu-active);
 }
 .el-sub-menu__title span,
 .el-menu-item span:not(.bullet-dot),

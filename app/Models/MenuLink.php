@@ -37,4 +37,13 @@ class MenuLink extends Authenticatable
         'created_at',
         'updated_at',
     ];
+
+    public function getParentNameAttribute()
+    {
+        if ($this->parent_id != null && $this->type == 'child') {
+            $parentName = self::find($this->parent_id);
+            return $parentName->name;
+        }
+        return null;
+    }
 }

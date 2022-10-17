@@ -1,7 +1,10 @@
 <template>
     <el-row class="mb-4">
-        <el-col :span="12" class="pr-4 pt-4"
-            ><div class="grid-content">
+        <el-col :span="11" class="p-3 border rounded-lg bg-white">
+            <h2 class="pb-4 font-medium text-xl text-lightBlue-500">
+                Application Menu Control
+            </h2>
+            <div class="grid-content">
                 <el-row class="mb-2">
                     <el-col :span="24">
                         <div class="flex justify-between">
@@ -11,6 +14,7 @@
                                     effect="dark"
                                     content="Add Menu"
                                     placement="top"
+                                    v-if="iPropsValue('userCan', 'create')"
                                 >
                                     <el-button
                                         data-action="expand-all"
@@ -27,7 +31,10 @@
                                     effect="dark"
                                     content="Save Changes"
                                     placement="top"
-                                    v-if="menuChangedStatus"
+                                    v-if="
+                                        menuChangedStatus &&
+                                        iPropsValue('userCan', 'edit')
+                                    "
                                 >
                                     <el-button
                                         type="success"
@@ -55,7 +62,10 @@
                 />
             </div>
         </el-col>
-        <el-col :span="12" class="pl-4 pt-4">
+        <el-col :span="12" :offset="1" class="p-3 border rounded-lg bg-white">
+            <h2 class="pb-4 font-medium text-xl text-lightBlue-500">
+                Menu Permission Control
+            </h2>
             <RoleMenuList />
         </el-col>
     </el-row>

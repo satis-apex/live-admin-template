@@ -29,7 +29,13 @@ class MenuLinkController extends Controller
                 'parentLinks' => $parentLinks,
                 'userRoles' => $userRoles,
                 'roleMenus' => $roleMenus,
-                'menuLinkLists' => $menuLinkLists
+                'menuLinkLists' => $menuLinkLists,
+                'breadcrumb' => getBreadcrumb(),
+                'userCan' => [
+                    'create' => request()->user()->hasPermissionTo('MenuLink-create'),
+                    'edit' => request()->user()->hasPermissionTo('MenuLink-edit'),
+                    'delete' => request()->user()->hasPermissionTo('MenuLink-delete'),
+                ]
             ]
         );
     }

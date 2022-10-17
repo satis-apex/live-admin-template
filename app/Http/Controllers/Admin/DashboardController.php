@@ -5,8 +5,10 @@ use Inertia\Inertia;
 
 class DashboardController
 {
-    public function index()
+    public function __invoke()
     {
-        return Inertia::render('Admin/Home');
+        return Inertia::render('Admin/Home', [
+            'breadcrumb' => getBreadcrumb()
+        ]);
     }
 }

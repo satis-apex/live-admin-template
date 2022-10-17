@@ -13,7 +13,7 @@ class userInfo extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
     protected $hidden = ['created_at', 'updated_at'];
-    protected $appends = ['fullName', 'getAvatarAttribute'];
+    protected $appends = ['fullName', 'avatar'];
     protected $fillable = [
         'first_name',
         'middle_name',

@@ -1,13 +1,14 @@
 <template>
-    <el-header class="relative bg-blue-300">
+    <el-header class="relative bg-white">
         <el-row class="row-bg h-full items-center" justify="space-between">
             <el-col :span="8"
-                ><div class="grid-content ep-bg-purple" />
-                Dashboard /
+                ><div class="grid-content text-lg text-lightBlue-500">
+                    {{ breadcrumb }}
+                </div>
             </el-col>
             <el-col :span="10">
                 <el-row class="row-bg flex items-center" justify="end">
-                    <el-col :span="10" class="">search</el-col>
+                    <!-- <el-col :span="10" class="text-white">search</el-col> -->
 
                     <el-col :span="14" class="content-center text-right">
                         <el-dropdown class="" trigger="click">
@@ -35,7 +36,8 @@
                             </span>
                             <template #dropdown>
                                 <el-dropdown-menu>
-                                    <el-dropdown-item divided :icon="Plus">
+                                    <el-dropdown-item>
+                                        <fa icon="user" class="pr-1" />
                                         {{
                                             iPropsValue(
                                                 "auth",
@@ -43,22 +45,19 @@
                                             )
                                         }}</el-dropdown-item
                                     >
-                                    <el-dropdown-item :icon="CirclePlusFilled">
-                                        Action 2
-                                    </el-dropdown-item>
-                                    <el-dropdown-item :icon="CirclePlus"
-                                        >Action 3</el-dropdown-item
+                                    <el-dropdown-item divided
+                                        ><fa
+                                            icon="unlock-keyhole"
+                                            class="pr-1"
+                                        />change password</el-dropdown-item
                                     >
-                                    <el-dropdown-item :icon="Check"
-                                        >change password</el-dropdown-item
-                                    >
-                                    <el-dropdown-item
-                                        divided
-                                        :icon="CircleCheck"
-                                    >
+                                    <el-dropdown-item divided>
+                                        <fa
+                                            icon="right-from-bracket"
+                                            class="pr-1"
+                                        />
                                         <nav-link
                                             class="is-link text-left"
-                                            title="Dashboard"
                                             method="post"
                                             as="button"
                                             :href="appRoute('logout')"
@@ -78,15 +77,16 @@
 <script setup>
 import {
     ArrowDown,
-    Plus,
     CirclePlusFilled,
     CirclePlus,
     Check,
     CircleCheck,
 } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-
+import { inject } from "vue";
 let { iPropsValue } = useInertiaPropsUtility();
+
+const breadcrumb = iPropsValue("breadcrumb");
 </script>
 <script>
 export default {

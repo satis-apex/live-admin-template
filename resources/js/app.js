@@ -1,6 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
-
+import 'simplebar/dist/simplebar.min.css';
 //element ui 
 import 'element-plus/theme-chalk/display.css'
 /* import the fontawesome core */
@@ -60,4 +60,6 @@ createInertiaApp({
     },
 });
 
-InertiaProgress.init({ color: '#4B5563' });
+InertiaProgress.init({
+    color: '#FF8B00'
+});

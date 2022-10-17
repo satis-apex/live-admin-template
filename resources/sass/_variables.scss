@@ -24,7 +24,7 @@
 );
 
 // Body
-$body-bg: #f5f8fa;
+$body-bg: #F6F6F6;
 
 // Borders
 $laravel-border-color: darken($body-bg, 10%);
@@ -34,7 +34,11 @@ $panel-default-border: $laravel-border-color;
 $panel-inner-border: $laravel-border-color;
 
 // Brands
-$brand-primary: #3097D1;
+$brand-primary: #009ef7;
+$brand-primary-dark: #0071AD;
+$brand-primary-light: #0AA9FF;
+$brand-primary-lightest: #31B5FC;
+$brand-complementary: #FFBA00;
 $brand-info: #8eb4cb;
 $brand-success: #608878;
 $brand-warning: #cbb956;
@@ -61,4 +65,35 @@ $input-color-placeholder: lighten($text-color, 30%);
 $panel-default-heading-bg: #fff;
 :root{
   --active-highlight: #ccc;
+  --brand-primary: $brand-primary;
+  --brand-primary-light: $brand-primary-light;
+  --menu-active: #c6e2ff;;
+}
+.bg-primary
+{
+	background-color: $brand-primary;
+}
+.bg-primary-light
+{
+	background-color: $brand-primary-light;
+}
+.bg-primary-lightest
+{
+	background-color: $brand-primary-lightest;
+}
+.bg-primary-dark
+{
+  background-color: $brand-primary-dark;
+}
+.bg-primary-light
+{
+  background-color: $brand-primary-light;
+}
+.bg-complementary
+{
+  background-color: $brand-complementary;
+}
+.bg-body
+{
+  background-color: $body-bg;
 }

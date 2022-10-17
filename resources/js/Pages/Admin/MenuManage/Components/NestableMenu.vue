@@ -35,12 +35,14 @@
                                 effect="dark"
                                 content="Edit Menu"
                                 placement="top"
+                                v-if="iPropsValue('userCan', 'edit')"
                             >
                                 <el-button
                                     type="primary"
                                     @click="emit('editMenu', menu)"
                                     size="small"
                                     rounded
+                                    class="!px-2"
                                 >
                                     <fa icon="pen"
                                 /></el-button>
@@ -50,12 +52,14 @@
                                 effect="dark"
                                 content="Delete Menu"
                                 placement="top"
+                                v-if="iPropsValue('userCan', 'delete')"
                             >
                                 <el-button
                                     type="danger"
                                     @click="deleteMenu(menu.id)"
                                     size="small"
                                     rounded
+                                    class="!px-2"
                                     ><fa icon="trash"
                                 /></el-button>
                             </el-tooltip>
@@ -94,6 +98,9 @@
                                             effect="dark"
                                             content="Edit Menu"
                                             placement="top"
+                                            v-if="
+                                                iPropsValue('userCan', 'edit')
+                                            "
                                         >
                                             <el-button
                                                 type="primary"
@@ -102,6 +109,7 @@
                                                 "
                                                 size="small"
                                                 rounded
+                                                class="!px-2"
                                             >
                                                 <fa icon="pen"
                                             /></el-button>
@@ -111,12 +119,16 @@
                                             effect="dark"
                                             content="Delete Menu"
                                             placement="top"
+                                            v-if="
+                                                iPropsValue('userCan', 'delete')
+                                            "
                                         >
                                             <el-button
                                                 type="danger"
                                                 @click="deleteMenu(subMenu.id)"
                                                 size="small"
                                                 rounded
+                                                class="!px-2"
                                                 ><fa icon="trash"
                                             /></el-button>
                                         </el-tooltip>
@@ -136,7 +148,8 @@ import "~/css/nestable.css";
 import "/node_modules/nestable2/jquery.nestable.js";
 import { watch, markRaw, defineEmits, onMounted } from "vue";
 import { Delete } from "@element-plus/icons-vue";
-
+import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
+let { iPropsValue } = useInertiaPropsUtility();
 let menuList = $ref(props.parentMenus);
 let menus = JSON.parse(menuList); //using computed property glitch the sorting
 

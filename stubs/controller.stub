@@ -20,6 +20,7 @@ class {{ class }}Controller extends Controller
 		return Inertia::render(
 			'',
 			[
+				'breadcrumb' => getBreadcrumb(),
 				'userCan' => [
                     'create' => request()->user()->hasPermissionTo('{{ class }}-create'),
                     'edit' => request()->user()->hasPermissionTo('{{ class }}-edit'),

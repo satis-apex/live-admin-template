@@ -37,9 +37,10 @@ Route::get('/', function () {
     // ]);
 });
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.user');
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
     Route::resource('menu', MenuController::class)->only(['store']);
     Route::resource('menu-link', MenuLinkController::class);
+    Route::resource('menu-links', MenuLinkController::class);
     Route::resource('menu-link-permission', MenuLinkPermissionController::class)->only(['destroy', 'update']);
 });
 

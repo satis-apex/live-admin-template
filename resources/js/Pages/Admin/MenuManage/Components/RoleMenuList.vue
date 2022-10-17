@@ -47,6 +47,7 @@
                                             @click="editMenuPermission(menu)"
                                             size="small"
                                             rounded
+                                            class="!px-2"
                                         >
                                             <fa icon="pen"
                                         /></el-button>
@@ -63,6 +64,7 @@
                                             @click="deleteMenu(menu.id)"
                                             size="small"
                                             rounded
+                                            class="!px-2"
                                             ><fa icon="trash"
                                         /></el-button>
                                     </el-tooltip>
@@ -117,6 +119,7 @@
                                                         "
                                                         size="small"
                                                         rounded
+                                                        class="!px-2"
                                                     >
                                                         <fa icon="pen"
                                                     /></el-button>
@@ -136,6 +139,7 @@
                                                         "
                                                         size="small"
                                                         rounded
+                                                        class="!px-2"
                                                         ><fa icon="trash"
                                                     /></el-button>
                                                 </el-tooltip>

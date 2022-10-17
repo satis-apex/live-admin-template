@@ -31,6 +31,8 @@
         "element-plus": "^2.2.11",
         "moment": "^2.29.4",
         "nestable2": "^1.6.0",
-        "sass": "^1.54.0"
+        "sass": "^1.54.0",
+        "simplebar": "^5.3.8",
+        "simplebar-vue3": "^0.2.0"
     }
 }

@@ -4,3 +4,35 @@
 	--tw-ring-shadowL:unset !important;
 	box-shadow:unset !important;
 }
+
+/* width */
+::-webkit-scrollbar {
+	width: 9px;
+	background-color: #f9f9f9;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 2px grey; 
+	/* border-radius: 10px; */
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+	background: #cdcdcd; 
+	/* border-radius: 10px; */
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+	background: #b9b9b9; 
+  }
+  #nprogress .bar
+  {
+	height: 3px !important;
+	box-shadow: 0 0 6px #000000, 0 0 3px #303030;
+  }
+  #nprogress .spinner {
+    top: 20px !important;
+    right: 18px !important;
+}
