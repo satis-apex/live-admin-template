@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use App\Models\MenuLink;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
@@ -10,8 +11,11 @@ use Facades\App\Services\MenuLinkService;
 
 class MenuLinkController extends Controller
 {
+    protected $routeName = '';
+
     public function __construct()
     {
+        $this->routeName = Str::camel('menuLink');
         $this->implementMethodPermission('MenuLink');
     }
 
@@ -35,6 +39,7 @@ class MenuLinkController extends Controller
                     'create' => request()->user()->hasPermissionTo('MenuLink-create'),
                     'edit' => request()->user()->hasPermissionTo('MenuLink-edit'),
                     'delete' => request()->user()->hasPermissionTo('MenuLink-delete'),
+                    'generate' => !app()->environment('production')
                 ]
             ]
         );
@@ -45,9 +50,9 @@ class MenuLinkController extends Controller
         try {
             MenuLinkService::add();
         } catch (\Exception $e) {
-            return Redirect::route('menu-link.index')->with('error', $e->getMessage());
+            return Redirect::route($this->routeName . '.index')->with('error', $e->getMessage());
         }
-        return Redirect::route('menu-link.index')->with('success', 'Menu Link Added Successfully');
+        return Redirect::route($this->routeName . '.index')->with('success', 'Menu Link Added Successfully');
     }
 
     public function update($menuId)
@@ -55,9 +60,9 @@ class MenuLinkController extends Controller
         try {
             MenuLinkService::update($menuId);
         } catch (\Exception $e) {
-            return Redirect::route('menu-link.index')->with('error', $e->getMessage());
+            return Redirect::route($this->routeName . '.index')->with('error', $e->getMessage());
         }
-        return Redirect::route('menu-link.index')->with('success', 'Menu Link Updates Successfully');
+        return Redirect::route($this->routeName . '.index')->with('success', 'Menu Link Updates Successfully');
     }
 
     public function destroy($menuId)
@@ -65,8 +70,8 @@ class MenuLinkController extends Controller
         try {
             MenuLinkService::remove($menuId);
         } catch (\Exception $e) {
-            return Redirect::route('menu-link.index')->with('error', $e->getMessage());
+            return Redirect::route($this->routeName . '.index')->with('error', $e->getMessage());
         }
-        return Redirect::route('menu-link.index')->with('success', 'Menu Link Deleted Successfully');
+        return Redirect::route($this->routeName . '.index')->with('success', 'Menu Link Deleted Successfully');
     }
 }

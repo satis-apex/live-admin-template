@@ -248,3 +248,22 @@ if (!\function_exists('getBreadcrumb')) {
         return null;
     }
 }
+
+if (!\function_exists('readable')) {
+    function readable($string)
+    {
+        $words = str_replace(['-', '_'], ' ', $string);
+        $escapedCamel = strtolower(preg_replace('/(?<!^)[A-Z]/', ' $0', $words));
+        return ucwords(
+            preg_replace(
+                    '~(\s|\x{3164})+~u',
+                    ' ',
+                    preg_replace(
+                        '~^[\s﻿]+|[\s﻿]+$~u',
+                        '',
+                        $escapedCamel
+                    )
+                )
+        );
+    }
+}

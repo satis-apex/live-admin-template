@@ -2,42 +2,65 @@
 
 namespace {{ namespace }};
 
+use Inertia\Inertia;
 use {{ namespacedModel }};
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
+use Facades\App\Services\{{ class }}Service;
 
-class {{ class }} extends Controller
+class {{ class }}Controller extends Controller
 {
+    protected $routeName = '';
 	public function __construct()
     {
+        $this->routeName = Str::camel('{{ class }}');
         $this->implementMethodPermission('{{ class }}');
     }
 
     public function index()
     {
+		return Inertia::render(
+			'',
+			[
+				'breadcrumb' => getBreadcrumb() ?: readable('{{ class }}'),
+				'userCan' => [
+                    'create' => request()->user()->hasPermissionTo('{{ class }}-create'),
+                    'edit' => request()->user()->hasPermissionTo('{{ class }}-edit'),
+                    'delete' => request()->user()->hasPermissionTo('{{ class }}-delete'),
+                ]
+			]
+		);
     }
 
-    public function create()
+    public function store()
     {
+		try {
+           {{ class }}Service::add();
+        } catch (\Exception $e) {
+            return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
+        }
+        return Redirect::route($this->routeName.'.index')->with('success', ' Added Successfully');
     }
 
-    public function store(Request $request)
+    public function update(int $id)
     {
+		 try {
+           {{ class }}Service::update($id);
+        } catch (\Exception $e) {
+            return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
+        }
+        return Redirect::route($this->routeName.'.index')->with('success', ' Added Successfully');
     }
 
-    public function show({{ model }} ${{ modelVariable }})
+    public function destroy(int $id)
     {
-    }
-
-    public function edit({{ model }} ${{ modelVariable }})
-    {
-    }
-
-    public function update(Request $request, {{ model }} ${{ modelVariable }})
-    {
-    }
-
-    public function destroy({{ model }} ${{ modelVariable }})
-    {
+		 try {
+            {{ class }}Service::remove($id);
+        } catch (\Exception $e) {
+            return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
+        }
+        return Redirect::route($this->routeName.'.index')->with('success', ' Deleted Successfully');
     }
 }

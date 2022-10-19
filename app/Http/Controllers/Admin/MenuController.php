@@ -25,8 +25,8 @@ class MenuController extends Controller
                 $menuLink->save();
             }
         } catch (\Exception $e) {
-            return Redirect::route('menu-link.index')->with('error', $e->getMessage());
+            return Redirect::route('menuLink.index')->with('error', $e->getMessage());
         }
-        return Redirect::route('menu-link.index')->with('success', 'Menu Updated Successfully');
+        return Redirect::route('menuLink.index')->with('success', 'Menu Updated Successfully');
     }
 }

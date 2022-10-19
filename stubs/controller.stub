@@ -3,6 +3,7 @@
 namespace {{ namespace }};
 
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
@@ -10,8 +11,10 @@ use Facades\App\Services\{{ class }}Service;
 
 class {{ class }}Controller extends Controller
 {
+    protected $routeName = '';
 	public function __construct()
     {
+        $this->routeName = Str::camel('{{ class }}');
         $this->implementMethodPermission('{{ class }}');
     }
 
@@ -20,7 +23,7 @@ class {{ class }}Controller extends Controller
 		return Inertia::render(
 			'',
 			[
-				'breadcrumb' => getBreadcrumb(),
+				'breadcrumb' => getBreadcrumb() ?: readable('{{ class }}'),
 				'userCan' => [
                     'create' => request()->user()->hasPermissionTo('{{ class }}-create'),
                     'edit' => request()->user()->hasPermissionTo('{{ class }}-edit'),
@@ -35,9 +38,9 @@ class {{ class }}Controller extends Controller
 		try {
            {{ class }}Service::add();
         } catch (\Exception $e) {
-            return Redirect::route('.index')->with('error', $e->getMessage());
+            return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
         }
-        return Redirect::route('.index')->with('success', ' Added Successfully');
+        return Redirect::route($this->routeName.'.index')->with('success', ' Added Successfully');
     }
 
     public function update(int $id)
@@ -45,9 +48,9 @@ class {{ class }}Controller extends Controller
 		 try {
            {{ class }}Service::update($id);
         } catch (\Exception $e) {
-            return Redirect::route('.index')->with('error', $e->getMessage());
+            return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
         }
-        return Redirect::route('.index')->with('success', ' Added Successfully');
+        return Redirect::route($this->routeName.'.index')->with('success', ' Added Successfully');
     }
 
     public function destroy(int $id)
@@ -55,8 +58,8 @@ class {{ class }}Controller extends Controller
 		 try {
             {{ class }}Service::remove($id);
         } catch (\Exception $e) {
-            return Redirect::route('.index')->with('error', $e->getMessage());
+            return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
         }
-        return Redirect::route('.index')->with('success', ' Deleted Successfully');
+        return Redirect::route($this->routeName.'.index')->with('success', ' Deleted Successfully');
     }
 }

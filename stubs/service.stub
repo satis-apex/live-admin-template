@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace {{ namespace }};
 
 use Illuminate\Database\QueryException;
 
-Class DummyService
+Class {{ service }}
 {
 	public function add()
     {

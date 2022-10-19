@@ -29,6 +29,10 @@ class MenuLinkService
                 $controllerName = Str::studly(class_basename($controllerPath));
                 $routeLink = $generatedRouteLink . '.index';
             }
+            $generateOption = request('generateOption');
+            if ($generateOption == 'files-only') {
+                return;
+            }
             $createdMenu = MenuLink::create(
                 [
                     'name' => request('name'),
@@ -68,7 +72,9 @@ class MenuLinkService
             }
             $menus->menu_list = $app_menu;
             $menus->save();
+
             if ($createdMenu->type != 'parent') {
+                app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
                 SELF::createPermissions(Str::studly($createdMenu->controller_name));
                 SELF::assignPermissions($createdMenu->access);
             }
@@ -382,11 +388,12 @@ class MenuLinkService
         //creating service file
         Artisan::call('make:service ' . $controllerName . 'Service');
         //updating route file web.php
-        $generatedRouteLink = Str::kebab($controllerName);
+        $generatedRoutePath = Str::kebab($controllerName);
+        $generatedRouteName = Str::camel($controllerName);
         $file_name = base_path('routes\web.php');
         $string = "\n //dynamically new route added \n";
-        $string .= 'Route::resource(\'' . $generatedRouteLink . '\', ' . 'App\Http\Controllers\\' . str_replace('/', '\\', $controllerPath) . 'Controller::class);';
+        $string .= 'Route::resource(\'' . $generatedRoutePath . '\', ' . 'App\Http\Controllers\\' . str_replace('/', '\\', $controllerPath) . 'Controller::class,["names" => "' . $generatedRouteName . '"] )->middleware("auth");';
         File::append($file_name, $string, null);
-        return $generatedRouteLink;
+        return $generatedRouteName;
     }
 }

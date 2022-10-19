@@ -7,6 +7,7 @@ use Facades\App\Services\MenuLinkService;
 
 class MenuLinkPermissionController extends Controller
 {
+    
     public function __construct()
     {
         $this->implementMethodPermission('MenuLink');
@@ -17,10 +18,10 @@ class MenuLinkPermissionController extends Controller
         try {
             MenuLinkService::updatePermission($menuId);
         } catch (\Exception $e) {
-            return Redirect::route('menu-link.index')->with('error', $e->getMessage());
+            return Redirect::route('menuLink.index')->with('error', $e->getMessage());
         }
 
-        return Redirect::route('menu-link.index')->with('success', 'Menu link permission updated successfully');
+        return Redirect::route('menuLink.index')->with('success', 'Menu link permission updated successfully');
     }
 
     public function destroy($menuId)
@@ -28,9 +29,9 @@ class MenuLinkPermissionController extends Controller
         try {
             MenuLinkService::deletePermission($menuId);
         } catch (\Exception $e) {
-            return Redirect::route('menu-link.index')->with('error', $e->getMessage());
+            return Redirect::route('menuLink.index')->with('error', $e->getMessage());
         }
 
-        return Redirect::route('menu-link.index')->with('success', 'Menu link permission revoked successfully');
+        return Redirect::route('menuLink.index')->with('success', 'Menu link permission revoked successfully');
     }
 }

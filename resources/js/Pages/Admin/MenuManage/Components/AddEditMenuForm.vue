@@ -75,7 +75,10 @@
                         @change="checkGeneratorOption()"
                     >
                         <el-option
-                            v-if="FormType == 'Add'"
+                            v-if="
+                                FormType == 'Add' &&
+                                iPropsValue('userCan', 'generate')
+                            "
                             label="Auto Generate"
                             value="auto-generate"
                         />
@@ -88,7 +91,28 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item
-                    v-if="FormType == 'Add' && formData.link == 'auto-generate'"
+                    v-if="
+                        FormType == 'Add' &&
+                        formData.type == 'parent-single' &&
+                        formData.link == 'auto-generate' &&
+                        iPropsValue('userCan', 'generate')
+                    "
+                    label="Files Only"
+                    :label-width="formLabelWidth"
+                    prop="generateOption"
+                >
+                    <el-switch
+                        v-model="formData.generateOption"
+                        active-value="files-only"
+                        inactive-value="0"
+                    />
+                </el-form-item>
+                <el-form-item
+                    v-if="
+                        FormType == 'Add' &&
+                        formData.link == 'auto-generate' &&
+                        iPropsValue('userCan', 'generate')
+                    "
                     label="Controller Path"
                     :label-width="formLabelWidth"
                     prop="controllerPath"
@@ -262,6 +286,7 @@ const formData = useForm({
     type: "parent",
     parentId: null,
     link: "#",
+    generateOption: null,
     icon: null,
     controllerPath: "",
     access: ["Su-Admin"],
@@ -388,12 +413,15 @@ let changedMenuType = function () {
     }, 50);
 };
 let checkGeneratorOption = function () {
-    console.log("calld");
     if (FormType == "Add" && formData.link == "auto-generate") {
         rules.controllerPath[0].required = true;
     } else {
-        rules.controllerPath[0].required = true;
+        rules.controllerPath[0].required = false;
     }
+    formData.generateOption = "";
+    setTimeout(() => {
+        ruleFormRef.clearValidate();
+    }, 50);
 };
 let isMenuExist = function (newMenu) {
     if (FormType == "Edit") {
@@ -449,7 +477,7 @@ const insertMenu = async function () {
             icon: markRaw(Edit),
             callback: (action) => {
                 if (action == "confirm") {
-                    formData.post("/menu-link", {
+                    formData.post(route("menuLink.store"), {
                         preserveScroll: true,
                         onSuccess: () => {
                             closeForm();
@@ -466,7 +494,7 @@ const updateMenu = function () {
         icon: markRaw(Edit),
         callback: (action) => {
             if (action == "confirm") {
-                formData.patch("/menu-link/" + formData.id, {
+                formData.patch(route("menuLink.update", formData.id), {
                     preserveScroll: true,
                     onSuccess: () => {
                         closeForm();
