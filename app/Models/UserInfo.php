@@ -3,26 +3,16 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Support\Facades\File;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class userInfo extends Model implements HasMedia
+class userInfo extends Authenticatable implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
     protected $hidden = ['created_at', 'updated_at'];
     protected $appends = ['fullName', 'avatar'];
-    protected $fillable = [
-        'first_name',
-        'middle_name',
-        'last_name',
-        'contact',
-        'gender',
-        'email',
-        'joined_date',
-    ];
     protected $table = 'user_infos';
 
     public function account()

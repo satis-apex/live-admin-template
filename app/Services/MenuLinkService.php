@@ -278,7 +278,7 @@ class MenuLinkService
     {
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
         $menuLinks = MenuLink::where('name', '!=', 'home')->where('type', '!=', 'parent')->get();
-        $roles = Role::all();
+        $roles = Role::with('permissions')->get();
         $dataReturn = [];
         foreach ($menuLinks as $menuLink) {
             $linkId = $menuLink->id;

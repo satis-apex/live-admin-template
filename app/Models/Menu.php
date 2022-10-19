@@ -12,21 +12,6 @@ class Menu extends Authenticatable
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'menu_list',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'created_at',
         'updated_at',
