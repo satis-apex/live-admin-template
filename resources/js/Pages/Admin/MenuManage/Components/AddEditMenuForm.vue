@@ -5,7 +5,12 @@
         :title="FormType + ' Menu'"
     >
         <template #default>
-            <el-form :model="formData" :rules="rules" ref="ruleFormRef">
+            <el-form
+                @submit.prevent
+                :model="formData"
+                :rules="rules"
+                ref="ruleFormRef"
+            >
                 <el-form-item label="Menu Type" :label-width="formLabelWidth">
                     <el-radio-group
                         v-model="formData.type"
@@ -380,7 +385,7 @@ let changedMenuType = function () {
     }
     setTimeout(() => {
         ruleFormRef.clearValidate();
-    }, 100);
+    }, 50);
 };
 let checkGeneratorOption = function () {
     console.log("calld");

@@ -1,9 +1,8 @@
 <template>
-    <el-row class="mb-4">
-        <el-col :span="11" class="p-3 border rounded-lg bg-white">
-            <h2 class="pb-4 font-medium text-xl text-lightBlue-500">
-                Application Menu Control
-            </h2>
+    <el-row class="mb-4 justify-between">
+        <el-col :sm="11" :xs="24" class="p-3 border rounded-lg bg-white mb-3">
+            <h2 class="font-medium text-lg">Application Menu Control</h2>
+            <el-divider class="!mt-3 !mb-4" />
             <div class="grid-content">
                 <el-row class="mb-2">
                     <el-col :span="24">
@@ -62,10 +61,9 @@
                 />
             </div>
         </el-col>
-        <el-col :span="12" :offset="1" class="p-3 border rounded-lg bg-white">
-            <h2 class="pb-4 font-medium text-xl text-lightBlue-500">
-                Menu Permission Control
-            </h2>
+        <el-col :sm="12" :xs="24" class="p-3 border rounded-lg bg-white mb-3">
+            <h2 class="font-medium text-lg">Menu Permission Control</h2>
+            <el-divider class="!mt-3 !mb-4" />
             <RoleMenuList />
         </el-col>
     </el-row>

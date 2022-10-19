@@ -5,7 +5,7 @@
         :title="'Revoke Menu Permission for ' + userRole"
     >
         <template #default>
-            <el-form :model="formData" ref="ruleFormRef">
+            <el-form @submit.prevent :model="formData" ref="ruleFormRef">
                 <el-form-item
                     label="Menu Name"
                     :label-width="formLabelWidth"

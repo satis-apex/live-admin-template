@@ -61,6 +61,25 @@ export function useAppUtility() {
 		return check;
 	}
 
+	const mediaCheck = function (opt) {
+		switch (opt) {
+			case 'sm':
+				return window.matchMedia("(max-width: 480px)").matches; //less than 480px
+				break;
+			case 'md':
+				return window.matchMedia("(max-width: 768px)").matches;//less than 768px
+				break;
+			case 'lg':
+				return window.matchMedia("(max-width: 976px)").matches;//less than 976px
+				break;
+			case 'xl':
+				return window.matchMedia("(max-width: 1440px)").matches;//less than 1440px
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
 	const getMenuKey = function (object, key) {
 
 	}
@@ -73,5 +92,6 @@ export function useAppUtility() {
 		studentAvatar,
 		themeOption,
 		verifyRole,
+		mediaCheck,
 	}
 }

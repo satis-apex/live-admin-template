@@ -146,7 +146,7 @@
 <script setup>
 import "~/css/nestable.css";
 import "/node_modules/nestable2/jquery.nestable.js";
-import { watch, markRaw, defineEmits, onMounted } from "vue";
+import { watch, markRaw, onMounted } from "vue";
 import { Delete } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 let { iPropsValue } = useInertiaPropsUtility();

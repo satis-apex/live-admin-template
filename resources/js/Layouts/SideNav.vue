@@ -150,11 +150,8 @@ import { reactive, watch, computed, onUpdated, inject, unref } from "vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 const isMobile = navigator.userAgentData.mobile;
 let currentActive = $ref("");
-let isCollapse = $ref(props.parentIsCollapse);
+let isCollapse = inject("isCollapse");
 let { iPropsValue } = useInertiaPropsUtility();
-const props = defineProps({
-    parentIsCollapse: Boolean,
-});
 let hasMenuAccess = function (menu) {
     const role = iPropsValue("auth", "user.account.role");
     const accessList = menu.access?.split(",");

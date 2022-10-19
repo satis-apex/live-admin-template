@@ -1,8 +1,8 @@
 <template>
-    <el-header class="relative bg-white">
+    <el-header class="relative custom-header">
         <el-row class="row-bg h-full items-center" justify="space-between">
-            <el-col :span="8"
-                ><div class="grid-content text-lg text-lightBlue-500">
+            <el-col :span="8">
+                <div class="grid-content text-lg text-lightBlue-500">
                     {{ breadcrumb }}
                 </div>
             </el-col>
@@ -11,7 +11,7 @@
                     <!-- <el-col :span="10" class="text-white">search</el-col> -->
 
                     <el-col :span="14" class="content-center text-right">
-                        <el-dropdown class="" trigger="click">
+                        <el-dropdown trigger="click" ref="headDropdown">
                             <span class="el-dropdown-link flex">
                                 <el-avatar
                                     :src="iPropsValue('auth', 'user.avatar')"
@@ -35,33 +35,44 @@
                                 </div>
                             </span>
                             <template #dropdown>
-                                <el-dropdown-menu>
+                                <el-dropdown-menu class="user-info-dropdown">
                                     <el-dropdown-item>
-                                        <fa icon="user" class="pr-1" />
-                                        {{
+                                        <fa icon="shield" class="pr-1" />{{
                                             iPropsValue(
                                                 "auth",
                                                 "user.account.role"
                                             )
-                                        }}</el-dropdown-item
-                                    >
-                                    <el-dropdown-item divided
+                                        }}
+                                    </el-dropdown-item>
+                                    <el-dropdown-item divided>
+                                        <nav-link
+                                            @click="headDropdown.handleClose()"
+                                            :href="
+                                                appRoute('userProfile.index')
+                                            "
+                                        >
+                                            <fa icon="user" class="pr-1" />
+                                            User Profile
+                                        </nav-link>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item
+                                        @click="formVisible = true"
                                         ><fa
                                             icon="unlock-keyhole"
                                             class="pr-1"
-                                        />change password</el-dropdown-item
+                                        />Change Password</el-dropdown-item
                                     >
+
                                     <el-dropdown-item divided>
-                                        <fa
-                                            icon="right-from-bracket"
-                                            class="pr-1"
-                                        />
                                         <nav-link
                                             class="is-link text-left"
                                             method="post"
                                             as="button"
                                             :href="appRoute('logout')"
-                                        >
+                                            ><fa
+                                                icon="right-from-bracket"
+                                                class="pr-1"
+                                            />
                                             Logout
                                         </nav-link>
                                     </el-dropdown-item>
@@ -73,6 +84,10 @@
             </el-col>
         </el-row>
     </el-header>
+    <ChangeUserPassword
+        @closeForm="closeForm()"
+        :parentFormVisible="formVisible"
+    />
 </template>
 <script setup>
 import {
@@ -83,15 +98,38 @@ import {
     CircleCheck,
 } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-import { inject } from "vue";
+import { inject, watch } from "vue";
+import ChangeUserPassword from "@/Layouts/ChangeUserPassword.vue";
 let { iPropsValue } = useInertiaPropsUtility();
-
-const breadcrumb = iPropsValue("breadcrumb");
-</script>
-<script>
-export default {
-    data() {
-        return {};
-    },
+const formVisible = $ref(false);
+const headDropdown = $ref();
+const breadcrumb = $ref(iPropsValue("breadcrumb"));
+const closeForm = function () {
+    formVisible = false;
 };
+watch(
+    () => iPropsValue("breadcrumb"),
+    () => {
+        breadcrumb = iPropsValue("breadcrumb");
+    }
+);
 </script>
+<style scoped>
+.custom-header {
+    background-image: radial-gradient(transparent 1px, white 1px);
+    background-size: 4.6px 4.6px;
+    backdrop-filter: saturate(50%) blur(4px);
+    -webkit-backdrop-filter: saturate(50%) blur(4px);
+}
+</style>
+<style>
+.user-info-dropdown .el-dropdown-menu__item--divided {
+    margin: 0;
+}
+.user-info-dropdown.el-dropdown-menu {
+    padding: 0;
+}
+.user-info-dropdown .el-dropdown-menu__item {
+    height: 34px;
+}
+</style>
