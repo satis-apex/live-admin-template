@@ -97,11 +97,11 @@ class HandleInertiaRequests extends Middleware
                 [
                     'user' => [
                         'id' => $request->user()->profile->id,
-                        'first_name' => $request->user()->profile->first_name,
-                        'last_name' => $request->user()->profile->last_name,
+                        'firstName' => $request->user()->profile->first_name,
+                        'lastName' => $request->user()->profile->last_name,
                         'email' => $request->user()->email,
                         'avatar' => $request->user()->profile->avatar,
-                        'fullName' => '',
+                        'fullName' => $request->user()->profile->fullName,
                         'account' => [
                             'id' => $request->user()->id,
                             'role' => $request->user()->roles[0]->name

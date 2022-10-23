@@ -25,7 +25,7 @@
                                         {{
                                             iPropsValue(
                                                 "auth",
-                                                "user.first_name"
+                                                "user.firstName"
                                             )
                                         }}
                                     </span>

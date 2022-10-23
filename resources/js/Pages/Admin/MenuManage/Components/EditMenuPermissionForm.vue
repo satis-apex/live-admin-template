@@ -47,6 +47,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 import { watch, markRaw } from "vue";
 import { Edit } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
+
 let { iPropsValue } = useInertiaPropsUtility();
 const FormVisible = $ref(false);
 const menuName = $ref("");
@@ -117,7 +118,7 @@ const submitForm = async (formEl) => {
             icon: markRaw(Edit),
             callback: (action) => {
                 if (action == "confirm") {
-                    formData.patch("/menu-link-permission/" + menuId, {
+                    formData.patch(route("menuLinkPermission.update", menuId), {
                         preserveScroll: true,
                         onSuccess: () => {
                             closeForm();
