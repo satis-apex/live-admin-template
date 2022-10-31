@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite';
-import path from 'path';
+import { resolve } from 'path';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
+const projectRootDir = resolve(__dirname);
 
 export default defineConfig({
     plugins: [
@@ -32,8 +34,8 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': path.resolve('./resources/js'),
-            '~': path.resolve('./resources'),
+            '@': resolve(projectRootDir, 'resources/js'),
+            '~': resolve(projectRootDir, 'resources'),
         },
         extensions: ['.js', '.vue', '.json'],
     },
