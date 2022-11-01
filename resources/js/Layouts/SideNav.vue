@@ -1,10 +1,7 @@
 <template>
     <div>
         <div class="brand-logo bg-primary text-white">
-            <div
-                class="menu-toggler"
-                @click="this.isCollapse = !this.isCollapse"
-            >
+            <div class="menu-toggler" @click="isCollapse = !isCollapse">
                 <!-- hero icon -->
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +20,7 @@
             </div>
             <div class="logo" v-if="!isCollapse">Brand Logo</div>
         </div>
-        <SimpleBar id="menubar" :class="this.isCollapse ? 'is-collapsed' : ''">
+        <SimpleBar id="menubar" :class="isCollapse ? 'is-collapsed' : ''">
             <el-menu
                 :default-active="currentActive"
                 class="el-menu-vertical"
