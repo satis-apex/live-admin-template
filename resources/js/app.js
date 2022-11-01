@@ -31,12 +31,41 @@ createInertiaApp({
     //     resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'))
     // },
     resolve: async name => {
-        const comps = import.meta.glob('./Pages/**/*.vue');
-        const match = comps[`./Pages/${name}.vue`];
-        if (match == undefined) {
-            return import('./Errors/404page.vue');
+        let parts = name.split('::')
+        let type = false
+        let match
+        let page
+        if (parts.length > 1) type = parts[0]
+        if (type) {
+            let directoryParts = parts[1].split('/');
+            let fileName = directoryParts[directoryParts.length - 1]
+            directoryParts.pop();
+            try {
+                if (directoryParts.length === 0) {
+                    page = await import(`../../Modules/${type}/Resources/assets/js/Pages/${fileName}.vue`).then(module => module.default)
+                }
+                if (directoryParts.length === 1) {
+                    page = await import(`../../Modules/${type}/Resources/assets/js/Pages/${directoryParts[0]}/${fileName}.vue`).then(module => module.default)
+                }
+                else if (directoryParts.length === 2) {
+                    page = await import(`../../Modules/${type}/Resources/assets/js/Pages/${directoryParts[0]}/${directoryParts[1]}/${fileName}.vue`).then(module => module.default)
+                }
+
+            }
+            catch (e) {
+                console.log(e);
+                return import('./Errors/404page.vue');
+            }
         }
-        const page = (await match()).default;
+        else {
+            const comps = import.meta.glob('./Pages/**/*.vue');
+            match = comps[`./Pages/${name}.vue`];
+            if (match == undefined) {
+                return import('./Errors/404page.vue');
+            }
+            page = (await match()).default;
+        }
+
 
         if (page.layout === 'admin') {
             page.layout = Admin
