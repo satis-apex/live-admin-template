@@ -5,11 +5,11 @@ use App\Models\Menu;
 use App\Models\MenuLink;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Permission;
+use Nwidart\Modules\Facades\Module;
 
 class MenuLinkService
 {
@@ -24,9 +24,9 @@ class MenuLinkService
             $routeName = reset($routeNameArray);
             $controllerName = Str::studly($routeName);
             if ($routeLink == 'auto-generate') {
-                $controllerPath = request('controllerPath');
-                $generatedRouteLink = SELF::generateFiles($controllerPath);
-                $controllerName = Str::studly(class_basename($controllerPath));
+                $moduleName = request('moduleName');
+                $generatedRouteLink = SELF::generateFiles($moduleName);
+                $controllerName = Str::studly(class_basename($moduleName));
                 $routeLink = $generatedRouteLink . '.index';
             }
             $generateOption = request('generateOption');
@@ -39,7 +39,7 @@ class MenuLinkService
                     'link' => $routeLink,
                     'icon' => request('icon'),
                     'parent_id' => request('parentId'),
-                    'controller_name' => $controllerName,
+                    'permission_key' => $controllerName,
                     'type' => request('type'),
                     'access' => implode(',', request('access'))
                 ]
@@ -75,7 +75,7 @@ class MenuLinkService
 
             if ($createdMenu->type != 'parent') {
                 app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
-                SELF::createPermissions(Str::studly($createdMenu->controller_name));
+                SELF::createPermissions(Str::studly($createdMenu->permission_key));
                 SELF::assignPermissions($createdMenu->access);
             }
             return true;
@@ -105,7 +105,7 @@ class MenuLinkService
                 'parent_id' => request('parentId'),
                 'type' => request('type'),
                 'access' => implode(',', request('access')),
-                'controller_name' => request('link') ? $controllerName : null,
+                'permission_key' => request('link') ? $controllerName : null,
             ];
             $menuLink = MenuLink::find($menuId);
             $previousAccess = $menuLink->access;
@@ -115,7 +115,7 @@ class MenuLinkService
                 case 'child':
                     $oldParent = $menuLink->parent_id;
                     $menuLink->link = $new_menu->link;
-                    $menuLink->controller_name = $new_menu->controller_name;
+                    $menuLink->permission_key = $new_menu->permission_key;
                     $menuLink->parent_id = $new_menu->parent_id;
                     $new_menu->{'id'} = $menuId;
                     break;
@@ -124,7 +124,7 @@ class MenuLinkService
                     break;
                 case 'parent-single':
                     $menuLink->link = $new_menu->link;
-                    $menuLink->controller_name = $new_menu->controller_name;
+                    $menuLink->permission_key = $new_menu->permission_key;
                     $menuLink->icon = $new_menu->icon;
                     break;
                 default:
@@ -173,7 +173,7 @@ class MenuLinkService
             $menus->save();
             if ($new_menu->type != 'parent') {
                 foreach ($this->permissions as $permission) {
-                    $this->permissionList[] = $new_menu->controller_name . '-' . $permission;
+                    $this->permissionList[] = $new_menu->permission_key . '-' . $permission;
                 }
                 $revocableRoles = array_diff(explode(',', $previousAccess), explode(',', $new_menu->access));
                 $assignableRoles = array_diff(explode(',', $new_menu->access), explode(',', $previousAccess));
@@ -199,7 +199,7 @@ class MenuLinkService
         if ($menuLink->type == 'parent') {
             $childMenus = MenuLink::where('parent_id', $menuId)->get();
             foreach ($childMenus as $childMenu) {
-                $menuName = Str::studly($childMenu->controller_name);
+                $menuName = Str::studly($childMenu->permission_key);
                 foreach ($this->permissions as $permission) {
                     $this->permissionList[] = $menuName . '-' . $permission;
                     Permission::where('name', $menuName . '-' . $permission)->delete();
@@ -207,7 +207,7 @@ class MenuLinkService
                 MenuLink::destroy($childMenu->id);
             }
         } else {
-            $menuName = Str::studly($menuLink->controller_name);
+            $menuName = Str::studly($menuLink->permission_key);
             foreach ($this->permissions as $permission) {
                 $this->permissionList[] = $menuName . '-' . $permission;
                 Permission::where('name', $menuName . '-' . $permission)->delete();
@@ -288,7 +288,7 @@ class MenuLinkService
         $dataReturn = [];
         foreach ($menuLinks as $menuLink) {
             $linkId = $menuLink->id;
-            $linkName = Str::studly($menuLink->controller_name);
+            $linkName = Str::studly($menuLink->permission_key);
             foreach ($roles as $role) {
                 foreach ($this->permissions as $permission) {
                     $permissionName = $linkName . '-' . $permission;
@@ -304,7 +304,7 @@ class MenuLinkService
     public function updatePermission($menuId)
     {
         $menuLink = MenuLink::find($menuId);
-        $linkName = $menuLink->controller_name;
+        $linkName = $menuLink->permission_key;
         $role = request('role');
         $permissions = request('permission');
         $revokablePermissionName = $reassignPermissionName = [];
@@ -322,7 +322,7 @@ class MenuLinkService
     public function deletePermission($menuId)
     {
         $menuLink = MenuLink::find($menuId);
-        $linkName = $menuLink->controller_name;
+        $linkName = $menuLink->permission_key;
         $userRole = request('role');
         $revokablePermissionName = [];
         foreach ($this->permissions as $permission) {
@@ -340,12 +340,11 @@ class MenuLinkService
         //update menus json
         $roles = explode(',', $menuLink->access); //Role::pluck('name')->toArray();
         $assignableRoles = array_diff($roles, (array) $userRole);
-
         $new_menu = (object) [
             'name' => $menuLink->name,
             'link' => $menuLink->link,
             'icon' => $menuLink->icon,
-            'parent_id' => $menuLink->parentId,
+            'parent_id' => $menuLink->parent_id,
             'type' => $menuLink->type,
             'access' => implode(',', $assignableRoles)
         ];
@@ -375,25 +374,13 @@ class MenuLinkService
         return $menus->save();
     }
 
-    public function generateFiles($controllerPath)
+    public function generateFiles($moduleName)
     {
-        $controllerName = Str::studly(class_basename($controllerPath));
-        //creating controller file
-        Artisan::call('make:controller ' . $controllerPath . ' --resource');
-        $oldControllerPath = app_path('Http\Controllers\\') . $controllerPath . '.php';
-        $newControllerPath = app_path('Http\Controllers\\') . $controllerPath . 'Controller.php';
-        File::move($oldControllerPath, $newControllerPath);
-        //creating model file
-        Artisan::call('make:model ' . $controllerName);
-        //creating service file
-        Artisan::call('make:service ' . $controllerName . 'Service');
-        //updating route file web.php
-        $generatedRoutePath = Str::kebab($controllerName);
+        $controllerName = Str::studly(class_basename($moduleName));
+
         $generatedRouteName = Str::camel($controllerName);
-        $file_name = base_path('routes\web.php');
-        $string = "\n //dynamically new route added \n";
-        $string .= 'Route::resource(\'' . $generatedRoutePath . '\', ' . 'App\Http\Controllers\\' . str_replace('/', '\\', $controllerPath) . 'Controller::class,["names" => "' . $generatedRouteName . '"] )->middleware("auth");';
-        File::append($file_name, $string, null);
+        Artisan::call('make:module ' . $controllerName . ' -m');
+        Module::enable($controllerName);
         return $generatedRouteName;
     }
 }

@@ -113,12 +113,12 @@
                         formData.link == 'auto-generate' &&
                         iPropsValue('userCan', 'generate')
                     "
-                    label="Controller Path"
+                    label="Module Name"
                     :label-width="formLabelWidth"
-                    prop="controllerPath"
+                    prop="moduleName"
                 >
                     <el-input
-                        v-model="formData.controllerPath"
+                        v-model="formData.moduleName"
                         @keydown.space.prevent
                         autocomplete="off"
                         :formatter="
@@ -288,7 +288,7 @@ const formData = useForm({
     link: "#",
     generateOption: null,
     icon: null,
-    controllerPath: "",
+    moduleName: "",
     access: ["Su-Admin"],
 });
 const validateExists = (rule, value, callback) => {
@@ -322,10 +322,10 @@ const rules = reactive({
             trigger: "change",
         },
     ],
-    controllerPath: [
+    moduleName: [
         {
             required: false,
-            message: "Please Input Controller Name",
+            message: "Please Input Module Name",
             trigger: "blur",
         },
     ],
@@ -414,9 +414,9 @@ let changedMenuType = function () {
 };
 let checkGeneratorOption = function () {
     if (FormType == "Add" && formData.link == "auto-generate") {
-        rules.controllerPath[0].required = true;
+        rules.moduleName[0].required = true;
     } else {
-        rules.controllerPath[0].required = false;
+        rules.moduleName[0].required = false;
     }
     formData.generateOption = "";
     setTimeout(() => {

@@ -16,7 +16,7 @@ return new class() extends Migration {
             $table->id();
             $table->string('name')->unique();
             $table->string('link')->nullable();
-            $table->string('controller_name');
+            $table->string('permission_key');
             $table->string('icon')->nullable();
             $table->string('type');
             $table->string('parent_id')->nullable();
