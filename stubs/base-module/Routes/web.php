@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\{Module}\Http\Controllers\{Module}Controller;
 
-Route::prefix('{module}')->group(function() {
+Route::middleware(['auth'])->prefix('{module-}')->group(function() {
     Route::get('/', [{Module}Controller::class, 'index'])->name('{routeName}.index');
     Route::post('create', [{Module}Controller::class, 'store'])->name('{routeName}.store');
     // Route::get('edit/{id}', [{Module}Controller::class, 'edit'])->name('{routeName}.edit');

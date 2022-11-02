@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\{Module}\Http\Services;
+namespace Modules\{Module}\Services;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;

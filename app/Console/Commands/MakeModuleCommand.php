@@ -7,6 +7,7 @@ use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Nwidart\Modules\Facades\Module;
 
 #[AsCommand(name: 'make:module')]
 class MakeModuleCommand extends Command
@@ -29,8 +30,13 @@ class MakeModuleCommand extends Command
         $this->container['model'] = ucwords(Str::singular($this->container['name']));
         $this->comment('Success!');
         $this->generate();
-        $this->info('Starter ' . $this->container['name'] . ' module installed successfully.');
-        $this->info('To enable module run command php artisan module:enable ' . $this->container['name']);
+        $this->info($this->container['name'] . ' module installed successfully.');
+        if ($this->option('enable')) {
+            Module::enable($this->container['name']);
+            $this->info($this->container['name'] . ' module enabled successfully.');
+        } else {
+            $this->comment('To enable module run command php artisan module:enable ' . $this->container['name']);
+        }
     }
 
     protected function generate()
@@ -62,6 +68,7 @@ class MakeModuleCommand extends Command
         $this->replaceInFile($targetPath . '/Providers/ModuleServiceProvider.php');
         $this->replaceInFile($targetPath . '/Providers/RouteServiceProvider.php');
         $this->replaceInFile($targetPath . '/Routes/web.php');
+        $this->replaceInFile($targetPath . '/Routes/api.php');
         $this->replaceInFile($targetPath . '/composer.json');
         $this->replaceInFile($targetPath . '/module.json');
         $this->replaceInFile($targetPath . '/vite.config.js');
@@ -121,8 +128,8 @@ class MakeModuleCommand extends Command
         $name = $this->container['name'];
         $model = $this->container['model'];
         $types = [
-            '{module_}' => null,
-            '{module-}' => null,
+            '{module_}' => Str::snake($name),
+            '{module-}' => Str::kebab($name),
             '{Module}' => $name,
             '{module}' => strtolower($name),
             '{Model}' => $model,
@@ -132,18 +139,6 @@ class MakeModuleCommand extends Command
 
         foreach ($types as $key => $value) {
             if (file_exists($path)) {
-                if ($key == 'module_') {
-                    $parts = preg_split('/(?=[A-Z])/', $name, -1, PREG_SPLIT_NO_EMPTY);
-                    $parts = array_map('strtolower', $parts);
-                    $value = implode('_', $parts);
-                }
-
-                if ($key == 'module-') {
-                    $parts = preg_split('/(?=[A-Z])/', $name, -1, PREG_SPLIT_NO_EMPTY);
-                    $parts = array_map('strtolower', $parts);
-                    $value = implode('-', $parts);
-                }
-
                 file_put_contents($path, str_replace($key, $value, file_get_contents($path)));
             }
         }
@@ -160,6 +155,7 @@ class MakeModuleCommand extends Command
     {
         return [
             ['model', 'm', InputOption::VALUE_NONE, 'Generate a resource controller for the given model'],
+            ['enable', 'e', InputOption::VALUE_NONE, 'Enable module after creation'],
         ];
     }
 }
