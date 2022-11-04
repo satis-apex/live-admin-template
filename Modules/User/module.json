@@ -1,0 +1,14 @@
+{
+    "name": "User",
+    "label": "User",
+    "alias": "user",
+    "description": "manage all user",
+    "keywords": ["user"],
+    "priority": 0,
+    "providers": [
+        "Modules\\User\\Providers\\UserServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

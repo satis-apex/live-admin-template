@@ -1,11 +1,12 @@
 <?php
-namespace App\Http\Controllers\Admin;
+
+namespace Modules\User\Http\Controllers;
 
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
-use Facades\App\Services\UserPermissionCheckService;
+use Facades\Modules\User\Services\UserPermissionCheckService;
 
 class UserPermissionCheckController extends Controller
 {

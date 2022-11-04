@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace Modules\User\Models;
 
 use Carbon\Carbon;
 use Spatie\MediaLibrary\HasMedia;

@@ -1,11 +1,11 @@
 <?php
 
-namespace Database\Seeders;
+namespace Modules\User\Database\Seeders;
 
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\userInfo;
 use Illuminate\Database\Seeder;
+use Modules\User\Models\UserInfo;
 
 class UserSeeder extends Seeder
 {
@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
 	 */
 	public function run()
 	{
-		$userInfo = userInfo::create([
+		$userInfo = UserInfo::create([
 			'first_name' => 'satish',
 			'last_name' => 'maharjan',
 			// 'email' => 'admin@example.com',

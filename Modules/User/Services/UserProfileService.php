@@ -1,7 +1,7 @@
 <?php
-namespace App\Services;
+namespace Modules\User\Services;
 
-use App\Models\UserInfo;
+use Modules\User\Models\UserInfo;
 use Illuminate\Database\QueryException;
 
 class UserProfileService

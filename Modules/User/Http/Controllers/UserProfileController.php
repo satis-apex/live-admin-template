@@ -1,11 +1,11 @@
 <?php
-namespace App\Http\Controllers\Admin;
+namespace Modules\User\Http\Controllers;
 
 use Inertia\Inertia;
-use App\Models\userInfo;
+use Modules\User\Models\UserInfo;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
-use Facades\App\Services\UserProfileService;
+use Facades\Modules\User\Services\UserProfileService;
 
 class UserProfileController extends Controller
 {
@@ -21,7 +21,7 @@ class UserProfileController extends Controller
     {
         $userInfo = request()->user()->profile->only('avatar', 'contact', 'first_name', 'middle_name', 'last_name', 'gender', 'id');
         return Inertia::render(
-            'Admin/Profile/Index',
+            'User::Profile/Index',
             [
                 'breadcrumb' => getBreadcrumb() ?: readable('UserProfile'),
                 'userInfo' => $userInfo
