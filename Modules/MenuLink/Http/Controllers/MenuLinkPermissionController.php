@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Controllers\Admin;
+namespace Modules\MenuLink\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
-use Facades\App\Services\MenuLinkService;
+use Facades\Modules\MenuLink\Services\MenuLinkService;
 
 class MenuLinkPermissionController extends Controller
 {

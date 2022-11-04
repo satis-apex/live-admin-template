@@ -1,0 +1,14 @@
+{
+    "name": "MenuLink",
+    "label": "MenuLink",
+    "alias": "menulink",
+    "description": "manage all menulink",
+    "keywords": ["menulink"],
+    "priority": 0,
+    "providers": [
+        "Modules\\MenuLink\\Providers\\MenuLinkServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

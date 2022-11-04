@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Controllers\Admin;
+namespace Modules\MenuLink\Http\Controllers;
 
-use App\Models\Menu;
-use App\Models\MenuLink;
+use Modules\MenuLink\Models\Menu;
 use App\Http\Controllers\Controller;
+use Modules\MenuLink\Models\MenuLink;
 use Illuminate\Support\Facades\Redirect;
 
 class MenuController extends Controller

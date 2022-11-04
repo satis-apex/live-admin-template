@@ -1,21 +1,19 @@
 <?php
-namespace App\Http\Controllers\Admin;
+namespace Modules\MenuLink\Http\Controllers;
 
 use Inertia\Inertia;
-use App\Models\MenuLink;
-use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Modules\MenuLink\Models\MenuLink;
 use Illuminate\Support\Facades\Redirect;
-use Facades\App\Services\MenuLinkService;
+use Facades\Modules\MenuLink\Services\MenuLinkService;
 
 class MenuLinkController extends Controller
 {
-    protected $routeName = '';
+    protected $routeName = 'menuLink';
 
     public function __construct()
     {
-        $this->routeName = Str::camel('menuLink');
         $this->implementMethodPermission('MenuLink');
     }
 

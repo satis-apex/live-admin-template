@@ -1,15 +1,15 @@
 <?php
-namespace App\Services;
+namespace Modules\MenuLink\Services;
 
-use App\Models\Menu;
-use App\Models\MenuLink;
 use Illuminate\Support\Str;
+use Modules\MenuLink\Models\Menu;
 use Spatie\Permission\Models\Role;
+use Nwidart\Modules\Facades\Module;
 use Illuminate\Support\Facades\Route;
+use Modules\MenuLink\Models\MenuLink;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Permission;
-use Nwidart\Modules\Facades\Module;
 
 class MenuLinkService
 {

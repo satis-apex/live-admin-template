@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace Modules\MenuLink\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Menu extends Authenticatable
+class MenuLink extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
@@ -16,4 +16,13 @@ class Menu extends Authenticatable
         'created_at',
         'updated_at',
     ];
+
+    public function getParentNameAttribute()
+    {
+        if ($this->parent_id != null && $this->type == 'child') {
+            $parentName = self::find($this->parent_id);
+            return $parentName->name;
+        }
+        return null;
+    }
 }

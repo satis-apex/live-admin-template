@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,10 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(
             [
                 ApplicationInfoSeeder::class,
-                MenuSeeder::class,
-                MenuLinkSeeder::class,
-                RoleAndPermissionSeeder::class,
-                UserSeeder::class,
             ]
         );
     }
