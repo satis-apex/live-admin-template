@@ -8,7 +8,7 @@
             :size="250"
             custom-class="menu-drawer"
         >
-            <template #title>
+            <template #header>
                 <div class="logo">Brand Logo</div>
             </template>
             <template #default>

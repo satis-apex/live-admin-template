@@ -141,7 +141,6 @@ watch(
 const emit = defineEmits(["showMenu"]);
 onMounted(() => {
     window.addEventListener("resize", () => {
-        console.log("resixe");
         mobileMenu = mediaCheck("md");
     });
 });

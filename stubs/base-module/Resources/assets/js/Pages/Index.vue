@@ -1,13 +1,14 @@
 <template>
     <AddEditForm ref="refAddEditForm" />
     <el-row class="mb-3 justify-between" :gutter="20">
-        <el-col :xs="18" :sm="12" :md="10">
+        <el-col :xs="12" :sm="12" :md="10">
             <el-row :gutter="20">
                 <el-col :span="18"
                     ><el-input
                         v-model="searchText"
                         placeholder="Type to search"
                         @input="searchFilter"
+                        class="searchable"
                     >
                         <template #prepend
                             ><el-button :icon="Search"
@@ -48,15 +49,32 @@
                 :data="filterDataList"
                 style="width: 100%"
                 height="75vh"
+                ref="refTable"
+                table-layout="auto"
             >
-                <el-table-column type="index" fixed="left" width="50" />
+                <el-table-column v-if="mobileView" type="expand">
+                    <template #default="props">
+                        <div class="ml-28">
+                            <p class="mb-2">Name: {{ props.row.name }}</p>
+                            <p class="mb-2">date: {{ props.row.date }}</p>
+                            <p class="mb-2">Address: {{ props.row.address }}</p>
+                            <p class="mb-2">Status: {{ props.row.status }}</p>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column type="index" fixed="left" />
+                <el-table-column label="Name" sortable prop="name" />
                 <el-table-column
                     label="Date"
                     prop="date"
                     :formatter="dateFormatter"
+                    v-if="!mobileView"
                 />
-                <el-table-column label="Name" sortable prop="name" />
-                <el-table-column label="Address" prop="address" />
+                <el-table-column
+                    label="Address"
+                    v-if="!mobileView"
+                    prop="address"
+                />
                 <el-table-column
                     label="Status"
                     prop="status"
@@ -113,8 +131,10 @@ import ActionButton from "./Components/ActionButton.vue";
 import ViewForm from "./Components/ViewForm.vue";
 import { Plus, Delete, Search } from "@element-plus/icons-vue";
 import moment from "moment";
+import { useAppUtility } from "@/Composables/appUtiility";
 let { iPropsValue } = useInertiaPropsUtility();
-
+let { mediaCheck } = useAppUtility();
+let mobileView = $ref(mediaCheck("md"));
 const refAddEditForm = $ref(null);
 const refViewForm = $ref(null);
 const addForm = function () {
@@ -132,7 +152,7 @@ const deleteForm = function (data) {
                 const deleteForm = useForm({
                     deleteId: data.id,
                 });
-                deleteForm.delete(route("{routeName}", data.id), {
+                deleteForm.delete(route("test.delete", data.id), {
                     preserveScroll: true,
                     onSuccess: () => {
                         deleteForm.reset();
@@ -207,6 +227,7 @@ const dataList = [
 let currentPage = $ref(1);
 let pageSize = $ref(100);
 let totalSize = $ref(0);
+let refTable = ref(null);
 let page = $ref(1);
 const searchText = $ref("");
 const exportData = reactive({
@@ -296,9 +317,13 @@ const formatJson = function (filterVal, jsonData) {
         })
     );
 };
+
 //page event cycle
 onMounted(() => {
     changePage();
+    window.addEventListener("resize", () => {
+        mobileView = mediaCheck("md");
+    });
 });
 </script>
 <script>
