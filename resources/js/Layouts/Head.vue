@@ -1,7 +1,29 @@
 <template>
     <el-header class="relative custom-header">
         <el-row class="row-bg h-full items-center" justify="space-between">
-            <el-col :span="8">
+            <el-col :span="12">
+                <div
+                    v-show="mobileMenu"
+                    class="menu-toggler block w-6 mr-2 float-left"
+                    @click="emit('showMenu')"
+                >
+                    <!-- hero icon -->
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2.5"
+                        stroke="currentColor"
+                        class="w-6 h-6"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                        />
+                    </svg>
+                </div>
+
                 <div class="grid-content text-lg text-lightBlue-500">
                     {{ breadcrumb }}
                 </div>
@@ -21,7 +43,7 @@
                                     />
                                 </el-avatar>
                                 <div class="flex items-center">
-                                    <span class="hidden-xs-only pl-2">
+                                    <span class="hidden-sm-and-down pl-2">
                                         {{
                                             iPropsValue(
                                                 "auth",
@@ -98,8 +120,10 @@ import {
     CircleCheck,
 } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-import { inject, watch } from "vue";
+import { inject, onMounted, watch } from "vue";
 import ChangeUserPassword from "@/Layouts/ChangeUserPassword.vue";
+import { useAppUtility } from "@/Composables/appUtiility";
+let { mediaCheck } = useAppUtility();
 let { iPropsValue } = useInertiaPropsUtility();
 const formVisible = $ref(false);
 const headDropdown = $ref();
@@ -107,12 +131,20 @@ const breadcrumb = $ref(iPropsValue("breadcrumb"));
 const closeForm = function () {
     formVisible = false;
 };
+let mobileMenu = $ref(mediaCheck("md"));
 watch(
     () => iPropsValue("breadcrumb"),
     () => {
         breadcrumb = iPropsValue("breadcrumb");
     }
 );
+const emit = defineEmits(["showMenu"]);
+onMounted(() => {
+    window.addEventListener("resize", () => {
+        console.log("resixe");
+        mobileMenu = mediaCheck("md");
+    });
+});
 </script>
 <style scoped>
 .custom-header {

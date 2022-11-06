@@ -1,6 +1,6 @@
 <template>
     <el-row class="mb-4 justify-between">
-        <el-col :sm="11" :xs="24" class="p-3 border rounded-lg bg-white mb-3">
+        <el-col :lg="11" :md="24" class="p-3 border rounded-lg bg-white mb-3">
             <h2 class="font-medium text-lg">Application Menu Control</h2>
             <el-divider class="!mt-3 !mb-4" />
             <div class="grid-content">
@@ -61,7 +61,7 @@
                 />
             </div>
         </el-col>
-        <el-col :sm="12" :xs="24" class="p-3 border rounded-lg bg-white mb-3">
+        <el-col :lg="12" :md="24" class="p-3 border rounded-lg bg-white mb-3">
             <h2 class="font-medium text-lg">Menu Permission Control</h2>
             <el-divider class="!mt-3 !mb-4" />
             <RoleMenuList />

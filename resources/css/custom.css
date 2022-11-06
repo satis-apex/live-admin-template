@@ -36,3 +36,8 @@
     top: 20px !important;
     right: 18px !important;
 }
+
+/* 
+responsive hidden modified version of display .css(element plus)
+*/
+@media only screen and (max-width:479px) { .hidden-xs-only { display: none !important } } @media only screen and (min-width:480px) { .hidden-sm-and-up { display: none !important } } @media only screen and (min-width:480px) and (max-width:767px) { .hidden-sm-only { display: none !important } } @media only screen and (max-width:767px) { .hidden-sm-and-down { display: none !important } } @media only screen and (min-width:768px) { .hidden-md-and-up { display: none !important } } @media only screen and (min-width:768px) and (max-width:975px) { .hidden-md-only { display: none !important } } @media only screen and (max-width:975px) { .hidden-md-and-down { display: none !important } } @media only screen and (min-width:976px) { .hidden-lg-and-up { display: none !important } } @media only screen and (min-width:976px) and (max-width:1440px) { .hidden-lg-only { display: none !important } } @media only screen and (max-width:1440px) { .hidden-lg-and-down { display: none !important } } @media only screen and (min-width:1440px) { .hidden-xl-only { display: none !important } }
