@@ -1,3 +1,5 @@
+import { usePage } from "@inertiajs/inertia-vue3";
+
 export function useAppUtility() {
 
 	const themeOption = function (key) {
@@ -86,6 +88,14 @@ export function useAppUtility() {
 	const getMenuKey = function (object, key) {
 
 	}
+	const hasMenuAccess = function (menu) {
+		const role = usePage().props.value.auth.user.account.role
+		const accessList = menu.access?.split(",");
+		if (accessList.indexOf(role) != -1) {
+			return true;
+		}
+		return false;
+	}
 	return {
 		ifUrlExist,
 		isAuthorize,
@@ -96,5 +106,6 @@ export function useAppUtility() {
 		themeOption,
 		verifyRole,
 		mediaCheck,
+		hasMenuAccess
 	}
 }

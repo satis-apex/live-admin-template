@@ -297,19 +297,11 @@ import { SimpleBar } from "simplebar-vue3";
 import { watch, computed, inject, onMounted } from "vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useAppUtility } from "@/Composables/appUtiility";
-let { mediaCheck } = useAppUtility();
-let currentActive = $ref("");
-let isCollapse = $ref(inject("isCollapse"));
-const menuDrawer = $ref();
 let { iPropsValue } = useInertiaPropsUtility();
-let hasMenuAccess = function (menu) {
-    const role = iPropsValue("auth", "user.account.role");
-    const accessList = menu.access?.split(",");
-    if (accessList.indexOf(role) != -1) {
-        return true;
-    }
-    return false;
-};
+let { mediaCheck, hasMenuAccess } = useAppUtility();
+let isCollapse = $ref(inject("isCollapse"));
+let menuDrawer = $ref();
+let currentActive = $ref("");
 let menus = $ref(iPropsValue("app_menu", "menu_list"));
 watch(
     () => iPropsValue("app_menu", "menu_list"),
@@ -320,14 +312,14 @@ watch(
 const menuList = computed(() => {
     return JSON.parse(menus);
 });
+const showMenuDrawer = function () {
+    menuDrawer = true;
+};
 onMounted(() => {
     window.addEventListener("resize", () => {
         isCollapse = mediaCheck("lg");
     });
 });
-const showMenuDrawer = function () {
-    menuDrawer = true;
-};
 defineExpose({
     showMenuDrawer,
 });

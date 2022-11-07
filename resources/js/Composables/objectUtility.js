@@ -75,6 +75,15 @@ export function useObjectUtility() {
 		});
 		return filteredObj;
 	}
+	const filterObjectWithGroupedValue = function (objectArray, keys) {
+		let filteredObj = [];
+		_.forEach(objectArray, obj => {
+			const filteringObj = _.pick(obj, keys);
+			if (!filteredObj.includes(filteringObj[keys]))
+				filteredObj.push(filteringObj[keys]);
+		});
+		return filteredObj;
+	}
 	const populateObject = function (objToPopulate, objSource) {
 		// let objToPop = Object.assign({}, objToPopulate)
 		//let newObj = {};
@@ -93,5 +102,5 @@ export function useObjectUtility() {
 			return value
 		});
 	}
-	return { getKeyByValue, getObjectIndex, getObjectRow, getObjectIndex, objectToArray, groupBy, filterObject, populateObject, sanitizeObject, resetObjectKey };
+	return { getKeyByValue, getObjectIndex, getObjectRow, getObjectIndex, objectToArray, groupBy, filterObject, populateObject, sanitizeObject, resetObjectKey, filterObjectWithGroupedValue };
 }
