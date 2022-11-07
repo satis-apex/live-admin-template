@@ -64,16 +64,19 @@ export function useAppUtility() {
 	const mediaCheck = function (opt) {
 		switch (opt) {
 			case 'sm':
-				return window.matchMedia("(max-width: 480px)").matches; //less than 480px
+				return window.matchMedia("(max-width: 575.98px)").matches; // X-Small devices (portrait phones, less than 576px)
 				break;
 			case 'md':
-				return window.matchMedia("(max-width: 768px)").matches;//less than 768px
+				return window.matchMedia("(max-width: 767.98px)").matches; // Small devices (landscape phones, less than 768px)
 				break;
 			case 'lg':
-				return window.matchMedia("(max-width: 976px)").matches;//less than 976px
+				return window.matchMedia("(max-width: 991.98px)").matches; // Medium devices (tablets, less than 992px)
 				break;
 			case 'xl':
-				return window.matchMedia("(max-width: 1440px)").matches;//less than 1440px
+				return window.matchMedia("(max-width: 991.98px)").matches; // Large devices (desktops, less than 1200px)
+				break;
+			case '2xl':
+				return window.matchMedia("(max-width: 1399.98px)").matches; // X-Large devices (large desktops, less than 1400px)
 				break;
 			default:
 				return false;
