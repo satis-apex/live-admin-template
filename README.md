@@ -7,6 +7,8 @@ Live-Admin is an admin template created by integrating Laravel, Vue3 and Inertia
 -   Dynamic menu management with the recorder.
 -   Role Permission integrated with the menu
 -   Option to generate Controller, Model and Service class (all about personal preferences and coding standard)
+-   Laravel Module Implemented
+-   Ability to create fully functional Demo Crud file from add Manage Menu UI dynamically
 
 ## Installation
 
@@ -26,6 +28,7 @@ Live-Admin is an admin template created by integrating Laravel, Vue3 and Inertia
 -   [spatie/laravel-permission](https://github.com/spatie/laravel-permission)-Associate users with permissions and roles.
 -   [vue3](https://vuejs.org) - An approachable, performant and versatile framework for building web user interfaces.
 -   [Element Plus](https://element-plus.org/en-US/) - A Vue 3 based component library for designers and developers.
+-   [Laravel Modules](https://github.com/nWidart/laravel-modules) - A package to manage your large Laravel app using modules.
 
 ## Contributing
 
@@ -49,7 +52,7 @@ I'm a full stack developer...
 ## Roadmap
 
 -   Multi tenent implementation
--   CRUD view generator
+-   laravel Notification
 -   Add more integrations
 
 ## License
