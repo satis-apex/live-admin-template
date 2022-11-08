@@ -125,9 +125,9 @@ import ChangeUserPassword from "@/Layouts/ChangeUserPassword.vue";
 import { useAppUtility } from "@/Composables/appUtiility";
 let { mediaCheck } = useAppUtility();
 let { iPropsValue } = useInertiaPropsUtility();
-const formVisible = $ref(false);
+let formVisible = $ref(false);
 const headDropdown = $ref();
-const breadcrumb = $ref(iPropsValue("breadcrumb"));
+let breadcrumb = $ref(iPropsValue("breadcrumb"));
 const closeForm = function () {
     formVisible = false;
 };

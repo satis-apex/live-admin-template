@@ -74,8 +74,8 @@ const formData = useForm({
     password: "",
     password_confirmation: "",
 });
-const showError = $ref(false);
-const formVisible = $ref(props.parentFormVisible);
+let showError = $ref(false);
+let formVisible = $ref(props.parentFormVisible);
 watch(
     () => props.parentFormVisible,
     () => {
