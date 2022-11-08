@@ -8,7 +8,7 @@
     </ul>
 </template>
 <script setup>
-import { watch, computed } from "vue";
+import { watch, computed } from "@vue/runtime-core";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 const props = defineProps({
     menuId: Number,

@@ -236,7 +236,7 @@
 </style>
 <script setup>
 //library import
-import { reactive, markRaw, watch } from "vue";
+import { reactive, markRaw, watch } from "@vue/runtime-core";
 import { Edit, Search } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import debounce from "lodash/debounce";

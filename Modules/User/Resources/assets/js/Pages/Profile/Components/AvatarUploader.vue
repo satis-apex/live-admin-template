@@ -40,7 +40,7 @@
     </el-dialog>
 </template>
 <script setup>
-import { reactive, markRaw, watch } from "vue";
+import { reactive, markRaw, watch } from "@vue/runtime-core";
 import { Edit, Plus } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";

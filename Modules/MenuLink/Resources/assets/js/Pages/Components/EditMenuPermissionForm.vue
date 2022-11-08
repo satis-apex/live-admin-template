@@ -44,7 +44,7 @@
 </template>
 <script setup>
 import { useForm } from "@inertiajs/inertia-vue3";
-import { watch, markRaw } from "vue";
+import { watch, markRaw } from "@vue/runtime-core";
 import { Edit } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 

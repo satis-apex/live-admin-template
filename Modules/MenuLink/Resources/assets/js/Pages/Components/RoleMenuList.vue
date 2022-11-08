@@ -163,7 +163,7 @@
 </template>
 <script setup>
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-import { computed, watch, markRaw } from "vue";
+import { computed, watch, markRaw } from "@vue/runtime-core";
 import { Delete } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import EditMenuPermissionForm from "./EditMenuPermissionForm.vue";

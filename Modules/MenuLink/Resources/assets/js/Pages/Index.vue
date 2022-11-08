@@ -71,7 +71,7 @@
 </template>
 <script setup>
 //library import
-import { watch } from "vue";
+import { watch } from "@vue/runtime-core";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { Plus } from "@element-plus/icons-vue";
 // component import
