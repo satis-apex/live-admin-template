@@ -13,8 +13,9 @@
                         >
                             <template #prepend
                                 ><el-button :icon="Search"
-                            /></template> </el-input
-                    ></el-col>
+                            /></template>
+                        </el-input>
+                    </el-col>
                     <el-col :span="2"
                         ><el-tooltip
                             v-if="iPropsValue('userCan', 'create')"
@@ -38,7 +39,11 @@
             </el-col>
 
             <el-col :span="6" class="item-right text-right">
-                <el-button type="success" @click="exportTable()">
+                <el-button
+                    type="success"
+                    :loading="exportLoading"
+                    @click="exportTable()"
+                >
                     <fa icon="file-excel" />
                 </el-button>
             </el-col>
@@ -157,6 +162,7 @@ let { mediaCheck } = useAppUtility();
 let mobileView = $ref(mediaCheck("md"));
 const refAddEditForm = $ref(null);
 const refViewForm = $ref(null);
+const exportLoading = $ref(false);
 const addForm = function () {
     refAddEditForm.showForm("Add");
 };
@@ -416,19 +422,30 @@ const searchFilter = function () {
     // this.busy = false;
 };
 const exportTable = function () {
-    import("@/Export2Excel").then((excel) => {
-        const tHeader = exportData.header;
-        const filterVal = exportData.headerValue;
+    exportLoading = true;
+    const exportNow = function (excel) {
+        return new Promise((resolve) => {
+            const tHeader = exportData.header;
+            const filterVal = exportData.headerValue;
 
-        const data = formatJson(filterVal, dataList);
-        excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: exportData.fileName,
-            autoWidth: exportData?.autoWidth ?? true,
-            bookType: exportData?.fileType ?? "xlsx",
+            const data = formatJson(filterVal, dataList);
+            excel.export_json_to_excel({
+                header: tHeader,
+                data,
+                filename: exportData.fileName,
+                autoWidth: exportData?.autoWidth ?? true,
+                bookType: exportData?.fileType ?? "xlsx",
+            });
+            resolve("resolved");
         });
-    });
+    };
+    import("@/Export2Excel")
+        .then(async (excel) => {
+            await exportNow(excel);
+        })
+        .then(() => {
+            exportLoading = false;
+        });
 };
 const formatJson = function (filterVal, jsonData) {
     return jsonData.map((v) =>
