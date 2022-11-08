@@ -1,12 +1,12 @@
 <?php
 
-use App\Models\MenuLink;
-use App\Models\User;
 use Illuminate\Support\Str;
+use Modules\User\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Modules\MenuLink\Models\MenuLink;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -256,14 +256,14 @@ if (!\function_exists('readable')) {
         $escapedCamel = strtolower(preg_replace('/(?<!^)[A-Z]/', ' $0', $words));
         return ucwords(
             preg_replace(
-                    '~(\s|\x{3164})+~u',
-                    ' ',
-                    preg_replace(
-                        '~^[\s﻿]+|[\s﻿]+$~u',
-                        '',
-                        $escapedCamel
-                    )
+                '~(\s|\x{3164})+~u',
+                ' ',
+                preg_replace(
+                    '~^[\s﻿]+|[\s﻿]+$~u',
+                    '',
+                    $escapedCamel
                 )
+            )
         );
     }
 }

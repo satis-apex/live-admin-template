@@ -1,11 +1,11 @@
 <?php
 namespace App\Http\Middleware;
 
-use App\Models\Menu;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 use Illuminate\Http\Request;
 use App\Models\ApplicationInfo;
+use Modules\MenuLink\Models\Menu;
 use Illuminate\Support\Facades\Session;
 
 class HandleInertiaRequests extends Middleware

@@ -1,11 +1,11 @@
 <template>
     <div class="common-layout">
         <el-container>
-            <side-nav></side-nav>
+            <side-nav ref="refSideNav"></side-nav>
             <el-container class="bg-body">
                 <SimpleBar style="height: 100vh; overflow-y: auto; width: 100%">
                     <el-affix :offset="0.1" style="width: 100%">
-                        <heads></heads>
+                        <heads @showMenu="showDrawer"></heads>
                     </el-affix>
                     <el-main class="main-container-wrapper"><slot /></el-main>
                     <el-footer
@@ -29,9 +29,13 @@ import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useAppUtility } from "@/Composables/appUtiility";
 let { iPropsValue } = useInertiaPropsUtility();
 let { mediaCheck } = useAppUtility();
-const isMobile = mediaCheck("md");
-const isCollapse = ref(isMobile ? true : false);
+const isMobile = mediaCheck("lg");
+const isCollapse = $ref(isMobile ? true : false);
+const refSideNav = $ref(null);
 provide("isCollapse", isCollapse);
+const showDrawer = function () {
+    refSideNav.showMenuDrawer();
+};
 </script>
 
 <style scoped>

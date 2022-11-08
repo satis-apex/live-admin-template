@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
-use App\Models\Menu;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Modules\MenuLink\Models\Menu;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -49,11 +48,10 @@ class AuthenticatedSessionController extends Controller
             ]
         ]);
 
-
         Inertia::share(
             'auth',
             fn (Request $request) => $request->user()
-                ? ["user" => $request->user()->only('id', 'email'), "profile" => $request->user()->profile]
+                ? ['user' => $request->user()->only('id', 'email'), 'profile' => $request->user()->profile]
                 : null
         );
         Inertia::share(
