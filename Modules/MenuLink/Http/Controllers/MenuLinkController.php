@@ -25,7 +25,7 @@ class MenuLinkController extends Controller
         $roleMenus = MenuLinkService::listRoleMenuPermission();
         $menuLinkLists = MenuLink::pluck('name')->toArray();
         return Inertia::render(
-            'Admin/MenuManage/Index',
+            'MenuLink::Index',
             [
                 'menuRoutes' => $menuRoutes,
                 'parentLinks' => $parentLinks,
