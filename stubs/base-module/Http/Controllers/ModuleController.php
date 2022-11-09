@@ -42,6 +42,16 @@ class {Module}Controller extends Controller
         return Redirect::route($this->routeName.'.index')->with('success', ' Added Successfully');
     }
 
+    public function massStore()
+    {
+		try {
+           {Module}Service::massAdd();
+        } catch (\Exception $e) {
+            return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
+        }
+        return Redirect::route($this->routeName.'.index')->with('success', ' Added Successfully');
+    }
+
     public function update(int $id)
     {
 		 try {

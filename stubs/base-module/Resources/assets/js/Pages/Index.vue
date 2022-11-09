@@ -1,10 +1,11 @@
 <template>
     <div>
         <AddEditForm ref="refAddEditForm" />
+        <AddByExcelForm ref="refAddByExcelForm" />
         <el-row class="mb-3 justify-between" :gutter="20">
             <el-col :xs="12" :sm="12" :md="10">
                 <el-row :gutter="20">
-                    <el-col :span="18"
+                    <el-col :span="16"
                         ><el-input
                             v-model="searchText"
                             placeholder="Type to search"
@@ -16,24 +17,41 @@
                             /></template>
                         </el-input>
                     </el-col>
-                    <el-col :span="2"
-                        ><el-tooltip
-                            v-if="iPropsValue('userCan', 'create')"
-                            class="box-item"
-                            effect="dark"
-                            content="Add "
-                            placement="bottom"
-                        >
-                            <el-button
-                                data-action="expand-all"
-                                type="success"
-                                size="default"
-                                rounded
-                                @click="addForm"
-                                :icon="Plus"
+                    <el-col :span="8">
+                        <el-button-group>
+                            <el-tooltip
+                                v-if="iPropsValue('userCan', 'create')"
+                                class="box-item"
+                                effect="dark"
+                                content="Add "
+                                placement="bottom"
                             >
-                            </el-button>
-                        </el-tooltip>
+                                <el-button
+                                    type="success"
+                                    size="default"
+                                    rounded
+                                    @click="addForm"
+                                    :icon="Plus"
+                                >
+                                </el-button>
+                            </el-tooltip>
+                            <el-tooltip
+                                v-if="iPropsValue('userCan', 'create')"
+                                class="box-item"
+                                effect="dark"
+                                content="Excel Add"
+                                placement="bottom"
+                            >
+                                <el-button
+                                    type="warning"
+                                    size="default"
+                                    rounded
+                                    @click="addExcelForm"
+                                    :icon="DocumentAdd"
+                                >
+                                </el-button>
+                            </el-tooltip>
+                        </el-button-group>
                     </el-col>
                 </el-row>
             </el-col>
@@ -150,9 +168,10 @@ import { computed, markRaw, onMounted, reactive, ref } from "@vue/runtime-core";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { useObjectUtility } from "@/Composables/objectUtility";
 import AddEditForm from "./Components/AddEditForm.vue";
+import AddByExcelForm from "./Components/AddByExcelForm.vue";
 import ActionButton from "./Components/ActionButton.vue";
 import ViewForm from "./Components/ViewForm.vue";
-import { Plus, Delete, Search } from "@element-plus/icons-vue";
+import { Plus, Delete, Search, DocumentAdd } from "@element-plus/icons-vue";
 import moment from "moment";
 let { iPropsValue } = useInertiaPropsUtility();
 let { filterObjectWithGroupedValue } = useObjectUtility();
@@ -161,10 +180,14 @@ import { useAppUtility } from "@/Composables/appUtiility";
 let { mediaCheck } = useAppUtility();
 let mobileView = $ref(mediaCheck("md"));
 const refAddEditForm = $ref(null);
+const refAddByExcelForm = $ref(null);
 const refViewForm = $ref(null);
 const exportLoading = $ref(false);
 const addForm = function () {
     refAddEditForm.showForm("Add");
+};
+const addExcelForm = function () {
+    refAddByExcelForm.showForm();
 };
 const editForm = function (data) {
     refAddEditForm.showForm("Edit", data);
