@@ -1,39 +1,62 @@
 <template>
     <div>
-        <AddEditForm ref="refAddEditForm" />
+        <AddEditForm ref="refAddEditForm" :parentFormInput="formInputNames" />
+        <AddByExcelForm
+            v-if="iPropsValue('userCan', 'massAdd')"
+            ref="refAddByExcelForm"
+            :parentFormInput="formInputNames"
+        />
         <el-row class="mb-3 justify-between" :gutter="20">
             <el-col :xs="12" :sm="12" :md="10">
                 <el-row :gutter="20">
-                    <el-col :span="18"
+                    <el-col :span="16"
                         ><el-input
                             v-model="searchText"
                             placeholder="Type to search"
                             @input="searchFilter"
                             class="searchable"
+                            clearable
                         >
                             <template #prepend
                                 ><el-button :icon="Search"
                             /></template>
                         </el-input>
                     </el-col>
-                    <el-col :span="2"
-                        ><el-tooltip
-                            v-if="iPropsValue('userCan', 'create')"
-                            class="box-item"
-                            effect="dark"
-                            content="Add "
-                            placement="bottom"
-                        >
-                            <el-button
-                                data-action="expand-all"
-                                type="success"
-                                size="default"
-                                rounded
-                                @click="addForm"
-                                :icon="Plus"
+                    <el-col :span="8">
+                        <el-button-group>
+                            <el-tooltip
+                                v-if="iPropsValue('userCan', 'create')"
+                                class="box-item"
+                                effect="dark"
+                                content="Add "
+                                placement="bottom"
                             >
-                            </el-button>
-                        </el-tooltip>
+                                <el-button
+                                    type="success"
+                                    size="default"
+                                    rounded
+                                    @click="addForm"
+                                    :icon="Plus"
+                                >
+                                </el-button>
+                            </el-tooltip>
+                            <el-tooltip
+                                v-if="iPropsValue('userCan', 'massAdd')"
+                                class="box-item"
+                                effect="dark"
+                                content="Excel Add"
+                                placement="bottom"
+                            >
+                                <el-button
+                                    type="warning"
+                                    size="default"
+                                    rounded
+                                    @click="addExcelForm"
+                                    :icon="DocumentAdd"
+                                >
+                                </el-button>
+                            </el-tooltip>
+                        </el-button-group>
                     </el-col>
                 </el-row>
             </el-col>
@@ -51,6 +74,22 @@
         <el-row :gutter="20">
             <el-col :span="24">
                 <el-card>
+                    <div class="mb-4 flex">
+                        <el-checkbox-group
+                            v-model="viewableColumn"
+                            size="small"
+                            @change="searchFilter"
+                        >
+                            <template
+                                :key="key"
+                                v-for="(inputName, key) in tableColumnNames"
+                            >
+                                <el-checkbox :label="key" border class="!mr-2">
+                                    {{ inputName }}
+                                </el-checkbox>
+                            </template>
+                        </el-checkbox-group>
+                    </div>
                     <el-table
                         id="printTable"
                         :data="filterDataList"
@@ -58,13 +97,13 @@
                         ref="refTable"
                         table-layout="auto"
                         border
-                        max-height="75vh"
+                        max-height="70vh"
                     >
                         <el-table-column v-if="mobileView" type="expand">
                             <template #default="props">
                                 <div class="ml-28">
                                     <p class="mb-2">
-                                        Name: {{ props.row.name }}
+                                        Full Name: {{ props.row.name }}
                                     </p>
                                     <p class="mb-2">
                                         date: {{ props.row.date }}
@@ -78,22 +117,33 @@
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column type="index" fixed="left" />
-                        <el-table-column label="Name" sortable prop="name" />
                         <el-table-column
-                            label="Date"
-                            prop="date"
-                            :formatter="dateFormatter"
-                            v-if="!mobileView"
+                            type="index"
+                            :index="indexMethod"
+                            fixed="left"
+                            width="50px"
                         />
                         <el-table-column
-                            label="Address"
-                            v-if="!mobileView"
+                            :label="tableColumnNames.name"
+                            sortable
+                            prop="name"
+                            v-if="isViewableColumn('name')"
+                        />
+                        <el-table-column
+                            :label="tableColumnNames.date"
+                            prop="date"
+                            :formatter="dateFormatter"
+                            v-if="!mobileView && isViewableColumn('date')"
+                        />
+                        <el-table-column
+                            :label="tableColumnNames.address"
+                            v-if="!mobileView && isViewableColumn('address')"
                             prop="address"
                         />
                         <el-table-column
-                            label="Status"
+                            :label="tableColumnNames.status"
                             prop="status"
+                            v-if="isViewableColumn('status')"
                             :filters="getFilterKey('status')"
                             :filter-method="filterStatus"
                             filter-placement="bottom-end"
@@ -145,43 +195,62 @@
     </div>
 </template>
 <script setup>
+//composable imports
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-import { computed, markRaw, onMounted, reactive, ref } from "@vue/runtime-core";
-import { useForm } from "@inertiajs/inertia-vue3";
 import { useObjectUtility } from "@/Composables/objectUtility";
+import { useAppUtility } from "@/Composables/appUtiility";
+//library imports
+import { markRaw, onMounted, reactive, watch, ref } from "@vue/runtime-core";
+import { useForm } from "@inertiajs/inertia-vue3";
+//Component imports
 import AddEditForm from "./Components/AddEditForm.vue";
+import AddByExcelForm from "./Components/AddByExcelForm.vue";
 import ActionButton from "./Components/ActionButton.vue";
 import ViewForm from "./Components/ViewForm.vue";
-import { Plus, Delete, Search } from "@element-plus/icons-vue";
 import moment from "moment";
-let { iPropsValue } = useInertiaPropsUtility();
-let { filterObjectWithGroupedValue } = useObjectUtility();
-const role = iPropsValue("auth", "user.account.role");
-import { useAppUtility } from "@/Composables/appUtiility";
-let { mediaCheck } = useAppUtility();
-let mobileView = $ref(mediaCheck("md"));
+import { Plus, Delete, Search, DocumentAdd } from "@element-plus/icons-vue";
+//composable function import
+const { iPropsValue } = useInertiaPropsUtility();
+const { filterObjectWithGroupedValue } = useObjectUtility();
+const { mediaCheck } = useAppUtility();
+//variable declare
+const mobileView = $ref(mediaCheck("md"));
 const refAddEditForm = $ref(null);
+const refAddByExcelForm = $ref(null);
 const refViewForm = $ref(null);
 const exportLoading = $ref(false);
-const addForm = function () {
-    refAddEditForm.showForm("Add");
+const viewableColumn = $ref(["name", "status", "address"]);
+const tableColumnNames = {
+    name: "Full Name",
+    status: "Status",
+    address: "Address",
+    date: "Date",
 };
-const editForm = function (data) {
-    refAddEditForm.showForm("Edit", data);
+//export table column refrence
+const exportTableOption = reactive({
+    header: ["Name", "Date"],
+    headerValue: ["name", "date"],
+    fileName: "testfile",
+});
+const formInputNames = {
+    name: "",
 };
-const deleteForm = function (data) {
+const addForm = () => refAddEditForm.showForm("Add");
+const addExcelForm = () => refAddByExcelForm.showForm();
+const editForm = (data) => refAddEditForm.showForm("Edit", data);
+const viewForm = (data) => refViewForm.showForm(data);
+const filterStatus = (value, row) => row.status === value;
+const deleteForm = (data) => {
     ElMessageBox.confirm("It will permanently delete. Continue?", "Warning", {
         type: "error",
         icon: markRaw(Delete),
         callback: (action) => {
             if (action == "confirm") {
-                const deleteForm = useForm({
-                    deleteId: data.id,
-                });
-                deleteForm.delete(route("test.delete", data.id), {
+                const formData = useForm();
+                formData.delete(route("{routeName}.delete", data.id), {
                     preserveScroll: true,
                     onSuccess: () => {
-                        deleteForm.reset();
+                        formData.reset();
                     },
                 });
             }
@@ -189,13 +258,7 @@ const deleteForm = function (data) {
     });
     return;
 };
-const viewForm = function (data) {
-    refViewForm.showForm(data);
-};
-const filterStatus = (value, row) => {
-    return row.status === value;
-};
-const getFilterKey = function (columnKey) {
+const getFilterKey = (columnKey) => {
     const filteredValues = filterObjectWithGroupedValue(dataList, columnKey);
     let filterKey = [];
     filteredValues.forEach((item, index) => {
@@ -203,238 +266,92 @@ const getFilterKey = function (columnKey) {
     });
     return filterKey;
 };
-const dateFormatter = (row, column) => {
-    return moment(row.date).format("MMMM Do, YYYY");
-};
-const dataList = [
-    {
-        date: "2016-05-03",
-        name: "Tom",
-        address: "No. 189, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-02",
-        name: "John",
-        address: "No. 199, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-04",
-        name: "Morgan",
-        address: "No. 179, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-01",
-        name: "Jessy",
-        address: "No. 169, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-03",
-        name: "Tom",
-        address: "No. 189, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-02",
-        name: "John",
-        address: "No. 199, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-04",
-        name: "Morgan",
-        address: "No. 179, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-01",
-        name: "Jessy",
-        address: "No. 169, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-03",
-        name: "Tom",
-        address: "No. 189, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-02",
-        name: "John",
-        address: "No. 199, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-04",
-        name: "Morgan",
-        address: "No. 179, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-01",
-        name: "Jessy",
-        address: "No. 169, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-03",
-        name: "Tom",
-        address: "No. 189, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-02",
-        name: "John",
-        address: "No. 199, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-04",
-        name: "Morgan",
-        address: "No. 179, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-01",
-        name: "Jessy",
-        address: "No. 169, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-03",
-        name: "Tom",
-        address: "No. 189, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-02",
-        name: "John",
-        address: "No. 199, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-04",
-        name: "Morgan",
-        address: "No. 179, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-01",
-        name: "Jessy",
-        address: "No. 169, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-03",
-        name: "Tom",
-        address: "No. 189, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-02",
-        name: "John",
-        address: "No. 199, Grove St, Los Angeles",
-        status: "Active",
-    },
-    {
-        date: "2016-05-04",
-        name: "Morgan",
-        address: "No. 179, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-    {
-        date: "2016-05-01",
-        name: "Jessy",
-        address: "No. 169, Grove St, Los Angeles",
-        status: "In-Active",
-    },
-];
-
+const dateFormatter = (row, column) => moment(row.date).format("MMMM Do, YYYY");
 //table pagination / search related
-let currentPage = $ref(1);
-let pageSize = $ref(100);
-let totalSize = $ref(0);
-let refTable = ref(null);
-let page = $ref(1);
+const currentPage = $ref(1);
+const pageSize = $ref(100);
+const totalSize = $ref(0);
+const refTable = ref(null);
 const searchText = $ref("");
-const exportData = reactive({
-    header: ["Name", "Date"],
-    headerValue: ["name", "date"],
-    fileName: "testfile",
-});
-let filterDataList = $ref();
+const filterDataList = $ref();
+const indexMethod = (index) => (currentPage - 1) * pageSize + index + 1;
+const isViewableColumn = (columnName) => viewableColumn.includes(columnName);
+const dataList = $ref(iPropsValue("{module}Lists"));
+watch(
+    () => iPropsValue("{module}Lists"),
+    () => {
+        dataList = iPropsValue("{module}Lists");
+        changePage(currentPage);
+    }
+);
 const changePageSize = (val) => {
     pageSize = val;
     changePage();
 };
+
 const changePage = (val = 1) => {
-    // this.busy = true;
-    page = currentPage = val;
+    currentPage = val;
     const listStorage = dataList;
     // CHECK IF SEARCH EMPTY
     if (searchText == "") {
         totalSize = listStorage.length;
         const append = listStorage.slice(
-            (page - 1) * pageSize,
-            (page - 1) * pageSize + pageSize
+            (currentPage - 1) * pageSize,
+            (currentPage - 1) * pageSize + pageSize
         );
         filterDataList = append;
     } else {
-        const filteredPosts = listStorage.filter(
-            (data) =>
-                data.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                data.address
-                    .toString()
-                    .toLowerCase()
-                    .includes(searchText.toLowerCase())
-        );
+        const filteredPosts = listStorage.filter((data) => {
+            let hasValue = false;
+            viewableColumn.forEach((value) => {
+                if (
+                    data[value].toLowerCase().includes(searchText.toLowerCase())
+                )
+                    hasValue = true;
+            });
+            return hasValue;
+        });
         totalSize = filteredPosts.length;
         const append = filteredPosts.slice(
-            (page - 1) * pageSize,
-            (page - 1) * pageSize + pageSize
+            (currentPage - 1) * pageSize,
+            (currentPage - 1) * pageSize + pageSize
         );
         filterDataList = append;
     }
-    // this.busy = false;
 };
-const searchFilter = function () {
-    // this.busy = true;
-    page = currentPage = 1;
+const searchFilter = () => {
+    currentPage = 1;
     const listStorage = dataList;
 
-    const filteredPosts = listStorage.filter(
-        (data) =>
-            data.name.toLowerCase().includes(searchText.toLowerCase()) ||
-            data.address
-                .toString()
-                .toLowerCase()
-                .includes(searchText.toLowerCase())
-    );
+    const filteredPosts = listStorage.filter((data) => {
+        let hasValue = false;
+        viewableColumn.forEach((value) => {
+            if (data[value].toLowerCase().includes(searchText.toLowerCase()))
+                hasValue = true;
+        });
+        return hasValue;
+    });
     totalSize = filteredPosts.length;
     const append = filteredPosts.slice(
-        (page - 1) * pageSize,
-        (page - 1) * pageSize + pageSize
+        (currentPage - 1) * pageSize,
+        (currentPage - 1) * pageSize + pageSize
     );
     filterDataList = append;
-    // this.busy = false;
 };
-const exportTable = function () {
+const exportTable = () => {
     exportLoading = true;
     const exportNow = function (excel) {
         return new Promise((resolve) => {
-            const tHeader = exportData.header;
-            const filterVal = exportData.headerValue;
+            const tHeader = exportTableOption.header;
+            const filterVal = exportTableOption.headerValue;
 
             const data = formatJson(filterVal, dataList);
             excel.export_json_to_excel({
                 header: tHeader,
                 data,
-                filename: exportData.fileName,
-                autoWidth: exportData?.autoWidth ?? true,
-                bookType: exportData?.fileType ?? "xlsx",
+                filename: exportTableOption.fileName,
+                autoWidth: exportTableOption?.autoWidth ?? true,
+                bookType: exportTableOption?.fileType ?? "xlsx",
             });
             resolve("resolved");
         });
@@ -447,7 +364,7 @@ const exportTable = function () {
             exportLoading = false;
         });
 };
-const formatJson = function (filterVal, jsonData) {
+const formatJson = (filterVal, jsonData) => {
     return jsonData.map((v) =>
         filterVal.map((j) => {
             if (j === "date") {
@@ -458,7 +375,6 @@ const formatJson = function (filterVal, jsonData) {
         })
     );
 };
-
 //page event cycle
 onMounted(() => {
     changePage();

@@ -84,7 +84,7 @@ import AvatarUploader from "./Components/AvatarUploader.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { onMounted } from "@vue/runtime-core";
-let { iPropsValue } = useInertiaPropsUtility();
+const { iPropsValue } = useInertiaPropsUtility();
 const avatarUploader = $ref();
 const formRef = $ref();
 const showAvatarUploader = function () {
@@ -100,7 +100,7 @@ const formData = useForm({
     gender: "",
 });
 
-let populateFormData = function (data) {
+const populateFormData = function (data) {
     formData.id = data.id;
     formData.firstName = data.first_name;
     formData.middleName = data.middle_name;

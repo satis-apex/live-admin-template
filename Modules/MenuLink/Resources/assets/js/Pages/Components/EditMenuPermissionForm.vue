@@ -48,7 +48,7 @@ import { watch, markRaw } from "@vue/runtime-core";
 import { Edit } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 
-let { iPropsValue } = useInertiaPropsUtility();
+const { iPropsValue } = useInertiaPropsUtility();
 const FormVisible = $ref(false);
 const menuName = $ref("");
 const menuId = $ref(0);
@@ -62,7 +62,7 @@ const props = defineProps({
     parentTabName: String,
 });
 
-let roleMenus = $ref(iPropsValue("roleMenus"));
+const roleMenus = $ref(iPropsValue("roleMenus"));
 watch(
     () => iPropsValue("roleMenus"),
     () => {
@@ -72,7 +72,7 @@ watch(
 );
 
 const userRole = $ref(props.parentTabName);
-let ruleFormRef = $ref();
+const ruleFormRef = $ref();
 
 watch(
     () => props.parentTabName,

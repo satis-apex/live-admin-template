@@ -149,9 +149,9 @@ import "/node_modules/nestable2/jquery.nestable.js";
 import { watch, markRaw, onMounted } from "@vue/runtime-core";
 import { Delete } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-let { iPropsValue } = useInertiaPropsUtility();
-let menuList = $ref(props.parentMenus);
-let menus = JSON.parse(menuList); //using computed property glitch the sorting
+const { iPropsValue } = useInertiaPropsUtility();
+const menuList = $ref(props.parentMenus);
+const menus = $ref(JSON.parse(menuList)); //using computed property glitch the sorting
 
 const emit = defineEmits([
     "deleteMenu",
@@ -168,9 +168,9 @@ watch(
         menus = JSON.parse(props.parentMenus);
     }
 );
-let changedMenuLists = $ref({});
+const changedMenuLists = $ref({});
 
-let deleteMenu = (menuId) => {
+const deleteMenu = (menuId) => {
     ElMessageBox.confirm(
         "It will permanently delete the menu and its permission. Continue?",
         "Warning",
@@ -187,7 +187,7 @@ let deleteMenu = (menuId) => {
     return;
 };
 
-let initiateSortable = function () {
+const initiateSortable = function () {
     jQuery("#nestable-menu-list").nestable({
         beforeDragStop: function (l, e, p) {
             let type = jQuery(e).data("type");

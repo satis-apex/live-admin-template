@@ -168,11 +168,11 @@ import { Delete } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import EditMenuPermissionForm from "./EditMenuPermissionForm.vue";
 import PermissionLabel from "./PermissionLabel.vue";
-let { iPropsValue } = useInertiaPropsUtility();
-let roles = iPropsValue("userRoles");
+const { iPropsValue } = useInertiaPropsUtility();
+const roles = iPropsValue("userRoles");
 const editMenuPermissionForm = $ref();
-let menuList = $ref(iPropsValue("app_menu", "menu_list"));
-let roleMenus = $ref(iPropsValue("roleMenus"));
+const menuList = $ref(iPropsValue("app_menu", "menu_list"));
+const roleMenus = $ref(iPropsValue("roleMenus"));
 watch(
     () => iPropsValue("app_menu", "menu_list"),
     () => {
@@ -187,14 +187,14 @@ watch(
 );
 const activeTab = $ref("Su-Admin");
 const menus = computed(() => JSON.parse(menuList));
-let hasMenuAccess = function (menu, role) {
+const hasMenuAccess = function (menu, role) {
     const accessList = menu.access?.split(",");
     if (accessList.indexOf(role) != -1) {
         return true;
     }
     return false;
 };
-let deleteMenu = (menuId) => {
+const deleteMenu = (menuId) => {
     ElMessageBox.confirm(
         "It will permanently Revoke menu Permission. Continue?",
         "Warning",
@@ -219,7 +219,7 @@ let deleteMenu = (menuId) => {
     return;
 };
 
-let editMenuPermission = (menuData) => {
+const editMenuPermission = (menuData) => {
     editMenuPermissionForm.showForm(menuData);
 };
 </script>

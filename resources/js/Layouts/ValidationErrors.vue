@@ -13,7 +13,7 @@
 <script setup>
 import { useStringUtility } from "@/Composables/stringUtility";
 import { computed, watch } from "vue";
-let { readableWord } = useStringUtility();
+const { readableWord } = useStringUtility();
 const props = defineProps({
     errors: Object,
 });

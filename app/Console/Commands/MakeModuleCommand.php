@@ -74,6 +74,7 @@ class MakeModuleCommand extends Command
         $this->replaceInFile($targetPath . '/vite.config.js');
         $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/Index.vue');
         $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/Components/AddEditForm.vue');
+        $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/Components/AddByExcelForm.vue');
         $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/Components/ViewForm.vue');
         //rename
         $this->rename($targetPath . '/Http/Controllers/ModuleController.php', $targetPath . '/Http/Controllers/' . $Module . 'Controller.php');

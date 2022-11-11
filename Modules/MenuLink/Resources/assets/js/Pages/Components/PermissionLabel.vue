@@ -16,8 +16,8 @@ const props = defineProps({
 });
 const menuId = $ref(props.menuId);
 const role = $ref(props.role);
-let { iPropsValue } = useInertiaPropsUtility();
-let roleMenus = $ref(iPropsValue("roleMenus"));
+const { iPropsValue } = useInertiaPropsUtility();
+const roleMenus = $ref(iPropsValue("roleMenus"));
 watch(
     () => iPropsValue("roleMenus"),
     () => {
