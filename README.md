@@ -10,11 +10,69 @@ Live-Admin is an admin template created by integrating Laravel, Vue3 and Inertia
 -   Laravel Module Implemented
 -   Ability to create fully functional Demo Crud file from add Manage Menu UI dynamically
 
+## Requirement
+
+Prior running application make sure your machine meets all the defaults requirements from [laravel documentation](https://laravel.com/docs/9.x/deployment#server-requirements) and also include the following
+
+-   [node](https://nodejs.org/en/download/) (version: [16.13.1](https://nodejs.org/en/download/))
+-   [composer](https://getcomposer.org/download/)
+-   php-gd2 library extension
+-   php-exif extension
+
 ## Installation
 
-### Manual
+Use the [composer](https://getcomposer.org/download/) to install php dependencies.
 
-[WIP]
+```bash
+composer install
+```
+
+Use the [npm](https://www.w3schools.com/whatis/whatis_npm.asp) to install js dependencies.
+
+```bash
+npm install
+
+#development server
+npm run dev
+
+#production server
+npm run build
+```
+
+### Don’t forget .env.example
+
+form your root application folder rename [.env.example](https://github.com/laravel/laravel/blob/9.x/.env.example)
+to .env and update the corrersponding value to your need.
+
+```bash
+#generates key for session encryption
+php artisan key:generate
+
+#create symlink in public folder
+php artisan storage:link
+
+#migrate database
+php artisan migrate
+php artisan db:seed
+#seeds database form module seeder
+php artisan module:seed
+
+#create dummy files for report generation
+php artisan load:dummyFiles
+```
+
+## Usage
+
+```bash
+php artisan serve
+or
+php artisan serve --port=80
+```
+
+## Admin Login Infos / Demo Account
+
+-   Email: _admin@admin.com_
+-   Password: _password_
 
 ### Docker
 
