@@ -21,10 +21,10 @@
     </el-button-group>
 </template>
 <script setup>
-let expandAllMenu = function () {
+const expandAllMenu = function () {
     jQuery(".dd").nestable("expandAll");
 };
-let collapseAllMenu = function () {
+const collapseAllMenu = function () {
     jQuery(".dd").nestable("collapseAll");
 };
 </script>

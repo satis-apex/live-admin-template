@@ -98,7 +98,15 @@ export function useObjectUtility() {
 	}
 
 	const resetObjectKey = function (jsObj) {
-		return _.filter(jsObj, function (value) {
+
+		const results = jsObj.filter(element => {
+			if (Object.keys(element).length !== 0) {
+				return true;
+			}
+			return false;
+		});
+
+		return _.filter(results, function (value) {
 			return value
 		});
 	}

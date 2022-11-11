@@ -34,9 +34,9 @@ import { reactive } from "@vue/reactivity";
 const props = defineProps({
     onSuccess: Function,
 });
-let loading = $ref(false);
+const loading = $ref(false);
 const refUpload = $ref(null);
-let excelData = reactive({
+const excelData = reactive({
     header: null,
     results: null,
 });
@@ -53,7 +53,6 @@ const handleRemove = function () {
 const handleExceed = function (files) {
     clearFiles();
     const file = files[0];
-    console.log(file);
     file.uid = genFileId();
     refUpload.handleStart(file);
 };

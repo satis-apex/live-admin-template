@@ -2,8 +2,8 @@
 import { onMounted, watch } from "vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 
-let { iPropsValue } = useInertiaPropsUtility();
-let title = function (status) {
+const { iPropsValue } = useInertiaPropsUtility();
+const title = function (status) {
     return {
         503: "503: Service Unavailable",
         500: "500: Server Error",
@@ -12,7 +12,7 @@ let title = function (status) {
         419: "419: Page Expired",
     }[status];
 };
-let description = function (status) {
+const description = function (status) {
     return {
         503: "Sorry, we are doing some maintenance. Please check back soon.",
         500: "Whoops, something went wrong on our servers.",
@@ -33,7 +33,7 @@ watch(
         displayFlash();
     }
 );
-let displayFlash = function () {
+const displayFlash = function () {
     if (
         iPropsValue("flash", "message") != undefined &&
         iPropsValue("flash", "message") != ""
@@ -46,7 +46,7 @@ let displayFlash = function () {
         });
     }
 };
-let displayException = function () {
+const displayException = function () {
     if (
         iPropsValue("page_exception", "statusCode") != undefined &&
         iPropsValue("page_exception", "statusCode") != ""

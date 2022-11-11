@@ -123,15 +123,15 @@ import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { inject, onMounted, watch } from "vue";
 import ChangeUserPassword from "@/Layouts/ChangeUserPassword.vue";
 import { useAppUtility } from "@/Composables/appUtiility";
-let { mediaCheck } = useAppUtility();
-let { iPropsValue } = useInertiaPropsUtility();
-let formVisible = $ref(false);
+const { mediaCheck } = useAppUtility();
+const { iPropsValue } = useInertiaPropsUtility();
+const formVisible = $ref(false);
 const headDropdown = $ref();
-let breadcrumb = $ref(iPropsValue("breadcrumb"));
+const breadcrumb = $ref(iPropsValue("breadcrumb"));
 const closeForm = function () {
     formVisible = false;
 };
-let mobileMenu = $ref(mediaCheck("md"));
+const mobileMenu = $ref(mediaCheck("md"));
 watch(
     () => iPropsValue("breadcrumb"),
     () => {

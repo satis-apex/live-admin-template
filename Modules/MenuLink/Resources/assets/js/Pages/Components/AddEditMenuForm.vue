@@ -248,14 +248,14 @@ const iconDialogVisible = $ref(false);
 const linkToParent = $ref(false);
 const formLabelWidth = "140px";
 const menuIcon = $ref();
-let { iPropsValue } = useInertiaPropsUtility();
-let ruleFormRef = $ref();
-let FormType = $ref("Add");
-let menuRoutes = $ref(iPropsValue("menuRoutes"));
-let parentLinks = $ref(iPropsValue("parentLinks"));
-let roles = iPropsValue("userRoles");
-let menuLinkLists = iPropsValue("menuLinkLists");
-let editFormData = $ref(); //default edit form data
+const { iPropsValue } = useInertiaPropsUtility();
+const ruleFormRef = $ref();
+const FormType = $ref("Add");
+const menuRoutes = $ref(iPropsValue("menuRoutes"));
+const parentLinks = $ref(iPropsValue("parentLinks"));
+const roles = $ref(iPropsValue("userRoles"));
+const menuLinkLists = $ref(iPropsValue("menuLinkLists"));
+const editFormData = $ref(); //default edit form data
 watch(
     () => iPropsValue("menuRoutes"),
     () => {
@@ -381,7 +381,7 @@ const iconList = [
     "university",
     "sitemap",
 ];
-let changedMenuType = function () {
+const changedMenuType = function () {
     formData.reset("icon", "link", "parentId");
     switch (formData.type) {
         case "child":
@@ -412,7 +412,7 @@ let changedMenuType = function () {
         ruleFormRef.clearValidate();
     }, 50);
 };
-let checkGeneratorOption = function () {
+const checkGeneratorOption = function () {
     if (FormType == "Add" && formData.link == "auto-generate") {
         rules.moduleName[0].required = true;
     } else {
@@ -423,7 +423,7 @@ let checkGeneratorOption = function () {
         ruleFormRef.clearValidate();
     }, 50);
 };
-let isMenuExist = function (newMenu) {
+const isMenuExist = function (newMenu) {
     if (FormType == "Edit") {
         if (editFormData.name == newMenu) return false;
     }
@@ -432,7 +432,7 @@ let isMenuExist = function (newMenu) {
     }
     return false;
 };
-let selectIcon = function (iconName) {
+const selectIcon = function (iconName) {
     menuIcon = iconName;
     iconDialogVisible = false;
     ruleFormRef.clearValidate("icon");
@@ -516,7 +516,7 @@ const showForm = function (formType, data = "") {
         populateFormData(data);
     }
 };
-let populateFormData = function (data) {
+const populateFormData = function (data) {
     formData.name = data.name;
     formData.id = data.id;
     formData.type = data.type;

@@ -297,12 +297,12 @@ import { SimpleBar } from "simplebar-vue3";
 import { watch, computed, inject, onMounted } from "vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useAppUtility } from "@/Composables/appUtiility";
-let { iPropsValue } = useInertiaPropsUtility();
-let { mediaCheck, hasMenuAccess } = useAppUtility();
-let isCollapse = $ref(inject("isCollapse"));
-let menuDrawer = $ref();
-let currentActive = $ref("");
-let menus = $ref(iPropsValue("app_menu", "menu_list"));
+const { iPropsValue } = useInertiaPropsUtility();
+const { mediaCheck, hasMenuAccess } = useAppUtility();
+const isCollapse = $ref(inject("isCollapse"));
+const menuDrawer = $ref();
+const currentActive = $ref("");
+const menus = $ref(iPropsValue("app_menu", "menu_list"));
 watch(
     () => iPropsValue("app_menu", "menu_list"),
     () => {

@@ -87,10 +87,10 @@ const nestableComponentKey = $ref(0);
 const menuChangedStatus = $ref(false);
 const addEditMenuForm = $ref(null);
 const saveMenuLoading = $ref(false);
-let { resetObjectKey } = useObjectUtility();
-let { iPropsValue } = useInertiaPropsUtility();
-let menus = $ref(iPropsValue("app_menu", "menu_list"));
-let changedMenus = $ref({});
+const { resetObjectKey } = useObjectUtility();
+const { iPropsValue } = useInertiaPropsUtility();
+const menus = $ref(iPropsValue("app_menu", "menu_list"));
+const changedMenus = $ref({});
 watch(
     () => iPropsValue("app_menu", "menu_list"),
     () => {
