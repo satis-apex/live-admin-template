@@ -206,12 +206,15 @@ const deleteMenu = (menuId) => {
                     const deleteForm = useForm({
                         role: activeTab,
                     });
-                    deleteForm.delete("/menu-link-permission/" + menuId, {
-                        preserveScroll: true,
-                        onSuccess: () => {
-                            deleteForm.reset();
-                        },
-                    });
+                    deleteForm.delete(
+                        route("menuLinkPermission.delete", menuId),
+                        {
+                            preserveScroll: true,
+                            onSuccess: () => {
+                                deleteForm.reset();
+                            },
+                        }
+                    );
                 }
             },
         }

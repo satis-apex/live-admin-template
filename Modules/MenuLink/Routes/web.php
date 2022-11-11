@@ -13,6 +13,6 @@ Route::middleware(['auth'])->prefix('menu-link')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('menu', MenuController::class)->only(['store']);
+    Route::resource('menu', MenuController::class, ['names' => 'menu'])->only(['store']);
     Route::resource('menu-link-permission', MenuLinkPermissionController::class, ['names' => 'menuLinkPermission'])->only(['destroy', 'update']);
 });
