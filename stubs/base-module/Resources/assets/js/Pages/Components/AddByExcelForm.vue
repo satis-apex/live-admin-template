@@ -13,13 +13,11 @@
                 style="width: 100%; margin-top: 20px"
                 table-layout="auto"
                 max-height="200px"
+                empty-text="matching data not available"
             >
-                <el-table-column
-                    v-for="item of tableHeader"
-                    :key="item"
-                    :prop="item"
-                    :label="item"
-                />
+                <template :key="key" v-for="(item, key) of tableHeader">
+                    <el-table-column :prop="item" :label="item" />
+                </template>
             </el-table>
         </template>
         <template #footer>
@@ -57,27 +55,23 @@ import { Edit, Search, UploadFilled } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 //composable import
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
+import { useObjectUtility } from "@/Composables/objectUtility";
 //variable declaration
 const FormVisible = $ref(false);
 const formLabelWidth = "140px";
 let { iPropsValue } = useInertiaPropsUtility();
+const { filterObject, resetObjectKey } = useObjectUtility();
 let formRef = $ref();
 let FormType = $ref("Add");
 let editFormData = $ref(); //default edit form data
 let tableData = $ref([]);
 let refExcelUpload = $ref(null);
 let tableHeader = $ref([]);
+const props = defineProps({
+    parentFormInput: Object,
+});
 const formData = useForm({
     massRecord: [],
-});
-const rules = reactive({
-    name: [
-        {
-            required: true,
-            message: "Please Input Name",
-            trigger: "blur",
-        },
-    ],
 });
 const resetForm = (formEl) => {
     tableData = [];
@@ -123,30 +117,13 @@ let populateFormData = function (data) {
     formData.name = data.name;
 };
 const handleSuccess = function ({ results, header }) {
-    tableData = results;
-    formData.massRecord = results;
-    tableHeader = header;
+    let keys = Object.keys(props.parentFormInput);
+    tableData = resetObjectKey(filterObject(results, keys));
+    formData.massRecord = tableData;
+    tableHeader = keys;
 };
 
 defineExpose({
     showForm,
 });
 </script>
-<style scoped>
-li.icon {
-    height: 50px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid var(--el-border-color);
-    border-bottom: 1px solid var(--el-border-color);
-}
-li.icon:hover {
-    cursor: pointer;
-    background: rgb(226, 226, 226);
-}
-ul.icon-picker {
-    border-top: 1px solid var(--el-border-color);
-    border-left: 1px solid var(--el-border-color);
-}
-</style>

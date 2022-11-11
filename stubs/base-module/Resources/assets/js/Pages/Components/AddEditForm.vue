@@ -71,7 +71,9 @@ let { iPropsValue } = useInertiaPropsUtility();
 let formRef = $ref();
 let FormType = $ref("Add");
 let editFormData = $ref(); //default edit form data
-
+const props = defineProps({
+    parentFormInput: Object,
+});
 const formData = useForm({
     name: "",
 });
@@ -136,12 +138,21 @@ const update = function () {
         icon: markRaw(Edit),
         callback: (action) => {
             if (action == "confirm") {
-                formData.patch(route("{routeName}.update", formData.id), {
-                    preserveScroll: true,
-                    onSuccess: () => {
-                        closeForm();
-                    },
-                });
+                try {
+                    formData.patch(route("{routeName}.update", formData.id), {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            closeForm();
+                        },
+                    });
+                } catch (error) {
+                    ElNotification({
+                        title: "Error",
+                        message: "Request Form Error.",
+                        type: "error",
+                    });
+                    console.log(error);
+                }
             }
         },
     });
