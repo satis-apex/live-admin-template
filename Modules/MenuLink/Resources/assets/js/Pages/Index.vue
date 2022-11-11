@@ -153,7 +153,7 @@ const deleteMenu = async function (menuId) {
         menuList: menus,
         deletedId: menuId,
     });
-    deleteForm.delete("/menu-link/" + menuId, {
+    deleteForm.delete(route("menuLink.delete", menuId), {
         preserveScroll: true,
         onSuccess: () => {
             deleteForm.reset();
@@ -169,7 +169,7 @@ const saveMenuChanges = function () {
         menus: updatedMenu,
         changedMenu: changedMenus,
     });
-    formData.post("/menu", {
+    formData.post(route('menu.store'), {
         preserveScroll: true,
         onSuccess: () => {
             menuChangedStatus = false;
