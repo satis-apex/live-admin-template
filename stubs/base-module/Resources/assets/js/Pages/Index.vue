@@ -276,11 +276,11 @@ const searchText = $ref("");
 const filterDataList = $ref();
 const indexMethod = (index) => (currentPage - 1) * pageSize + index + 1;
 const isViewableColumn = (columnName) => viewableColumn.includes(columnName);
-const dataList = $ref(iPropsValue("{module}Lists"));
+const dataList = $ref(iPropsValue("{Module}Lists"));
 watch(
-    () => iPropsValue("{module}Lists"),
+    () => iPropsValue("{Module}Lists"),
     () => {
-        dataList = iPropsValue("{module}Lists");
+        dataList = iPropsValue("{Module}Lists");
         changePage(currentPage);
     }
 );

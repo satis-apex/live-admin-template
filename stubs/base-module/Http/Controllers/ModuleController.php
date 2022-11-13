@@ -20,25 +20,25 @@ class {Module}Controller extends Controller
 
     public function index()
     {
-        ${module}Lists = [
-            {
-                date: "2016-05-03",
-                name: "Tom",
-                address: "No. 189, Grove St, Los Angeles",
-                status: "Active",
-            },
-            {
-                date: "2016-05-02",
-                name: "John",
-                address: "No. 199, Grove St, Los Angeles",
-                status: "Active",
-            },
+        ${Module}Lists = [
+            [
+                'date' => '2016-05-03',
+                'name' => 'Tom',
+                'address' => 'No. 189, Grove St, Los Angeles',
+                'status' => 'Active',
+            ],
+            [
+                'date' => '2016-05-02',
+                'name' => 'John',
+                'address' => 'No. 199, Grove St, Los Angeles',
+                'status' => 'Active',
+            ],
         ]; // {Model}::query()->get('name');
         return Inertia::render(
 			'{Module}::Index',
 			[
 				'breadcrumb' => getBreadcrumb() ?: readable('{Module}'),
-                '${module}Lists' = > ${module}Lists,
+                '{Module}Lists' => ${Module}Lists,
 				'userCan' => [
                     'massAdd' => true && request()->user()->hasPermissionTo('{Module}-create'),
                     'create' => request()->user()->hasPermissionTo('{Module}-create'),
