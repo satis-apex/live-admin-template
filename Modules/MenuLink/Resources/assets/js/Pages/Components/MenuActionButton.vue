@@ -1,23 +1,37 @@
 <template>
     <el-button-group>
-        <el-button
-            data-action="expand-all"
-            type="primary"
-            size="default"
-            rounded
-            @click="expandAllMenu()"
+        <el-tooltip
+            class="box-item"
+            effect="dark"
+            content="Expand All Menu"
+            placement="top"
         >
-            Expand All
-        </el-button>
-        <el-button
-            data-action="collapse-all"
-            type="primary"
-            size="default"
-            rounded
-            @click="collapseAllMenu()"
+            <el-button
+                data-action="expand-all"
+                type="primary"
+                size="default"
+                rounded
+                @click="expandAllMenu()"
+            >
+                <fa icon="angles-down" />
+            </el-button>
+        </el-tooltip>
+        <el-tooltip
+            class="box-item"
+            effect="dark"
+            content="Collapse All Menu"
+            placement="top"
         >
-            Collapse All
-        </el-button>
+            <el-button
+                data-action="collapse-all"
+                type="primary"
+                size="default"
+                rounded
+                @click="collapseAllMenu()"
+            >
+                <fa icon="angles-up" />
+            </el-button>
+        </el-tooltip>
     </el-button-group>
 </template>
 <script setup>

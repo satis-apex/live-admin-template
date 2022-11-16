@@ -1,7 +1,7 @@
 <template>
     <el-tabs
         tab-position="top"
-        style="height: 200px"
+        style="min-height: 200px"
         v-model="activeTab"
         class="demo-tabs"
     >
@@ -19,57 +19,14 @@
                             :data-access="menu.access"
                             v-if="hasMenuAccess(menu, role)"
                         >
-                            <div class="nestable-content !pl-3 text-sm">
-                                <el-icon><fa :icon="menu.icon" /> </el-icon>
-                                {{ menu.name }}
-                                <PermissionLabel
-                                    :menuId="menu.id"
-                                    :role="activeTab"
-                                />
-                            </div>
-                            <div
-                                class="action"
-                                v-if="
-                                    menu.name != 'Home' &&
-                                    menu.name != 'Dashboard'
-                                "
-                            >
-                                <el-button-group class="ml-4">
-                                    <el-tooltip
-                                        class="box-item"
-                                        effect="dark"
-                                        content="Edit Menu Permission"
-                                        placement="top"
-                                        v-if="menu.type != 'parent'"
-                                    >
-                                        <el-button
-                                            type="primary"
-                                            @click="editMenuPermission(menu)"
-                                            size="small"
-                                            rounded
-                                            class="!px-2"
-                                        >
-                                            <fa icon="pen"
-                                        /></el-button>
-                                    </el-tooltip>
-                                    <el-tooltip
-                                        class="box-item"
-                                        effect="dark"
-                                        content="Delete Menu Permission"
-                                        placement="top"
-                                        v-if="role != 'Su-Admin'"
-                                    >
-                                        <el-button
-                                            type="danger"
-                                            @click="deleteMenu(menu.id)"
-                                            size="small"
-                                            rounded
-                                            class="!px-2"
-                                            ><fa icon="trash"
-                                        /></el-button>
-                                    </el-tooltip>
-                                </el-button-group>
-                            </div>
+                            <PermissionMenuItem
+                                :menuItem="menu"
+                                :activeTab="activeTab"
+                                :role="role"
+                                @editMenu="editMenuPermission"
+                                @deleteMenu="deleteMenu"
+                            />
+
                             <ol
                                 v-if="
                                     menu.hasOwnProperty('children') &&
@@ -95,56 +52,13 @@
                                         :data-parent_id="subMenu.parent_id"
                                         v-if="hasMenuAccess(subMenu, role)"
                                     >
-                                        <div class="nestable-content !pl-3">
-                                            {{ subMenu.name }}
-                                            <PermissionLabel
-                                                :menuId="subMenu.id"
-                                                :role="activeTab"
-                                            />
-                                        </div>
-                                        <div class="action">
-                                            <el-button-group class="ml-4">
-                                                <el-tooltip
-                                                    class="box-item"
-                                                    effect="dark"
-                                                    content="Edit Menu Permission"
-                                                    placement="top"
-                                                >
-                                                    <el-button
-                                                        type="primary"
-                                                        @click="
-                                                            editMenuPermission(
-                                                                subMenu
-                                                            )
-                                                        "
-                                                        size="small"
-                                                        rounded
-                                                        class="!px-2"
-                                                    >
-                                                        <fa icon="pen"
-                                                    /></el-button>
-                                                </el-tooltip>
-                                                <el-tooltip
-                                                    class="box-item"
-                                                    effect="dark"
-                                                    content="Delete Menu Permission"
-                                                    placement="top"
-                                                >
-                                                    <el-button
-                                                        type="danger"
-                                                        @click="
-                                                            deleteMenu(
-                                                                subMenu.id
-                                                            )
-                                                        "
-                                                        size="small"
-                                                        rounded
-                                                        class="!px-2"
-                                                        ><fa icon="trash"
-                                                    /></el-button>
-                                                </el-tooltip>
-                                            </el-button-group>
-                                        </div>
+                                        <PermissionMenuItem
+                                            :menuItem="subMenu"
+                                            :activeTab="activeTab"
+                                            :role="role"
+                                            @editMenu="editMenuPermission"
+                                            @deleteMenu="deleteMenu"
+                                        />
                                     </li>
                                 </template>
                             </ol>
@@ -168,6 +82,7 @@ import { Delete } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import EditMenuPermissionForm from "./EditMenuPermissionForm.vue";
 import PermissionLabel from "./PermissionLabel.vue";
+import PermissionMenuItem from "./PermissionMenuItem.vue";
 const { iPropsValue } = useInertiaPropsUtility();
 const roles = iPropsValue("userRoles");
 const editMenuPermissionForm = $ref();
@@ -194,6 +109,7 @@ const hasMenuAccess = function (menu, role) {
     }
     return false;
 };
+
 const deleteMenu = (menuId) => {
     ElMessageBox.confirm(
         "It will permanently Revoke menu Permission. Continue?",
@@ -207,7 +123,7 @@ const deleteMenu = (menuId) => {
                         role: activeTab,
                     });
                     deleteForm.delete(
-                        route("menuLinkPermission.delete", menuId),
+                        route("menuLinkPermission.destroy", menuId),
                         {
                             preserveScroll: true,
                             onSuccess: () => {

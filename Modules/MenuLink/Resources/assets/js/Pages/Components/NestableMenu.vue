@@ -13,58 +13,12 @@
                     :class="menu.type == 'parent-single' ? 'dd-nochildren' : ''"
                 >
                     <!-- particular menu expand/collapse purpose -->
-                    <div
-                        :class="
-                            menu.name == 'Home' || menu.name == 'Dashboard'
-                                ? 'dd-nodrag'
-                                : 'dd-handle'
-                        "
-                        class="nestable-handle"
-                    ></div>
-                    <div class="nestable-content text-sm">
-                        <el-icon><fa :icon="menu.icon" /> </el-icon>
-                        {{ menu.name }}
-                    </div>
-                    <div
-                        class="action"
-                        v-if="menu.name != 'Home' && menu.name != 'Dashboard'"
-                    >
-                        <el-button-group class="ml-4">
-                            <el-tooltip
-                                class="box-item"
-                                effect="dark"
-                                content="Edit Menu"
-                                placement="top"
-                                v-if="iPropsValue('userCan', 'edit')"
-                            >
-                                <el-button
-                                    type="primary"
-                                    @click="emit('editMenu', menu)"
-                                    size="small"
-                                    rounded
-                                    class="!px-2"
-                                >
-                                    <fa icon="pen"
-                                /></el-button>
-                            </el-tooltip>
-                            <el-tooltip
-                                class="box-item"
-                                effect="dark"
-                                content="Delete Menu"
-                                placement="top"
-                                v-if="iPropsValue('userCan', 'delete')"
-                            >
-                                <el-button
-                                    type="danger"
-                                    @click="deleteMenu(menu.id)"
-                                    size="small"
-                                    rounded
-                                    class="!px-2"
-                                    ><fa icon="trash"
-                                /></el-button>
-                            </el-tooltip>
-                        </el-button-group>
-                    </div>
+                    <MenuItem
+                        :menuItem="menu"
+                        @editMenu="editMenu"
+                        @deleteMenu="deleteMenu"
+                    />
+
                     <ol
                         v-if="
                             menu.hasOwnProperty('children') &&
@@ -87,53 +41,11 @@
                                 :data-access="subMenu.access"
                                 :data-parent_id="subMenu.parent_id"
                             >
-                                <div class="dd-handle nestable-handle"></div>
-                                <div class="nestable-content">
-                                    {{ subMenu.name }}
-                                </div>
-                                <div class="action">
-                                    <el-button-group class="ml-4">
-                                        <el-tooltip
-                                            class="box-item"
-                                            effect="dark"
-                                            content="Edit Menu"
-                                            placement="top"
-                                            v-if="
-                                                iPropsValue('userCan', 'edit')
-                                            "
-                                        >
-                                            <el-button
-                                                type="primary"
-                                                @click="
-                                                    emit('editMenu', subMenu)
-                                                "
-                                                size="small"
-                                                rounded
-                                                class="!px-2"
-                                            >
-                                                <fa icon="pen"
-                                            /></el-button>
-                                        </el-tooltip>
-                                        <el-tooltip
-                                            class="box-item"
-                                            effect="dark"
-                                            content="Delete Menu"
-                                            placement="top"
-                                            v-if="
-                                                iPropsValue('userCan', 'delete')
-                                            "
-                                        >
-                                            <el-button
-                                                type="danger"
-                                                @click="deleteMenu(subMenu.id)"
-                                                size="small"
-                                                rounded
-                                                class="!px-2"
-                                                ><fa icon="trash"
-                                            /></el-button>
-                                        </el-tooltip>
-                                    </el-button-group>
-                                </div>
+                                <MenuItem
+                                    :menuItem="subMenu"
+                                    @editMenu="editMenu"
+                                    @deleteMenu="deleteMenu"
+                                />
                             </li>
                         </template>
                     </ol>
@@ -145,11 +57,13 @@
 </template>
 <script setup>
 import "~/css/nestable.css";
-import "/node_modules/nestable2/jquery.nestable.js";
-import { watch, markRaw, onMounted } from "@vue/runtime-core";
+import { watch, markRaw, onMounted, onBeforeMount } from "@vue/runtime-core";
 import { Delete } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
+import { useAppUtility } from "@/Composables/appUtiility";
+import MenuItem from "./MenuItem.vue";
 const { iPropsValue } = useInertiaPropsUtility();
+const { loadScript } = useAppUtility();
 const menuList = $ref(props.parentMenus);
 const menus = $ref(JSON.parse(menuList)); //using computed property glitch the sorting
 
@@ -169,7 +83,9 @@ watch(
     }
 );
 const changedMenuLists = $ref({});
-
+const editMenu = (menuItem) => {
+    return emit("editMenu", menuItem);
+};
 const deleteMenu = (menuId) => {
     ElMessageBox.confirm(
         "It will permanently delete the menu and its permission. Continue?",
@@ -236,6 +152,16 @@ const initiateSortable = function () {
 };
 
 onMounted(() => {
-    initiateSortable();
+    loadScript(
+        "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.slim.min.js",
+        () => {
+            loadScript(
+                "https://cdnjs.cloudflare.com/ajax/libs/nestable2/1.6.0/jquery.nestable.min.js",
+                () => {
+                    initiateSortable();
+                }
+            );
+        }
+    );
 });
 </script>

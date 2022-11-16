@@ -1,10 +1,12 @@
 <template>
-    <ul
-        class="inline-block label"
-        v-for="(permission, key) in menuPermission"
-        :key="key"
-    >
-        <li>{{ permission }}</li>
+    <ul class="inline-block label hidden-sm-and-down">
+        <li
+            class="inline-block"
+            v-for="(permission, key) in menuPermission"
+            :key="key"
+        >
+            {{ permission }}
+        </li>
     </ul>
 </template>
 <script setup>
@@ -28,7 +30,7 @@ watch(
 const menuPermission = computed(() => {
     if (
         Object.keys(roleMenus).length != 0 &&
-        roleMenus[role].hasOwnProperty(menuId)
+        roleMenus[role]?.hasOwnProperty(menuId)
     ) {
         return roleMenus[role][menuId];
     }
@@ -38,7 +40,7 @@ const menuPermission = computed(() => {
 <style scoped>
 ul.label li {
     background: var(--el-color-primary-dark-2);
-    margin: 0px 3px;
+    margin: 2px 3px;
     color: #fff;
     font-weight: 600;
     padding: 0px 5px;

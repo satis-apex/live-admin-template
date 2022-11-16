@@ -494,7 +494,7 @@ const updateMenu = function () {
         icon: markRaw(Edit),
         callback: (action) => {
             if (action == "confirm") {
-                formData.patch(route("menuLink.update", formData.id), {
+                formData.patch(route("menuLink.update", editFormData.id), {
                     preserveScroll: true,
                     onSuccess: () => {
                         closeForm();
@@ -518,7 +518,6 @@ const showForm = function (formType, data = "") {
 };
 const populateFormData = function (data) {
     formData.name = data.name;
-    formData.id = data.id;
     formData.type = data.type;
     formData.link = data.link;
     if (data.type == "child") {

@@ -9,7 +9,7 @@ Route::middleware(['auth'])->prefix('menu-link')->group(function () {
     Route::post('create', [MenuLinkController::class, 'store'])->name('menuLink.store');
     // Route::get('edit/{id}', [MenuLinkController::class, 'edit'])->name('menuLink.edit');
     Route::patch('edit/{id}', [MenuLinkController::class, 'update'])->name('menuLink.update');
-    Route::delete('delete/{id}', [MenuLinkController::class, 'destroy'])->name('menuLink.delete');
+    Route::delete('delete/{id}', [MenuLinkController::class, 'destroy'])->name('menuLink.destroy');
 });
 
 Route::middleware(['auth'])->group(function () {

@@ -54,10 +54,10 @@
                 <NestableMenu
                     :key="nestableComponentKey"
                     :parentMenus="menus"
-                    @edit-menu="editForm"
-                    @delete-menu="deleteMenu"
-                    @render-nestable="renderNestable"
-                    @update-nestable="updateNestable"
+                    @editMenu="editForm"
+                    @deleteMenu="deleteMenu"
+                    @renderNestable="renderNestable"
+                    @updateNestable="updateNestable"
                 />
             </div>
         </el-col>
@@ -71,7 +71,7 @@
 </template>
 <script setup>
 //library import
-import { watch } from "@vue/runtime-core";
+import { onBeforeMount, onBeforeUnmount, watch } from "@vue/runtime-core";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { Plus } from "@element-plus/icons-vue";
 // component import
@@ -153,7 +153,7 @@ const deleteMenu = async function (menuId) {
         menuList: menus,
         deletedId: menuId,
     });
-    deleteForm.delete(route("menuLink.delete", menuId), {
+    deleteForm.delete(route("menuLink.destroy", menuId), {
         preserveScroll: true,
         onSuccess: () => {
             deleteForm.reset();
@@ -169,7 +169,7 @@ const saveMenuChanges = function () {
         menus: updatedMenu,
         changedMenu: changedMenus,
     });
-    formData.post(route('menu.store'), {
+    formData.post(route("menu.store"), {
         preserveScroll: true,
         onSuccess: () => {
             menuChangedStatus = false;
