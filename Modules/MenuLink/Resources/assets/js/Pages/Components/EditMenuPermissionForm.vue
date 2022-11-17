@@ -58,28 +58,10 @@ const formData = useForm({
     role: "",
     permission: [],
 });
-const props = defineProps({
-    parentTabName: String,
-});
-
 const roleMenus = $ref(iPropsValue("roleMenus"));
-watch(
-    () => iPropsValue("roleMenus"),
-    () => {
-        roleMenus = iPropsValue("roleMenus");
-    },
-    { deep: true }
-);
-
-const userRole = $ref(props.parentTabName);
+const userRole = $ref("");
 const ruleFormRef = $ref();
 
-watch(
-    () => props.parentTabName,
-    () => {
-        userRole = props.parentTabName;
-    }
-);
 const resetForm = (formEl) => {
     if (!formEl) return;
     formEl.resetFields();
@@ -90,11 +72,12 @@ const closeForm = () => {
     resetForm(ruleFormRef);
     formData.reset();
 };
-const showForm = function (data) {
+const showForm = function (data, activeTab) {
     FormVisible = true;
+    userRole = activeTab;
     formData.reset();
     formData.permission = menuPermission(data.id);
-    formData.role = userRole;
+    formData.role = activeTab;
     menuName = data.name;
     menuId = data.id;
 };

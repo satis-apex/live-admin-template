@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 use Illuminate\Http\Request;
-use App\Models\ApplicationInfo;
+use Modules\AppSetting\Models\ApplicationInfo;
 use Modules\MenuLink\Models\Menu;
 use Illuminate\Support\Facades\Session;
 
@@ -37,6 +37,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request)
     {
         $flashMessage = $pageException = [];
+
+        $menuObject = Menu::pluck('menu_list')->first();
         if (Session::get('pageException')) {
             $pageException = [
                 'token' => md5(date('Y-m-d H:i:s')),
@@ -112,7 +114,7 @@ class HandleInertiaRequests extends Middleware
                 : null,
             'app_info' => ApplicationInfo::first(),
             'app_menu' => fn () => $request->user()
-                ? Menu::first('menu_list')
+                ? json_decode($menuObject)
                 : null,
             'flash' => $flashMessage,
             'page_exception' => $pageException

@@ -529,6 +529,8 @@ const populateFormData = function (data) {
     }
     formData.access = data.access?.split(",");
 };
+
+const emit = defineEmits(["added", "updated"]);
 defineExpose({
     showForm,
 });

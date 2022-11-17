@@ -41,7 +41,8 @@ class MenuLinkService
                     'parent_id' => request('parentId'),
                     'permission_key' => $controllerName,
                     'type' => request('type'),
-                    'access' => implode(',', request('access'))
+                    'access' => implode(',', request('access')),
+                    'movable' => !app()->environment('production')
                 ]
             );
 
@@ -52,7 +53,8 @@ class MenuLinkService
                 'icon' => $createdMenu->icon,
                 'type' => $createdMenu->type,
                 'access' => $createdMenu->access,
-                'parent_id' => $createdMenu->parent_id
+                'parent_id' => $createdMenu->parent_id,
+                'movable' => $createdMenu->movable
             ];
             $menus = Menu::first();
             $app_menu = json_decode($menus->menu_list);
@@ -192,10 +194,13 @@ class MenuLinkService
 
     public function remove($menuId)
     {
+        $menuLink = MenuLink::find($menuId);
+        if (strtolower($menuLink->link) == strtolower('menuLink.index')) {
+            return throw new  \Exception('Deleting manage menu will crash application ');
+        }
         $menus = Menu::first();
         $menus->menu_list = json_decode(request('menuList'));
         $menus->save();
-        $menuLink = MenuLink::find($menuId);
         if ($menuLink->type == 'parent') {
             $childMenus = MenuLink::where('parent_id', $menuId)->get();
             foreach ($childMenus as $childMenu) {

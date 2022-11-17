@@ -23,8 +23,8 @@
                                 :menuItem="menu"
                                 :activeTab="activeTab"
                                 :role="role"
-                                @editMenu="editMenuPermission"
-                                @deleteMenu="deleteMenu"
+                                @edit-menu="editMenuPermission"
+                                @delete-menu="deleteMenu"
                             />
 
                             <ol
@@ -56,8 +56,8 @@
                                             :menuItem="subMenu"
                                             :activeTab="activeTab"
                                             :role="role"
-                                            @editMenu="editMenuPermission"
-                                            @deleteMenu="deleteMenu"
+                                            @edit-menu="editMenuPermission"
+                                            @delete-menu="deleteMenu"
                                         />
                                     </li>
                                 </template>
@@ -70,14 +70,11 @@
         </template>
     </el-tabs>
 
-    <EditMenuPermissionForm
-        :parentTabName="activeTab"
-        ref="editMenuPermissionForm"
-    />
+    <EditMenuPermissionForm ref="editMenuPermissionForm" />
 </template>
 <script setup>
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-import { computed, watch, markRaw } from "@vue/runtime-core";
+import { computed, watch, markRaw, onMounted } from "@vue/runtime-core";
 import { Delete } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import EditMenuPermissionForm from "./EditMenuPermissionForm.vue";
@@ -86,22 +83,8 @@ import PermissionMenuItem from "./PermissionMenuItem.vue";
 const { iPropsValue } = useInertiaPropsUtility();
 const roles = iPropsValue("userRoles");
 const editMenuPermissionForm = $ref();
-const menuList = $ref(iPropsValue("app_menu", "menu_list"));
-const roleMenus = $ref(iPropsValue("roleMenus"));
-watch(
-    () => iPropsValue("app_menu", "menu_list"),
-    () => {
-        menuList = iPropsValue("app_menu", "menu_list");
-    }
-);
-watch(
-    () => iPropsValue(roleMenus),
-    () => {
-        roleMenus = iPropsValue(roleMenus);
-    }
-);
+const menus = $ref(iPropsValue("app_menu"));
 const activeTab = $ref("Su-Admin");
-const menus = computed(() => JSON.parse(menuList));
 const hasMenuAccess = function (menu, role) {
     const accessList = menu.access?.split(",");
     if (accessList.indexOf(role) != -1) {
@@ -109,7 +92,6 @@ const hasMenuAccess = function (menu, role) {
     }
     return false;
 };
-
 const deleteMenu = (menuId) => {
     ElMessageBox.confirm(
         "It will permanently Revoke menu Permission. Continue?",
@@ -137,8 +119,7 @@ const deleteMenu = (menuId) => {
     );
     return;
 };
-
 const editMenuPermission = (menuData) => {
-    editMenuPermissionForm.showForm(menuData);
+    editMenuPermissionForm.showForm(menuData, activeTab);
 };
 </script>

@@ -96,6 +96,35 @@ export function useAppUtility() {
 		}
 		return false;
 	}
+	//dynamically load java script library source
+	const loadScript = function (url, callback) {
+		const scripts = document.querySelectorAll("script[type='text/javascript']");
+		let isloaded = false;
+		scripts.forEach((item) => {
+			if (item.src == url) isloaded = true;
+		});
+		if (isloaded) return callback();
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+
+		if (script.readyState) {
+			script.onreadystatechange = function () {
+				if (
+					script.readyState == "loaded" ||
+					script.readyState == "complete"
+				) {
+					script.onreadystatechange = null;
+					callback();
+				}
+			};
+		} else {
+			script.onload = function () {
+				callback();
+			};
+		}
+		script.src = url;
+		document.getElementsByTagName("head")[0].appendChild(script);
+	};
 	return {
 		ifUrlExist,
 		isAuthorize,
@@ -106,6 +135,7 @@ export function useAppUtility() {
 		themeOption,
 		verifyRole,
 		mediaCheck,
-		hasMenuAccess
+		hasMenuAccess,
+		loadScript
 	}
 }

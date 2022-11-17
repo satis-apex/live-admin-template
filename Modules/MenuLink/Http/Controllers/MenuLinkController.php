@@ -2,6 +2,7 @@
 namespace Modules\MenuLink\Http\Controllers;
 
 use Inertia\Inertia;
+use Modules\MenuLink\Models\Menu;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Modules\MenuLink\Models\MenuLink;
@@ -24,9 +25,12 @@ class MenuLinkController extends Controller
         $userRoles = Role::where('guard_name', 'web')->orderBy('id')->pluck('name')->toArray();
         $roleMenus = MenuLinkService::listRoleMenuPermission();
         $menuLinkLists = MenuLink::pluck('name')->toArray();
+        $menuObject = Menu::pluck('menu_list')->first();
+        // dd(json_decode($menuObject));
         return Inertia::render(
             'MenuLink::Index',
             [
+                'MenuObject' => json_decode($menuObject),
                 'menuRoutes' => $menuRoutes,
                 'parentLinks' => $parentLinks,
                 'userRoles' => $userRoles,
