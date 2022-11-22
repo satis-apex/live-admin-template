@@ -1,11 +1,14 @@
 <template>
     <el-header class="relative custom-header">
         <el-row class="row-bg h-full items-center" justify="space-between">
-            <el-col :span="12">
+            <el-col :span="12" class="flex">
                 <div
-                    v-show="mobileMenu"
-                    class="menu-toggler block w-6 mr-2 float-left"
-                    @click="emit('showMenu')"
+                    class="menu-toggler block"
+                    @click="
+                        mobileMenu
+                            ? emit('showMobileMenu')
+                            : emit('toggleDesktopMenu')
+                    "
                 >
                     <!-- hero icon -->
                     <svg
@@ -14,7 +17,6 @@
                         viewBox="0 0 24 24"
                         stroke-width="2.5"
                         stroke="currentColor"
-                        class="w-6 h-6"
                     >
                         <path
                             stroke-linecap="round"
@@ -24,7 +26,9 @@
                     </svg>
                 </div>
 
-                <div class="grid-content text-lg text-lightBlue-500">
+                <div
+                    class="flex pl-3 hidden-sm-and-down breadcrumb items-center sm:text-lg text-sm text-lightBlue-500"
+                >
                     {{ breadcrumb }}
                 </div>
             </el-col>
@@ -138,7 +142,7 @@ watch(
         breadcrumb = iPropsValue("breadcrumb");
     }
 );
-const emit = defineEmits(["showMenu"]);
+const emit = defineEmits(["showMobileMenu", "toggleDesktopMenu"]);
 onMounted(() => {
     window.addEventListener("resize", () => {
         mobileMenu = mediaCheck("md");
@@ -162,5 +166,26 @@ onMounted(() => {
 }
 .user-info-dropdown .el-dropdown-menu__item {
     height: 34px;
+}
+div.menu-toggler {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+}
+div.menu-toggler svg {
+    width: 32px;
+}
+.menu-toggler:hover {
+    background: #e2e2e2;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #000;
+}
+.breadcrumb {
+    width: calc(100% - 45px);
+}
+.el-header {
+    --el-header-padding: 0 10px !important;
 }
 </style>

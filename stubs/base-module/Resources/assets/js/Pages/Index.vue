@@ -247,7 +247,7 @@ const deleteForm = (data) => {
         callback: (action) => {
             if (action == "confirm") {
                 const formData = useForm();
-                formData.delete(route("{routeName}.delete", data.id), {
+                formData.delete(route("{routeName}.destroy", data.id), {
                     preserveScroll: true,
                     onSuccess: () => {
                         formData.reset();

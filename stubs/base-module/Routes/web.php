@@ -8,5 +8,5 @@ Route::middleware(['auth'])->prefix('{module-}')->group(function() {
     Route::post('mass-create', [{Module}Controller::class, 'massStore'])->name('{routeName}.massStore');
     // Route::get('edit/{id}', [{Module}Controller::class, 'edit'])->name('{routeName}.edit');
     Route::patch('edit/{id}', [{Module}Controller::class, 'update'])->name('{routeName}.update');
-    Route::delete('delete/{id}', [{Module}Controller::class, 'destroy'])->name('{routeName}.delete');
+    Route::delete('delete/{id}', [{Module}Controller::class, 'destroy'])->name('{routeName}.destroy');
 });

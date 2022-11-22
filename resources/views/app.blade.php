@@ -13,9 +13,8 @@
     @routes
     @vite('resources/js/app.js')
     @inertiaHead
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.slim.min.js" defer
-        integrity="sha512-yBpuflZmP5lwMzZ03hiCLzA94N0K2vgBtJgqQ2E1meJzmIBfjbb7k4Y23k2i2c/rIeSUGc7jojyIY5waK3ZxCQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
 </head>
 
 <body class="font-sans antialiased">

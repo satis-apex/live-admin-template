@@ -27,81 +27,80 @@
 	$xl: 1200px,
 );
 
-// Body
-$body-bg: #F6F6F6;
-
-// Borders
-$laravel-border-color: darken($body-bg, 10%);
-$list-group-border: $laravel-border-color;
-$navbar-default-border: $laravel-border-color;
-$panel-default-border: $laravel-border-color;
-$panel-inner-border: $laravel-border-color;
-
-// Brands
-$brand-primary: #009ef7;
-$brand-primary-dark: #0071AD;
-$brand-primary-light: #0AA9FF;
-$brand-primary-lightest: #31B5FC;
-$brand-complementary: #FFBA00;
-$brand-info: #8eb4cb;
-$brand-success: #608878;
-$brand-warning: #cbb956;
-$brand-danger:  #bf5329;
-
-// Typography
-$font-family-sans-serif: "Raleway", sans-serif;
-$font-size-base: 14px;
-$line-height-base: 1.6;
-$text-color: #636b6f;
-
-// Navbar
-$navbar-default-bg: #fff;
-
-// Buttons
-$btn-default-color: $text-color;
-
-// Inputs
-$input-border: lighten($text-color, 40%);
-$input-border-focus: lighten($brand-primary, 25%);
-$input-color-placeholder: lighten($text-color, 30%);
-
-// Panels
-$panel-default-heading-bg: #fff;
 :root{
   --active-highlight: #ccc;
-  --brand-primary: $brand-primary;
-  --brand-primary-light: $brand-primary-light;
-  --menu-active: #c6e2ff;;
+  --brand-primary: #009ef7;
+  --brand-primary-light: #0AA9FF;;
+  --menu-active: #c6e2ff;
+  --brand-primary-dark: #0071AD;
+  --brand-primary-lightest: #31B5FC;
+  --brand-complementary: #FFBA00;
+  --body-bg:#F6F6F6;
 }
+
+// Body
+// $body-bg: var(--body-bg);
+
+// Brands
+// $brand-primary: var(--brand-primary);
+// $brand-primary-dark: #0071AD;
+// $brand-primary-light: #0AA9FF;
+// $brand-primary-lightest: #31B5FC;
+// $brand-complementary: #FFBA00;
+// $brand-info: #8eb4cb;
+// $brand-success: #608878;
+// $brand-warning: #cbb956;
+// $brand-danger:  #bf5329;
+
+// Typography
+// $font-family-sans-serif: "Raleway", sans-serif;
+// $font-size-base: 14px;
+// $line-height-base: 1.6;
+// $text-color: #636b6f;
+
+// Navbar
+// $navbar-default-bg: #fff;
+
+// Buttons
+// $btn-default-color: $text-color;
+
+// Inputs
+// $input-border: lighten($text-color, 40%);
+// $input-border-focus: lighten($brand-primary, 25%);
+// $input-color-placeholder: lighten($text-color, 30%);
+
+// Panels
+// $panel-default-heading-bg: #fff;
+
 .bg-primary
 {
-	background-color: $brand-primary;
+	background-color: var(--brand-primary);
 }
 .bg-primary-light
 {
-	background-color: $brand-primary-light;
+	background-color: var(--brand-primary-light);
 }
 .bg-primary-lightest
 {
-	background-color: $brand-primary-lightest;
+	background-color: var(--brand-primary-lightest);
 }
 .bg-primary-dark
 {
-  background-color: $brand-primary-dark;
+  background-color: var(--brand-primary-dark);
 }
 .bg-primary-light
 {
-  background-color: $brand-primary-light;
+  background-color: var(--brand-primary-light);
 }
 .bg-complementary
 {
-  background-color: $brand-complementary;
+  background-color: var(--brand-complementary);
 }
 .bg-body
 {
-  background-color: $body-bg;
+  background-color: var(--body-bg);
 }
 .text-primary
 {
-  color:$brand-primary;
+  color: var(--brand-primary);
 }

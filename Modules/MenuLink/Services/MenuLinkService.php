@@ -42,7 +42,7 @@ class MenuLinkService
                     'permission_key' => $controllerName,
                     'type' => request('type'),
                     'access' => implode(',', request('access')),
-                    'movable' => !app()->environment('production')
+                    'default_menu' => false
                 ]
             );
 
@@ -54,7 +54,7 @@ class MenuLinkService
                 'type' => $createdMenu->type,
                 'access' => $createdMenu->access,
                 'parent_id' => $createdMenu->parent_id,
-                'movable' => $createdMenu->movable
+                'default_menu' => $createdMenu->default_menu
             ];
             $menus = Menu::first();
             $app_menu = json_decode($menus->menu_list);

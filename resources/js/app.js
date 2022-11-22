@@ -16,7 +16,6 @@ library.add(fas);
 import { createApp, h } from 'vue';
 import { createInertiaApp, Link } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
-// import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 //layout
 import Admin from '@/Layouts/Admin.vue'
 import Auth from '@/Layouts/Auth.vue'
@@ -26,9 +25,6 @@ const appName = window.document.getElementsByTagName('title')[0]?.innerText || '
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    // resolve: async (name) => {
-    //     resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'))
-    // },
     resolve: async name => {
         let parts = name.split('::')
         let type = false

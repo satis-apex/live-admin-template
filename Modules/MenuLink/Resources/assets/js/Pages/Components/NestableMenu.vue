@@ -1,63 +1,65 @@
 <template>
     <div id="nestable-menu-list" class="dd">
-        <ol
-            class="dd-list"
-            v-if="menus && Object.keys(menus).length > 0"
-            data-type="root"
-        >
-            <li
-                v-for="(menu, key) in menus"
-                :key="key"
-                :data-type="menu.type"
-                class="dd-item flex"
-                :data-id="menu.id"
-                :data-name="menu.name"
-                :data-icon="menu.icon"
-                :data-link="menu.link"
-                :data-movable="menu.movable"
-                :data-access="menu.access"
-                :class="menu.type == 'parent-single' ? 'dd-nochildren' : ''"
+        <el-scrollbar max-height="70vh">
+            <ol
+                class="dd-list"
+                v-if="menus && Object.keys(menus).length > 0"
+                data-type="root"
             >
-                <MenuItem
-                    :menuItem="menu"
-                    @edit-menu="editMenu"
-                    @delete-menu="deleteMenu"
-                />
-                <ol
-                    v-if="
-                        menu.hasOwnProperty('children') &&
-                        Object.keys(menu.children).length > 0
-                    "
-                    class="dd-list"
+                <li
+                    v-for="(menu, key) in menus"
+                    :key="key"
                     :data-type="menu.type"
+                    class="dd-item flex"
+                    :data-id="menu.id"
+                    :data-name="menu.name"
+                    :data-icon="menu.icon"
+                    :data-link="menu.link"
+                    :data-default_menu="menu.default_menu"
+                    :data-access="menu.access"
+                    :class="menu.type == 'parent-single' ? 'dd-nochildren' : ''"
                 >
-                    <template
-                        v-for="(subMenu, subMenuKey) in menu.children"
-                        :key="subMenuKey"
+                    <MenuItem
+                        :menuItem="menu"
+                        @edit-menu="editMenu"
+                        @delete-menu="deleteMenu"
+                    />
+                    <ol
+                        v-if="
+                            menu.hasOwnProperty('children') &&
+                            Object.keys(menu.children).length > 0
+                        "
+                        class="dd-list"
+                        :data-type="menu.type"
                     >
-                        <li
-                            v-if="Object.keys(subMenu).length > 0"
-                            :data-type="subMenu.type"
-                            class="dd-item"
-                            :data-id="subMenu.id"
-                            :data-name="subMenu.name"
-                            :data-icon="subMenu.icon"
-                            :data-link="subMenu.link"
-                            :data-movable="subMenu.movable"
-                            :data-access="subMenu.access"
-                            :data-parent_id="subMenu.parent_id"
+                        <template
+                            v-for="(subMenu, subMenuKey) in menu.children"
+                            :key="subMenuKey"
                         >
-                            <MenuItem
-                                :menuItem="subMenu"
-                                @edit-menu="editMenu"
-                                @delete-menu="deleteMenu"
-                            />
-                        </li>
-                    </template>
-                </ol>
-            </li>
-            <div id="dd-empty-placeholder"></div>
-        </ol>
+                            <li
+                                v-if="Object.keys(subMenu).length > 0"
+                                :data-type="subMenu.type"
+                                class="dd-item"
+                                :data-id="subMenu.id"
+                                :data-name="subMenu.name"
+                                :data-icon="subMenu.icon"
+                                :data-link="subMenu.link"
+                                :data-default_menu="subMenu.default_menu"
+                                :data-access="subMenu.access"
+                                :data-parent_id="subMenu.parent_id"
+                            >
+                                <MenuItem
+                                    :menuItem="subMenu"
+                                    @edit-menu="editMenu"
+                                    @delete-menu="deleteMenu"
+                                />
+                            </li>
+                        </template>
+                    </ol>
+                </li>
+                <div id="dd-empty-placeholder"></div>
+            </ol>
+        </el-scrollbar>
     </div>
 </template>
 <script setup>

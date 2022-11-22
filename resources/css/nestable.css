@@ -3,7 +3,6 @@
     display: block;
     margin: 0;
     padding: 0;
-    /* max-width: 600px; */
     list-style: none;
     font-size: 13px;
     line-height: 20px;
@@ -34,7 +33,6 @@
     display: block;
     height: 30px;
     margin: 5px 0;
-    padding: 5px 10px;
     color: #333;
     text-decoration: none;
     font-weight: 700;
@@ -42,10 +40,14 @@
     background: #fafafa;
     border-radius: 3px;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .dd-handle:hover {
-    color: #2ea8e5;
-    /* background: #fff; */
+}
+.dd-placeholder{
+   cursor:all-scroll
 }
 .dd-item > button {
     position: relative;
@@ -121,46 +123,32 @@
 }
 button.dd-collapse,
 button.dd-expand {
-    /* margin-left: 30px; */
     font-size: 0.875rem;
     line-height: 1.25rem;
 }
 
+.nestable-handle.dd-handle {
+    cursor: all-scroll;
+}
+.nestable-handle.dd-nodrag {
+    cursor: not-allowed;
+}
 .nestable-handle {
-    position: absolute;
     margin: 0;
-    left: 0;
-    top: 0;
-    cursor: pointer;
     width: 30px;
-    text-indent: 30px;
-    white-space: nowrap;
-    overflow: hidden;
-    border: 1px solid #79bbff;
-    background: #79bbff;
+    border: unset;
     height: 38px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-}
-.nestable-handle:before {
-    content: "≡";
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 6px;
-    width: 100%;
-    text-align: center;
-    text-indent: 0;
-    color: #fff;
     font-size: 20px;
-    font-weight: normal;
+    color: var(--brand-primary-dark);
 }
 .nestable-content {
     display: block;
-    height: 38px;
+    display: flex;
+    align-items: center;
+    min-height: 38px;
     margin: 5px 0;
-    padding: 8px 10px 8px 40px;
-
     color: #333;
     text-decoration: none;
     font-weight: bold;
@@ -172,18 +160,14 @@ button.dd-expand {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
-.dd-item .action {
-    float: right;
-    position: absolute;
-    z-index: 1;
-    right: 7px;
-    display: flex;
-    top: 7px;
-}
 #nestable-menu-list
 {
 	border: 1px solid #e7e6e6;
     padding: 10px;
     background: #f3f3f3;
     border-radius: 10px;
+}
+.dd-expand, .dd-collapse
+{
+    display: none !important;
 }
