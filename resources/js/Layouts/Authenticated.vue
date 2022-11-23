@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from '@vue/runtime-core';
 import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
 import BreezeDropdown from '@/Components/Dropdown.vue';
 import BreezeDropdownLink from '@/Components/DropdownLink.vue';

@@ -1,7 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
 import 'simplebar/dist/simplebar.min.css';
-
+import 'element-plus/theme-chalk/src/dark/css-vars.scss'
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
 /* import font awesome icon component */

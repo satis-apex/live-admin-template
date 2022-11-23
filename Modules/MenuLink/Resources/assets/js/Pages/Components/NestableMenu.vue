@@ -1,5 +1,8 @@
 <template>
-    <div id="nestable-menu-list" class="dd">
+    <div
+        id="nestable-menu-list"
+        class="dd border dark:border-none bg-gray-100 dark:bg-neutral-700"
+    >
         <el-scrollbar max-height="70vh">
             <ol
                 class="dd-list"

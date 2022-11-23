@@ -162,9 +162,7 @@ button.dd-expand {
 }
 #nestable-menu-list
 {
-	border: 1px solid #e7e6e6;
     padding: 10px;
-    background: #f3f3f3;
     border-radius: 10px;
 }
 .dd-expand, .dd-collapse

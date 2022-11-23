@@ -1,0 +1,36 @@
+
+html.dark{
+    --active-highlight: #ccc;
+    --brand-primary: #009ef7;
+    --brand-primary-light: #0AA9FF;;
+    --menu-active: #212121;
+    --brand-primary-dark: #0071AD;
+    --brand-primary-lightest: #31B5FC;
+    --brand-complementary: #FFBA00;
+    --body-bg:#F6F6F6;
+
+  .el-sub-menu__title:hover,
+  .el-menu-item:hover {
+      background-color: #494949;
+  }
+  .el-menu-item.is-active {
+      color: #aeaeae;
+  }
+  .el-menu[role="menubar"] {
+      border-right: solid 1px #494949;
+  }
+  .border {
+      border-color: #494949;
+  }
+  .custom-header {
+    background-image: radial-gradient(transparent 1px, #1b1b1b 1px);
+    }
+    .dark-mode-toggler .el-switch__core .el-switch__inner .is-icon,
+    .el-switch__core .el-switch__inner .is-text {
+        color: white;
+    }
+    .el-switch.is-checked .el-switch__core .el-switch__action
+    {
+        background-color:#161616
+    }
+}

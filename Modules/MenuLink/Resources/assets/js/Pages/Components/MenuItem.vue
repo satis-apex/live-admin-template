@@ -1,19 +1,24 @@
 <template>
-    <div class="nestable-content text-sm" v-if="menuItem">
+    <div class="nestable-content text-sm dark:bg-zinc-800" v-if="menuItem">
         <div
             :class="
                 menuItem.name == 'Home' || menuItem.name == 'Dashboard'
                     ? 'dd-nodrag'
                     : 'dd-handle'
             "
-            class="nestable-handle flex-none"
+            class="nestable-handle flex-none dark:bg-zinc-800"
         >
             <fa icon="grip-vertical" />
         </div>
-        <el-icon v-if="menuItem.type != 'child'" class="flex-none m-1"
+        <el-icon
+            v-if="menuItem.type != 'child'"
+            class="flex-none m-1 text-black dark:text-white"
             ><fa :icon="menuItem.icon" />
         </el-icon>
-        <span class="grow" :class="menuItem.type == 'child' ? 'pl-1' : ''">
+        <span
+            class="grow text-black dark:text-white"
+            :class="menuItem.type == 'child' ? 'pl-1' : ''"
+        >
             {{ menuItem.name }}</span
         >
         <div

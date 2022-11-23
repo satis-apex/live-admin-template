@@ -34,7 +34,9 @@
             </el-col>
             <el-col :span="10">
                 <el-row class="row-bg flex items-center" justify="end">
-                    <!-- <el-col :span="10" class="text-white">search</el-col> -->
+                    <el-col :span="10" class="">
+                        <DarkToggler />
+                    </el-col>
 
                     <el-col :span="14" class="content-center text-right">
                         <el-dropdown trigger="click" ref="headDropdown">
@@ -123,10 +125,12 @@ import {
     Check,
     CircleCheck,
 } from "@element-plus/icons-vue";
+import DarkToggler from "@/Components/DarkModeSwitch.vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-import { inject, onMounted, watch } from "vue";
+import { inject, onMounted, watch } from "@vue/runtime-core";
 import ChangeUserPassword from "@/Layouts/ChangeUserPassword.vue";
 import { useAppUtility } from "@/Composables/appUtiility";
+// import { set } from "@vueuse/shared";
 const { mediaCheck } = useAppUtility();
 const { iPropsValue } = useInertiaPropsUtility();
 const formVisible = $ref(false);
@@ -180,7 +184,6 @@ div.menu-toggler svg {
     background: #e2e2e2;
     border-radius: 50%;
     cursor: pointer;
-    color: #000;
 }
 .breadcrumb {
     width: calc(100% - 45px);

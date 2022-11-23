@@ -2,7 +2,7 @@
     <div class="common-layout">
         <el-container>
             <side-nav ref="refSideNav" :key="navComponentKey"></side-nav>
-            <el-container class="bg-body">
+            <el-container class="bg-body dark:bg-neutral-800">
                 <SimpleBar style="height: 100vh; overflow-y: auto; width: 100%">
                     <el-affix :offset="0.1" style="width: 100%">
                         <heads
@@ -26,7 +26,7 @@ import { SimpleBar } from "simplebar-vue3";
 import SideNav from "@/Layouts/SideNav.vue";
 import heads from "@/Layouts/Head.vue";
 import moment from "moment";
-import { ref, provide, onMounted, watch } from "vue";
+import { ref, provide, onMounted, watch } from "@vue/runtime-core";
 import FlashMessage from "@/Layouts/FlashMessage.vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useAppUtility } from "@/Composables/appUtiility";

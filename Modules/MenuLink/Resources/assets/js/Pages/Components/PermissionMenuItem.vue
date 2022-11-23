@@ -1,9 +1,11 @@
 <template>
-    <div class="nestable-content !pl-3 text-sm">
-        <el-icon v-if="menuItem.type != 'child'" class="flex-none pl-1 pr-3"
+    <div class="nestable-content !pl-3 text-sm dark:bg-zinc-800">
+        <el-icon
+            v-if="menuItem.type != 'child'"
+            class="flex-none pl-1 pr-3 dark:text-white"
             ><fa :icon="menuItem.icon" />
         </el-icon>
-        <span class="grow"> {{ menuItem.name }}</span>
+        <span class="grow dark:text-white"> {{ menuItem.name }}</span>
         <PermissionLabel :menuId="+menuItem.id" :role="activeTab" />
 
         <div
