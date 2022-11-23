@@ -1,4 +1,5 @@
 {
     "MenuLink": true,
-    "User": true
+    "User": true,
+    "AppSetting": true
 }

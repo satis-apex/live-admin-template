@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\ApplicationInfo;
+use Modules\AppSetting\Models\ApplicationInfo;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 

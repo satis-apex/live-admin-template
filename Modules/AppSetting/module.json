@@ -1,0 +1,14 @@
+{
+    "name": "AppSetting",
+    "label": "AppSetting",
+    "alias": "appsetting",
+    "description": "manage all appsetting",
+    "keywords": ["appsetting"],
+    "priority": 0,
+    "providers": [
+        "Modules\\AppSetting\\Providers\\AppSettingServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
