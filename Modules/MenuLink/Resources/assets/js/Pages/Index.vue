@@ -24,6 +24,7 @@
                                         type="success"
                                         size="default"
                                         rounded
+                                        :plain="darkMode"
                                         @click="addForm"
                                         :icon="Plus"
                                     >
@@ -43,6 +44,7 @@
                                         type="success"
                                         size="default"
                                         rounded
+                                        :plain="darkMode"
                                         @click="saveMenuChanges()"
                                         :loading="saveMenuLoading"
                                         v-if="menuChangedStatus"
@@ -89,6 +91,7 @@ import RoleMenuList from "./Components/RoleMenuList.vue";
 // composable import
 import { useObjectUtility } from "@/Composables/objectUtility";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
+import { useAppUtility } from "@/Composables/appUtiility";
 // declaration
 const nestableComponentKey = $ref(0);
 const menuChangedStatus = $ref(false);
@@ -96,6 +99,7 @@ const addEditMenuForm = $ref(null);
 const saveMenuLoading = $ref(false);
 const { resetObjectKey } = useObjectUtility();
 const { iPropsValue } = useInertiaPropsUtility();
+const { isDarkScheme } = useAppUtility();
 const changedMenus = $ref({});
 const renderNestable = (timeOut = 0) => {
     return new Promise((resolve) =>
@@ -176,6 +180,14 @@ const saveMenuChanges = function () {
         },
     });
 };
+const darkMode = $ref(isDarkScheme());
+document.documentElement.addEventListener(
+    "change-color-scheme",
+    (e) => {
+        darkMode = isDarkScheme();
+    },
+    false
+);
 </script>
 <script>
 export default {

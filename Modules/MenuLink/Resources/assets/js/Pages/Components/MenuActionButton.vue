@@ -11,6 +11,7 @@
                 type="primary"
                 size="default"
                 rounded
+                :plain="darkMode"
                 @click="expandAllMenu()"
             >
                 <fa icon="angles-down" />
@@ -27,6 +28,7 @@
                 type="primary"
                 size="default"
                 rounded
+                :plain="darkMode"
                 @click="collapseAllMenu()"
             >
                 <fa icon="angles-up" />
@@ -35,10 +37,21 @@
     </el-button-group>
 </template>
 <script setup>
+import { useAppUtility } from "@/Composables/appUtiility";
+const { isDarkScheme } = useAppUtility();
 const expandAllMenu = function () {
     jQuery(".dd").nestable("expandAll");
 };
 const collapseAllMenu = function () {
     jQuery(".dd").nestable("collapseAll");
 };
+
+const darkMode = $ref(isDarkScheme());
+document.documentElement.addEventListener(
+    "change-color-scheme",
+    (e) => {
+        darkMode = isDarkScheme();
+    },
+    false
+);
 </script>

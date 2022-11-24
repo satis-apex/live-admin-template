@@ -125,6 +125,24 @@ export function useAppUtility() {
 		script.src = url;
 		document.getElementsByTagName("head")[0].appendChild(script);
 	};
+	//dark mode function
+	const isDarkScheme = () => localStorage.theme === "dark";
+
+	const setDarkScheme = () => {
+		// Whenever the user explicitly chooses dark mode
+		localStorage.theme = "dark";
+		document.documentElement.classList.add("dark");
+	};
+	const setLightScheme = () => {
+		// Whenever the user explicitly chooses light mode
+		localStorage.theme = "light";
+		document.documentElement.classList.remove("dark");
+	};
+	const setDefaultScheme = () => {
+		// Whenever the user explicitly chooses to respect the OS preference
+		localStorage.removeItem("theme");
+	};
+
 	return {
 		ifUrlExist,
 		isAuthorize,
@@ -136,6 +154,10 @@ export function useAppUtility() {
 		verifyRole,
 		mediaCheck,
 		hasMenuAccess,
-		loadScript
+		loadScript,
+		isDarkScheme,
+		setDarkScheme,
+		setLightScheme,
+		setDefaultScheme
 	}
 }

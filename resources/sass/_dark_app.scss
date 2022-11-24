@@ -1,29 +1,32 @@
-
 html.dark{
-    --active-highlight: #ccc;
+    --active-highlight: #e1e1e1;
     --brand-primary: #009ef7;
     --brand-primary-light: #0AA9FF;;
-    --menu-active: #212121;
+    --menu-active: #1e1e1e;
     --brand-primary-dark: #0071AD;
     --brand-primary-lightest: #31B5FC;
     --brand-complementary: #FFBA00;
-    --body-bg:#F6F6F6;
-
-  .el-sub-menu__title:hover,
-  .el-menu-item:hover {
-      background-color: #494949;
-  }
-  .el-menu-item.is-active {
-      color: #aeaeae;
-  }
-  .el-menu[role="menubar"] {
-      border-right: solid 1px #494949;
-  }
-  .border {
-      border-color: #494949;
-  }
-  .custom-header {
-    background-image: radial-gradient(transparent 1px, #1b1b1b 1px);
+    --body-bg:#121212;
+    
+    .el-menu-item,.el-sub-menu__title
+    {
+        color:#9f9f9f
+    }
+    .el-sub-menu__title:hover,
+    .el-menu-item:hover {
+        background-color: #2e2e2e;
+    }
+    .el-menu-item.is-active {
+        color: var(--brand-primary);// #e1e1e1;
+    }
+    .el-menu[role="menubar"] {
+        border-right: solid 1px #2b2b2b;
+    }
+    .border {
+        border-color: #3b3b3b;
+    }
+    .custom-header {
+        background-image: radial-gradient(transparent 1px, #161616 1px);
     }
     .dark-mode-toggler .el-switch__core .el-switch__inner .is-icon,
     .el-switch__core .el-switch__inner .is-text {
@@ -32,5 +35,20 @@ html.dark{
     .el-switch.is-checked .el-switch__core .el-switch__action
     {
         background-color:#161616
+    }
+    .el-menu-vertical
+    {
+        background-color: #161616;
+    }
+    .menu-toggler:hover
+    {
+        background:#3b3b3b
+    }
+    .nestable-content
+    {
+        border-color: #626262;
+    }
+    .el-button {
+        --el-button-divide-border-color:#626262;
     }
 }

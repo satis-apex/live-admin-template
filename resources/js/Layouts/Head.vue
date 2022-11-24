@@ -1,7 +1,7 @@
 <template>
     <el-header class="relative custom-header">
         <el-row class="row-bg h-full items-center" justify="space-between">
-            <el-col :span="12" class="flex">
+            <el-col :xs="6" :sm="6" :md="12" class="!flex">
                 <div
                     class="menu-toggler block"
                     @click="
@@ -25,20 +25,16 @@
                         />
                     </svg>
                 </div>
-
                 <div
                     class="flex pl-3 hidden-sm-and-down breadcrumb items-center sm:text-lg text-sm text-lightBlue-500"
                 >
                     {{ breadcrumb }}
                 </div>
             </el-col>
-            <el-col :span="10">
+            <el-col :xs="16" :sm="16" :md="12">
                 <el-row class="row-bg flex items-center" justify="end">
-                    <el-col :span="10" class="">
+                    <el-col :span="24" class="content-center text-right">
                         <DarkToggler />
-                    </el-col>
-
-                    <el-col :span="14" class="content-center text-right">
                         <el-dropdown trigger="click" ref="headDropdown">
                             <span class="el-dropdown-link flex">
                                 <el-avatar

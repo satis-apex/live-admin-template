@@ -149,16 +149,20 @@
             </template>
         </el-drawer>
         <div
-            class="brand-logo bg-primary text-white"
-            :class="isCollapse ? 'hidden-sm-and-down !w-16 flex' : ''"
+            class="brand-logo bg-primary text-white hidden-sm-and-down"
+            :class="isCollapse ? '!w-16 flex' : ''"
         >
             <div class="logo" v-if="!isCollapse">Brand Logo</div>
             <div class="logo" v-if="isCollapse">B</div>
         </div>
-        <SimpleBar id="menubar" :class="isCollapse ? 'is-collapsed' : ''">
+        <SimpleBar
+            id="menubar"
+            class="hidden-sm-and-down"
+            :class="isCollapse ? 'is-collapsed' : ''"
+        >
             <el-menu
                 :default-active="currentActive"
-                class="el-menu-vertical dark:bg-neutral-900"
+                class="el-menu-vertical"
                 :collapse="isCollapse"
                 :collapse-transition="false"
             >

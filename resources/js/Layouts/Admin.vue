@@ -2,7 +2,7 @@
     <div class="common-layout">
         <el-container>
             <side-nav ref="refSideNav" :key="navComponentKey"></side-nav>
-            <el-container class="bg-body dark:bg-neutral-800">
+            <el-container class="bg-body">
                 <SimpleBar style="height: 100vh; overflow-y: auto; width: 100%">
                     <el-affix :offset="0.1" style="width: 100%">
                         <heads
