@@ -7,26 +7,33 @@
         ref="formRef"
     >
         <el-row :gutter="20">
-            <el-col :xs="24" :sm="8">
-                <el-card class="box-card h-full">
-                    <el-form-item label="Application Logo" prop="title">
+            <el-col :xs="24" :sm="8" class="mb-3 sm:m-0">
+                <el-card class="box-card sm:h-full">
+                    <el-form-item
+                        label="Application Logo"
+                        class="!mb-0"
+                        prop="title"
+                    >
                         <SingleFileUploader
-                            :acceptExtension="'.jpg, .jpeg, .svg'"
+                            ref="refLogoUpload"
+                            :acceptExtension="'.jpg, .jpeg, .svg, .png'"
                             :acceptSize="2048"
                             :listType="'picture'"
                             @uplodable="uplodableLogo"
                             @clearUplodable="uplodableLogo"
                         />
                     </el-form-item>
-                    <el-divider class="!mt-0" />
+                    <el-divider class="!mt-0 !mb-4" />
                     <el-form-item
                         label="Application Nemonic / Fav Icon"
                         prop="title"
                     >
                         <SingleFileUploader
+                            ref="refFavUpload"
                             :acceptExtension="'.png, .svg'"
                             :acceptSize="150"
                             :listType="'picture'"
+                            @uplodable="uplodableFavIcon"
                             @clearUplodable="uplodableFavIcon"
                         />
                     </el-form-item>
@@ -34,7 +41,7 @@
             </el-col>
             <el-col :xs="24" :sm="16">
                 <el-card class="box-card h-full">
-                    <el-row :gutter="20">
+                    <el-row :gutter="20" class="mb-6">
                         <el-col :sm="24" :md="12">
                             <el-form-item
                                 label="Organization / Company Name"
@@ -55,20 +62,43 @@
                         </el-col>
                         <el-col :sm="24" :md="12">
                             <el-form-item label="Contact" prop="contact">
-                                <el-input v-model="formData.contact" />
+                                <el-input
+                                    type="number"
+                                    v-model="formData.contact"
+                                />
                             </el-form-item>
                         </el-col>
-                        <el-col :sm="24" :md="12">
-                            <el-form-item
-                                label="Brand Color"
-                                prop="primaryColor"
-                            >
-                                <div class="demo-color-block">
-                                    <span class="mr-3">Primary Color</span>
-                                    <el-color-picker
-                                        show-alpha
-                                        v-model="formData.primaryColor"
-                                    />
+                        <el-col :sm="24" :md="24">
+                            <el-form-item label="Brand Color" prop="color">
+                                <div
+                                    class="grow grid grid-cols-1 sm:grid-cols-2"
+                                >
+                                    <div class="demo-color-block">
+                                        <span class="mr-3">Primary</span>
+                                        <el-color-picker
+                                            v-model="formData.primaryColor"
+                                        />
+                                    </div>
+                                    <div class="demo-color-block">
+                                        <span class="mr-3">Primary light</span>
+                                        <el-color-picker
+                                            v-model="formData.primaryLightColor"
+                                        />
+                                    </div>
+                                    <div class="demo-color-block">
+                                        <span class="mr-3">Primary Dark</span>
+                                        <el-color-picker
+                                            v-model="formData.primaryDarkColor"
+                                        />
+                                    </div>
+                                    <div class="demo-color-block">
+                                        <span class="mr-3">Complementary</span>
+                                        <el-color-picker
+                                            v-model="
+                                                formData.complementaryColor
+                                            "
+                                        />
+                                    </div>
                                 </div>
                             </el-form-item>
                         </el-col>
@@ -116,6 +146,9 @@ let { iPropsValue } = useInertiaPropsUtility();
 let formRef = $ref();
 let FormType = $ref("Add");
 let editFormData = $ref(); //default edit form data
+const refLogoUpload = $ref(null);
+const refFavUpload = $ref(null);
+
 const props = defineProps({
     parentDefaultData: Object,
 });
@@ -127,10 +160,10 @@ watch(
     }
 );
 const uplodableLogo = (file) => {
-    console.log(file);
+    formData.logo = file;
 };
 const uplodableFavIcon = (file) => {
-    console.log(file);
+    formData.fav = file;
 };
 const formData = useForm({
     _method: "PATCH",
@@ -138,8 +171,13 @@ const formData = useForm({
     year: "",
     email: "",
     address: "",
+    contact: "",
     logo: "",
     fav: "",
+    primaryColor: "",
+    primaryLightColor: "",
+    primaryDarkColor: "",
+    complementaryColor: "",
 });
 const rules = reactive({
     name: [
@@ -168,6 +206,8 @@ const submitForm = async (formEl) => {
 };
 const resetForm = (formEl) => {
     if (!formEl) return;
+    refLogoUpload.clearUploadFile();
+    refFavUpload.clearUploadFile();
     formEl.resetFields();
     formData.reset();
     populateFormData(defaultData);
@@ -177,105 +217,43 @@ const closeForm = () => {
 };
 
 const update = function () {
-    ElMessageBox.confirm("You are trying to edit. Continue?", "Warning", {
-        type: "warning",
-        icon: markRaw(Edit),
-        callback: (action) => {
-            if (action == "confirm") {
-                try {
-                    formData.post(route("appSetting.update"), {
-                        preserveScroll: true,
-                        onSuccess: () => {
-                            closeForm();
-                        },
-                    });
-                } catch (error) {
-                    ElNotification({
-                        title: "Error",
-                        message: "Request Form Error.",
-                        type: "error",
-                    });
-                    console.log(error);
+    ElMessageBox.confirm(
+        "You are trying to update default application Information. Continue?",
+        "Warning",
+        {
+            type: "warning",
+            icon: markRaw(Edit),
+            callback: (action) => {
+                if (action == "confirm") {
+                    try {
+                        formData.post(route("appSetting.update"), {
+                            preserveScroll: true,
+                            onSuccess: () => {
+                                closeForm();
+                            },
+                        });
+                    } catch (error) {
+                        ElNotification({
+                            title: "Error",
+                            message: "Request Form Error.",
+                            type: "error",
+                        });
+                        console.log(error);
+                    }
                 }
-            }
-        },
-    });
+            },
+        }
+    );
 };
 let populateFormData = function (data) {
     formData.title = data.title;
     formData.email = data.email;
     formData.contact = data.contact;
     formData.address = data.address;
-};
-
-const logoFilePreview = $ref(null);
-const favFilePreview = $ref(null);
-
-const showForm = function () {
-    avatarUploadVisible = true;
-};
-
-const logoUpload = function (file, response) {
-    if (beforeLogoUpload(file.raw)) {
-        logoFilePreview = URL.createObjectURL(file.raw);
-        formData.logo = file.raw;
-        return;
-    }
-    refLogoUpload.clearFiles();
-};
-const beforeLogoUpload = function (uploadFile) {
-    const file = uploadFile;
-    const isJPG = file.type === "image/jpeg";
-    const isLt2M = file.size / 1024 / 1024 < 2;
-
-    if (!isJPG) {
-        ElMessage.error("Logo must be JPG format!");
-        return false;
-    }
-    if (!isLt2M) {
-        ElMessage.error("Logo size can not exceed 2MB!");
-        return false;
-    }
-    return true;
-};
-
-const favUpload = function (file, response) {
-    if (beforeFavUpload(file.raw)) {
-        favFilePreview = URL.createObjectURL(file.raw);
-        formData.fav = file.raw;
-        return;
-    }
-    refFavUpload.clearFiles();
-};
-const beforeFavUpload = function (uploadFile) {
-    const file = uploadFile;
-    const isJPG = file.type === "image/png";
-    const isLt2M = file.size / 1024 / 1024 < 2;
-
-    if (!isJPG) {
-        ElMessage.error("Fav Icon must be JPG format!");
-        return false;
-    }
-    if (!isLt2M) {
-        ElMessage.error("Fav Icon size can not exceed 2MB!");
-        return false;
-    }
-    return true;
-};
-const refLogoUpload = $ref();
-const refFavUpload = $ref();
-
-const handleLogoExceed = (files) => {
-    refLogoUpload.clearFiles();
-    const file = files[0];
-    file.uid = genFileId();
-    refLogoUpload.handleStart(file);
-};
-const handleFavExceed = (files) => {
-    refFavUpload.clearFiles();
-    const file = files[0];
-    file.uid = genFileId();
-    refFavUpload.handleStart(file);
+    formData.primaryColor = data.primary_color;
+    formData.primaryLightColor = data.primary_light_color;
+    formData.primaryDarkColor = data.primary_dark_color;
+    formData.complementaryColor = data.complementary_color;
 };
 
 onMounted(() => {
@@ -304,5 +282,8 @@ ul.icon-picker {
 .card-footer {
     position: absolute;
     bottom: 20px;
+}
+.demo-color-block {
+    margin-right: 10px;
 }
 </style>

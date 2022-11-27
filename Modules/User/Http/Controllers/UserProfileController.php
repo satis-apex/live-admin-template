@@ -64,8 +64,8 @@ class UserProfileController extends Controller
         $userInfo = UserInfo::find(request()->user()->profile->id);
         if (request()->has('avatar')) {
             $userInfo->addMediaFromRequest('avatar')->toMediaCollection('avatar');
+            return Redirect::route($this->routeName . '.index')->with('success', 'Avatar Updated Successfully');
         }
-        request()->has('avatar');
-        return Redirect::route($this->routeName . '.index')->with('success', 'Avatar Updated Successfully');
+        return Redirect::route($this->routeName . '.index')->with('success', 'Invalid Avatar Uploaded.');
     }
 }

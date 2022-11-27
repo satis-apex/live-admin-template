@@ -37,12 +37,11 @@ class AppSettingController extends Controller
 
     public function update()
     {
-        dd($_FILES['logo']);
         try {
             AppSettingService::update();
         } catch (\Exception $e) {
             return Redirect::route($this->routeName . '.index')->with('error', $e->getMessage());
         }
-        return Redirect::route($this->routeName . '.index')->with('success', 'Updated Successfully');
+        return Redirect::route($this->routeName . '.index')->with('success', 'Application Information Updated Successfully');
     }
 }

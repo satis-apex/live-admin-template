@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Modules\MenuLink\Models\MenuLink;
 use Illuminate\Support\Facades\Storage;
+use Modules\AppSetting\Models\ApplicationInfo;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 if (!\function_exists('executeMax')) {
@@ -31,6 +32,16 @@ if (!\function_exists('getPercent')) {
     function getPercent($obtain, $total)
     {
         return round(($obtain / $total) * 100, 2);
+    }
+}
+if (!\function_exists('getAppInfo')) {
+    function getAppInfo($key = '')
+    {
+        $appInfo = ApplicationInfo::first();
+        if ($key != '') {
+            return $appInfo->$key;
+        }
+        return $appInfo;
     }
 }
 if (!\function_exists('file_name_info')) {

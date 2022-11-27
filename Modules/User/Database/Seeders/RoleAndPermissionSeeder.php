@@ -24,6 +24,16 @@ class RoleAndPermissionSeeder extends Seeder
             'MenuLink-create',
             'MenuLink-edit',
             'MenuLink-delete',
+
+            'AppSetting-access',
+            'AppSetting-create',
+            'AppSetting-edit',
+            'AppSetting-delete',
+
+            'AppInformation-access',
+            'AppInformation-create',
+            'AppInformation-edit',
+            'AppInformation-delete',
         ];
 
         foreach ($permissions as $permission) {

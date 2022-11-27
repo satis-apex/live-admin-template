@@ -1,5 +1,4 @@
 <?php
-
 namespace Modules\AppSetting\Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -10,7 +9,11 @@ class AppSettingDatabaseSeeder extends Seeder
     public function run()
     {
         Model::unguard();
-
+        $this->call(
+            [
+                ApplicationInfoSeeder::class,
+            ]
+        );
         // $this->call("OthersTableSeeder");
     }
 }
