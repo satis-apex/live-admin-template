@@ -141,7 +141,7 @@ button.dd-expand {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     font-size: 20px;
-    color: var(--brand-primary-dark);
+    color: var(--primary-dark-color);
 }
 .nestable-content {
     display: block;

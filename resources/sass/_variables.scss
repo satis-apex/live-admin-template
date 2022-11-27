@@ -29,12 +29,12 @@
 
 :root{
   --active-highlight: #ccc;
-  --brand-primary: #009ef7;
-  --brand-primary-light: #0AA9FF;;
-  --menu-active: #c6e2ff;
-  --brand-primary-dark: #0071AD;
-  --brand-primary-lightest: #31B5FC;
-  --brand-complementary: #FFBA00;
+  --primary-color: #009ef7;
+  --primary-light-color: #0AA9FF;
+  --menu-active-color: #c6e2ff;
+  --primary-dark-color: #0071AD;
+  --primary-lightest-color: #31B5FC;
+  --complementary_color: #FFBA00;
   --body-bg:#F6F6F6;
 }
 
@@ -43,10 +43,10 @@
 // $body-bg: var(--body-bg);
 
 // Brands
-// $brand-primary: var(--brand-primary);
-// $brand-primary-dark: #0071AD;
-// $brand-primary-light: #0AA9FF;
-// $brand-primary-lightest: #31B5FC;
+// $primary-color: var(--primary-color);
+// $primary-dark-color: #0071AD;
+// $primary-light-color: #0AA9FF;
+// $primary-lightest-color: #31B5FC;
 // $brand-complementary: #FFBA00;
 // $brand-info: #8eb4cb;
 // $brand-success: #608878;
@@ -67,7 +67,7 @@
 
 // Inputs
 // $input-border: lighten($text-color, 40%);
-// $input-border-focus: lighten($brand-primary, 25%);
+// $input-border-focus: lighten($primary-color, 25%);
 // $input-color-placeholder: lighten($text-color, 30%);
 
 // Panels
@@ -75,27 +75,27 @@
 
 .bg-primary
 {
-	background-color: var(--brand-primary);
+	background-color: var(--primary-color);
 }
 .bg-primary-light
 {
-	background-color: var(--brand-primary-light);
+	background-color: var(--primary-light-color);
 }
 .bg-primary-lightest
 {
-	background-color: var(--brand-primary-lightest);
+	background-color: var(--primary-lightest-color);
 }
 .bg-primary-dark
 {
-  background-color: var(--brand-primary-dark);
+  background-color: var(--primary-dark-color);
 }
 .bg-primary-light
 {
-  background-color: var(--brand-primary-light);
+  background-color: var(--primary-light-color);
 }
 .bg-complementary
 {
-  background-color: var(--brand-complementary);
+  background-color: var(--complementary_color);
 }
 .bg-body
 {
@@ -103,5 +103,12 @@
 }
 .text-primary
 {
-  color: var(--brand-primary);
+  color: var(--primary-color);
+}
+.el-input__inner[type=number],.el-input__inner[type=number]:hover
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button
+{
+  -webkit-appearance: none; 
+  -moz-appearance: textfield;
+  margin: 0; 
 }

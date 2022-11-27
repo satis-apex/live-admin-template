@@ -39,8 +39,8 @@ const darkMode = $ref(isDarkScheme());
 </template>
 <style>
 .dark-mode-toggler .el-switch__core {
-    border: 1px solid #c5c1c1;
-    box-shadow: 0px 0px 4px #d7d7d7;
+    border: 1px solid #bdbdbd;
+    box-shadow: 0px 0px 3px #d7d7d7;
 }
 .dark-mode-toggler .el-switch__core .el-switch__inner .is-icon,
 .el-switch__core .el-switch__inner .is-text {

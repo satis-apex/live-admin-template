@@ -152,8 +152,25 @@
             class="brand-logo bg-primary text-white hidden-sm-and-down"
             :class="isCollapse ? '!w-16 flex' : ''"
         >
-            <div class="logo" v-if="!isCollapse">Brand Logo</div>
-            <div class="logo" v-if="isCollapse">B</div>
+            <div class="logo" v-if="!isCollapse">
+                <template v-if="iPropsValue('app_info', 'brandLogo')">
+                    <img
+                        :src="iPropsValue('app_info', 'brandLogo')"
+                        alt="Brand Logo"
+                    />
+                </template>
+                <template v-else>Brand Logo</template>
+            </div>
+            <div class="logo" v-if="isCollapse">
+                <template v-if="iPropsValue('app_info', 'favIcon')">
+                    <img
+                        class="object-contain"
+                        :src="iPropsValue('app_info', 'favIcon')"
+                        alt="Brand Logo"
+                    />
+                </template>
+                <template v-else>B</template>
+            </div>
         </div>
         <SimpleBar
             id="menubar"
@@ -324,7 +341,7 @@ defineExpose({
     toggleDesktopMenu,
 });
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .brand-logo {
     height: 60px;
     display: flex;
@@ -353,11 +370,17 @@ defineExpose({
 }
 
 .logo {
-    width: 100%;
+    img {
+        height: 45px;
+        max-width: 100%;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .el-sub-menu.is-active {
-    background: var(--menu-active);
+    background: var(--menu-active-color);
 }
 .el-sub-menu__title span,
 .el-menu-item span:not(.bullet-dot),

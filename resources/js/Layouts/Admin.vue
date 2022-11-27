@@ -45,7 +45,18 @@ watch(
         navComponentKey += 1;
     }
 );
+const setCssProp = (propName, value) => {
+    document.documentElement.style.setProperty(propName, value);
+};
+const setAppThemeColor = function () {
+    const appInfo = iPropsValue("app_info");
+    setCssProp("--primary-color", appInfo.primary_color);
+    setCssProp("--primary-light-color", appInfo.primary_light_color);
+    setCssProp("--primary-dark-color", appInfo.primary_dark_color);
+    setCssProp("--complementary_color", appInfo.complementary_color);
+};
 onMounted(() => {
+    setAppThemeColor();
     // document.documentElement.style.setProperty("--el-color-primary", "pink");
     // document.documentElement.style.setProperty("--el-menu-text-color", "pink");
     // document.documentElement.style.setProperty(
@@ -56,7 +67,6 @@ onMounted(() => {
     //     "--el-color-primary-light-3",
     //     "pink"
     // );
-    // document.documentElement.style.setProperty("--brand-primary", "pink");
 });
 </script>
 

@@ -45,8 +45,6 @@ onMounted(() => {
     window.addEventListener("resize", () => {
         mobileView = mediaCheck("md");
     });
-
-    // document.documentElement.style.setProperty("--brand-primary", "red");
 });
 </script>
 <script>
