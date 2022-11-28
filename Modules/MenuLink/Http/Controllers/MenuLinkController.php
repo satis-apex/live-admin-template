@@ -26,7 +26,6 @@ class MenuLinkController extends Controller
         $roleMenus = MenuLinkService::listRoleMenuPermission();
         $menuLinkLists = MenuLink::pluck('name')->toArray();
         $menuObject = Menu::pluck('menu_list')->first();
-        // dd(json_decode($menuObject));
         return Inertia::render(
             'MenuLink::Index',
             [

@@ -3,6 +3,7 @@ namespace Modules\User\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\File;
 use Spatie\Permission\Models\Permission;
 
 class RoleAndPermissionSeeder extends Seeder
@@ -17,24 +18,8 @@ class RoleAndPermissionSeeder extends Seeder
         // Reset cached roles and permissions
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
         // create permissions
-        $permissions = [
-            'Home-access',
-
-            'MenuLink-access',
-            'MenuLink-create',
-            'MenuLink-edit',
-            'MenuLink-delete',
-
-            'AppSetting-access',
-            'AppSetting-create',
-            'AppSetting-edit',
-            'AppSetting-delete',
-
-            'AppInformation-access',
-            'AppInformation-create',
-            'AppInformation-edit',
-            'AppInformation-delete',
-        ];
+        $permissionList = File::get(base_path('Modules/User/Database/Seeders/PermissionList.json'));
+        $permissions = json_decode($permissionList);
 
         foreach ($permissions as $permission) {
             Permission::create([

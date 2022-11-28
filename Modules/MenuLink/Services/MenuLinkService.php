@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 use Modules\MenuLink\Models\Menu;
 use Spatie\Permission\Models\Role;
 use Nwidart\Modules\Facades\Module;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Modules\MenuLink\Models\MenuLink;
 use Illuminate\Database\QueryException;
@@ -249,8 +250,18 @@ class MenuLinkService
     public function createPermissions($menu)
     {
         foreach ($this->permissions as $permission) {
-            $this->permissionList[] = $menu . '-' . $permission;
-            Permission::create(['name' => $menu . '-' . $permission]);
+            $permissionName = $menu . '-' . $permission;
+            $this->permissionList[] = $permissionName;
+            Permission::create(['name' => $permissionName]);
+        }
+        //updating permission list to json file
+        $targetPath = base_path('Modules/User/Database/Seeders/PermissionList.json');
+        if (file_exists($targetPath)) {
+            $permissionListCurrent = File::get($targetPath);
+            $permissionListArr = json_decode($permissionListCurrent);
+            $permissionListUpdated = json_encode(array_unique([...$permissionListArr,
+                ...$this->permissionList]));
+            file_put_contents($targetPath, $permissionListUpdated);
         }
         return;
     }

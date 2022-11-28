@@ -20,7 +20,7 @@ class {Module}Controller extends Controller
 
     public function index()
     {
-        ${Module}Lists = [
+        ${moduleC}List = [
             [
                 'date' => '2016-05-03',
                 'name' => 'Tom',
@@ -38,7 +38,7 @@ class {Module}Controller extends Controller
 			'{Module}::Index',
 			[
 				'breadcrumb' => getBreadcrumb() ?: readable('{Module}'),
-                '{Module}Lists' => ${Module}Lists,
+                '{moduleC}List' => ${moduleC}List,
 				'userCan' => [
                     'massAdd' => true && request()->user()->hasPermissionTo('{Module}-create'),
                     'create' => request()->user()->hasPermissionTo('{Module}-create'),

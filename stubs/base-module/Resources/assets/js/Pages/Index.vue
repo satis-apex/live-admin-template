@@ -230,7 +230,7 @@ const tableColumnNames = {
 const exportTableOption = reactive({
     header: ["Name", "Date"],
     headerValue: ["name", "date"],
-    fileName: "testfile",
+    fileName: "{moduleC}List",
 });
 const formInputNames = {
     name: "",
@@ -276,11 +276,11 @@ const searchText = $ref("");
 const filterDataList = $ref();
 const indexMethod = (index) => (currentPage - 1) * pageSize + index + 1;
 const isViewableColumn = (columnName) => viewableColumn.includes(columnName);
-const dataList = $ref(iPropsValue("{Module}Lists"));
+const dataList = $ref(iPropsValue("{moduleC}List"));
 watch(
-    () => iPropsValue("{Module}Lists"),
+    () => iPropsValue("{moduleC}List"),
     () => {
-        dataList = iPropsValue("{Module}Lists");
+        dataList = iPropsValue("{moduleC}List");
         changePage(currentPage);
     }
 );
@@ -293,30 +293,35 @@ const changePage = (val = 1) => {
     currentPage = val;
     const listStorage = dataList;
     // CHECK IF SEARCH EMPTY
-    if (searchText == "") {
-        totalSize = listStorage.length;
-        const append = listStorage.slice(
-            (currentPage - 1) * pageSize,
-            (currentPage - 1) * pageSize + pageSize
-        );
-        filterDataList = append;
-    } else {
-        const filteredPosts = listStorage.filter((data) => {
-            let hasValue = false;
-            viewableColumn.forEach((value) => {
-                if (
-                    data[value].toLowerCase().includes(searchText.toLowerCase())
-                )
-                    hasValue = true;
+    if (listStorage) {
+        if (searchText == "") {
+            totalSize = listStorage.length;
+            const append = listStorage.slice(
+                (currentPage - 1) * pageSize,
+                (currentPage - 1) * pageSize + pageSize
+            );
+            filterDataList = append;
+        } else {
+            const filteredPosts = listStorage.filter((data) => {
+                let hasValue = false;
+                viewableColumn.forEach((value) => {
+                    if (
+                        data[value]
+                            .toString()
+                            .toLowerCase()
+                            .includes(searchText.toLowerCase())
+                    )
+                        hasValue = true;
+                });
+                return hasValue;
             });
-            return hasValue;
-        });
-        totalSize = filteredPosts.length;
-        const append = filteredPosts.slice(
-            (currentPage - 1) * pageSize,
-            (currentPage - 1) * pageSize + pageSize
-        );
-        filterDataList = append;
+            totalSize = filteredPosts.length;
+            const append = filteredPosts.slice(
+                (currentPage - 1) * pageSize,
+                (currentPage - 1) * pageSize + pageSize
+            );
+            filterDataList = append;
+        }
     }
 };
 const searchFilter = () => {
@@ -326,7 +331,12 @@ const searchFilter = () => {
     const filteredPosts = listStorage.filter((data) => {
         let hasValue = false;
         viewableColumn.forEach((value) => {
-            if (data[value].toLowerCase().includes(searchText.toLowerCase()))
+            if (
+                data[value]
+                    .toString()
+                    .toLowerCase()
+                    .includes(searchText.toLowerCase())
+            )
                 hasValue = true;
         });
         return hasValue;

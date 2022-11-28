@@ -26,6 +26,7 @@ class {Module}Service
 	public function massAdd()
     {
         try {
+            $insertData = request('massRecord');
             foreach ($insertData as $row) {
                 {Model}::create($row);
             }
@@ -52,7 +53,7 @@ class {Module}Service
     public function remove($id)
     {
         try {
-            return {Model}::destroy(1);
+            return {Model}::destroy($id);
         } catch (QueryException $e) {
             return throw new  \Exception($e->errorInfo[2]);
         } catch (\Exception $e) {

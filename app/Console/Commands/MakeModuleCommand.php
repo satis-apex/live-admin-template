@@ -138,7 +138,8 @@ class MakeModuleCommand extends Command
             '{module}' => strtolower($name),
             '{Model}' => $model,
             '{model}' => strtolower($model),
-            '{routeName}' => Str::camel($name)
+            '{routeName}' => Str::camel($name),
+            '{moduleC}' => Str::camel($name)
         ];
 
         foreach ($types as $key => $value) {

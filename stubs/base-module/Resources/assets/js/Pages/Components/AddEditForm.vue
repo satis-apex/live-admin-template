@@ -139,12 +139,15 @@ const update = function () {
         callback: (action) => {
             if (action == "confirm") {
                 try {
-                    formData.patch(route("{routeName}.update", formData.id), {
-                        preserveScroll: true,
-                        onSuccess: () => {
-                            closeForm();
-                        },
-                    });
+                    formData.patch(
+                        route("{routeName}.update", editFormData.id),
+                        {
+                            preserveScroll: true,
+                            onSuccess: () => {
+                                closeForm();
+                            },
+                        }
+                    );
                 } catch (error) {
                     ElNotification({
                         title: "Error",
