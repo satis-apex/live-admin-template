@@ -7,6 +7,7 @@
             placement="bottom"
             ><el-button
                 :icon="View"
+                :plain="darkMode"
                 @click="emit('view', rowData)"
                 size="small"
                 rounded
@@ -20,6 +21,7 @@
             v-if="iPropsValue('userCan', 'edit')"
             ><el-button
                 type="primary"
+                :plain="darkMode"
                 @click="emit('edit', rowData)"
                 :icon="Edit"
                 size="small"
@@ -33,6 +35,7 @@
             v-if="iPropsValue('userCan', 'delete')"
             ><el-button
                 type="danger"
+                :plain="darkMode"
                 @click="emit('delete', rowData)"
                 :icon="Delete"
                 size="small"
@@ -43,10 +46,20 @@
 <script setup>
 import { Edit, Delete, View } from "@element-plus/icons-vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
+import { useAppUtility } from "@/Composables/appUtiility";
+const { isDarkScheme } = useAppUtility();
 let { iPropsValue } = useInertiaPropsUtility();
 const emit = defineEmits(["delete", "edit", "view"]);
 let RowData = $ref(props.rowData);
 const props = defineProps({
     rowData: Object,
 });
+const darkMode = $ref(isDarkScheme());
+document.documentElement.addEventListener(
+    "change-color-scheme",
+    (e) => {
+        darkMode = isDarkScheme();
+    },
+    false
+);
 </script>
