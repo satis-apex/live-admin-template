@@ -3,6 +3,6 @@ INSERT INTO `menu_links` (`id`, `name`,`default_menu`, `link`,`permission_key`, 
 	(2, 'Manage Menu', 1,'menulink.index','MenuLink', 'database', 'child', 3, 'Su-Admin,Admin', '2022-10-12 02:43:42', '2022-10-12 02:43:42'),
 	(3, 'App Settings',1, '#','#', 'gear', 'parent', NULL, 'Su-Admin,Admin', '2022-10-12 02:43:42', '2022-10-12 02:43:42'),
 	(4, 'App Information',1, 'appSetting.index','AppSetting', NULL, 'child', 3, 'Su-Admin,Admin', '2022-10-12 02:43:42', '2022-10-12 02:43:42'),
-	(5, 'Manage Role', 0, 'userRole.index', 'UserRole', NULL, 'child', '3', 'Su-Admin,Admin', '2022-11-28 06:48:02', '2022-11-28 06:48:02');
-
+	(5, 'Manage Role', 0, 'userRole.index', 'UserRole', NULL, 'child', '3', 'Su-Admin,Admin', '2022-11-28 06:48:02', '2022-11-28 06:48:02'),
+	(6, 'Server Side Table', 0, 'dataTable.index', 'DataTable', 'table', 'parent-single', NULL, 'Su-Admin', '2022-11-30 08:59:18', '2022-11-30 08:59:18');
 

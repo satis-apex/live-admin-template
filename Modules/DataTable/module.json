@@ -1,0 +1,12 @@
+{
+    "name": "DataTable",
+    "label": "DataTable",
+    "alias": "datatable",
+    "description": "manage all datatable",
+    "keywords": ["datatable"],
+    "priority": 0,
+    "providers": ["Modules\\DataTable\\Providers\\DataTableServiceProvider"],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

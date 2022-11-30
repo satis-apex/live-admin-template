@@ -1,0 +1,23 @@
+[
+    "Home-access",
+    "MenuLink-access",
+    "MenuLink-create",
+    "MenuLink-edit",
+    "MenuLink-delete",
+    "AppSetting-access",
+    "AppSetting-create",
+    "AppSetting-edit",
+    "AppSetting-delete",
+    "AppInformation-access",
+    "AppInformation-create",
+    "AppInformation-edit",
+    "AppInformation-delete",
+    "UserRole-access",
+    "UserRole-create",
+    "UserRole-edit",
+    "UserRole-delete",
+    "DataTable-access",
+    "DataTable-create",
+    "DataTable-edit",
+    "DataTable-delete"
+]

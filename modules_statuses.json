@@ -1,5 +1,7 @@
 {
     "MenuLink": true,
     "User": true,
-    "AppSetting": true
+    "AppSetting": true,
+    "UserRole": true,
+    "DataTable": true
 }
