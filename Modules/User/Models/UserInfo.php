@@ -8,7 +8,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class userInfo extends Authenticatable implements HasMedia
+class UserInfo extends Authenticatable implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
     protected $hidden = ['created_at', 'updated_at'];

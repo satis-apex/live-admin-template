@@ -92,7 +92,7 @@ class MakeModuleCommand extends Command
             $this->replaceInFile($targetPath . '/Models/Model.php');
             //rename
             $this->rename($targetPath . '/Database/Factories/ModelFactory.php', $targetPath . '/Database/Factories/' . $Model . 'Factory.php');
-            $this->rename($targetPath . '/Database/migrations/create_module_table.php', $targetPath . '/Database/migrations/create_' . $module . '_table.php', 'migration');
+            $this->rename($targetPath . '/Database/migrations/create_module_table.php', $targetPath . '/Database/migrations/create_' . Str::snake($Module) . 's_table.php', 'migration');
             $this->rename($targetPath . '/Database/Seeders/ModelDatabaseSeeder.php', $targetPath . '/Database/Seeders/' . $Module . 'DatabaseSeeder.php');
             $this->rename($targetPath . '/Models/Model.php', $targetPath . '/Models/' . $Model . '.php');
         }
