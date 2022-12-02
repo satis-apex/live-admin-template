@@ -1,5 +1,7 @@
 # Live-Admin
 
+![LIVE Admin Template](https://iili.io/HqHBmej.jpg)
+
 Live-Admin is an admin template created by integrating Laravel, Vue3 and Inertia.js with the UI Toolkit Element Plus and css utility Tailwind. The work is inspired by vue-element-admin with the latest versions of the stack integrated with vite bundler for a rapid development experience. With the powerful Laravel framework as the backend, Vue3 as the high performance on the front end integrated with Inertia js, vite as a bundler, Live-admin appears to be a full-stack solution for an enterprise application level.
 
 ## Features:
@@ -9,6 +11,7 @@ Live-Admin is an admin template created by integrating Laravel, Vue3 and Inertia
 -   Option to generate Controller, Model and Service class (all about personal preferences and coding standard)
 -   Laravel Module Implemented
 -   Ability to create fully functional Demo Crud file from add Manage Menu UI dynamically
+-   Dark mode Compatible
 
 ## Requirement
 
