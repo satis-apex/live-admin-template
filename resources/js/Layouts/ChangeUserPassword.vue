@@ -13,7 +13,6 @@
                 ref="formDataRef"
                 :model="formData"
                 :rules="rules"
-                status-icon
                 label-width="140px"
                 :scroll-to-error="true"
                 @submit.prevent
@@ -92,12 +91,9 @@ const validatePass = (rule, value, callback) => {
     if (value === "") {
         callback(new Error("Please input the password"));
     } else {
-        if (formData.password_confirmation !== "") {
-            if (!formDataRef.value) return;
-            formDataRef.value.validateField(
-                "password_confirmation",
-                () => null
-            );
+        if (formData !== "") {
+            if (!formDataRef) return;
+            formDataRef.validateField("password_confirmation", () => null);
         }
         callback();
     }
@@ -113,7 +109,13 @@ const validatePass2 = (rule, value, callback) => {
 };
 
 const rules = reactive({
-    current_password: [{ required: true, trigger: "blur" }],
+    current_password: [
+        {
+            required: true,
+            trigger: "blur",
+            message: "Please enter current password.",
+        },
+    ],
     password: [{ required: true, validator: validatePass, trigger: "blur" }],
     password_confirmation: [
         { required: true, validator: validatePass2, trigger: "blur" },
@@ -121,9 +123,12 @@ const rules = reactive({
 });
 
 const submitForm = (formEl) => {
+    showError = false;
     if (!formEl) return;
     formEl.validate((valid, fields) => {
+        console.log(formEl);
         if (valid) {
+            console.log(valid);
             formData.patch(route("changePassword"), {
                 onFinish: () => {
                     formData.reset();
@@ -140,9 +145,14 @@ const submitForm = (formEl) => {
             console.log("error submit!", fields);
         }
     });
-    showError = true;
 };
-
+watch(
+    () => iPropsValue("errors", "changePassword"),
+    () => {
+        if (iPropsValue("errors", "changePassword")) showError = true;
+        else handleClose();
+    }
+);
 const resetForm = (formEl) => {
     if (!formEl) return;
     showError = false;
