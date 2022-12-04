@@ -57,7 +57,7 @@
     </el-dialog>
 </template>
 <script setup>
-import { watch, reactive } from "vue";
+import { watch, reactive } from "@vue/runtime-core";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useStringUtility } from "@/Composables/stringUtility";

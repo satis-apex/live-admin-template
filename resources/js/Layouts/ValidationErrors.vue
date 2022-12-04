@@ -12,7 +12,7 @@
 </template>
 <script setup>
 import { useStringUtility } from "@/Composables/stringUtility";
-import { computed, watch } from "vue";
+import { computed, watch } from "@vue/runtime-core";
 const { readableWord } = useStringUtility();
 const props = defineProps({
     errors: Object,
