@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed } from "@vue/runtime-core";
 import { usePage } from "@inertiajs/inertia-vue3";
 
 const errors = computed(() => usePage().props.value.errors);

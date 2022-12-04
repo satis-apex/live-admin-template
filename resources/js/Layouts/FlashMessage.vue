@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, watch } from "vue";
+import { onMounted, watch } from "@vue/runtime-core";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 
 const { iPropsValue } = useInertiaPropsUtility();

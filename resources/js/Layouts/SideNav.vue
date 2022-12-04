@@ -9,7 +9,9 @@
             custom-class="menu-drawer"
         >
             <template #header>
-                <div class="logo">Brand Logo</div>
+                <div class="logo">
+                    <ApplicationLogo />
+                </div>
             </template>
             <template #default>
                 <SimpleBar id="menubar-drawer">
@@ -153,23 +155,10 @@
             :class="isCollapse ? '!w-16 flex' : ''"
         >
             <div class="logo" v-if="!isCollapse">
-                <template v-if="iPropsValue('app_info', 'brandLogo')">
-                    <img
-                        :src="iPropsValue('app_info', 'brandLogo')"
-                        alt="Brand Logo"
-                    />
-                </template>
-                <template v-else>Brand Logo</template>
+                <ApplicationLogo />
             </div>
             <div class="logo" v-if="isCollapse">
-                <template v-if="iPropsValue('app_info', 'favIcon')">
-                    <img
-                        class="object-contain"
-                        :src="iPropsValue('app_info', 'favIcon')"
-                        alt="Brand Logo"
-                    />
-                </template>
-                <template v-else>B</template>
+                <ApplicationLogo :mnemonic="true" />
             </div>
         </div>
         <SimpleBar
@@ -318,6 +307,7 @@ import { SimpleBar } from "simplebar-vue3";
 import { watch, computed, inject, onMounted } from "@vue/runtime-core";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useAppUtility } from "@/Composables/appUtiility";
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 const { iPropsValue } = useInertiaPropsUtility();
 const { mediaCheck, hasMenuAccess } = useAppUtility();
 const isCollapse = $ref(inject("isCollapse"));

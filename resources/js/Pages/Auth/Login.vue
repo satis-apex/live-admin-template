@@ -33,7 +33,7 @@ export default {
     <BreezeGuestLayout>
         <Head title="Log in" />
 
-        <BreezeValidationErrors class="mb-4" />
+        <BreezeValidationErrors class="mb-4 bg-white/70 p-3 sm:rounded-lg" />
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
@@ -41,7 +41,11 @@ export default {
 
         <form @submit.prevent="submit">
             <div>
-                <BreezeLabel for="email" value="Email" />
+                <BreezeLabel
+                    for="email"
+                    value="Email"
+                    class="text-white text-base"
+                />
                 <BreezeInput
                     id="email"
                     type="email"
@@ -54,7 +58,11 @@ export default {
             </div>
 
             <div class="mt-4">
-                <BreezeLabel for="password" value="Password" />
+                <BreezeLabel
+                    for="password"
+                    value="Password"
+                    class="text-white text-base"
+                />
                 <BreezeInput
                     id="password"
                     type="password"
@@ -71,7 +79,7 @@ export default {
                         name="remember"
                         v-model:checked="form.remember"
                     />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    <span class="ml-2 text-md text-white">Remember me</span>
                 </label>
             </div>
 
@@ -79,14 +87,14 @@ export default {
                 <Link
                     v-if="canResetPassword"
                     :href="appRoute('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900"
+                    class="underline text-sm text-gray-100 hover:text-gray-900"
                 >
                     Forgot your password?
                 </Link>
 
                 <BreezeButton
                     class="ml-4"
-                    :class="{ 'opacity-25': form.processing }"
+                    :class="{ 'opacity-60': form.processing }"
                     :disabled="form.processing"
                 >
                     Log in

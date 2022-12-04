@@ -22,7 +22,7 @@ class ApplicationInfo extends Authenticatable implements HasMedia
     public function getBrandLogoAttribute()
     {
         if ($this->getFirstMedia('logo') != null) {
-            if ($this->getFirstMedia('logo')->hasGeneratedConversion('thumb')) {
+            if ($this->getFirstMedia('logo')->hasGeneratedConversion('medium')) {
                 $fullPath = $this->getFirstMedia('logo')->getPath('thumb');
                 if (file_exists($fullPath)) {
                     return $this->getFirstMedia('logo')->getUrl('thumb');
@@ -68,7 +68,7 @@ class ApplicationInfo extends Authenticatable implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->fit(Manipulations::FIT_MAX, 150, 150)
+            ->fit(Manipulations::FIT_MAX, 250, 250)
             ->sharpen(10)
             ->keepOriginalImageFormat();
 
