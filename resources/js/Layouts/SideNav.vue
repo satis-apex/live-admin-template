@@ -304,22 +304,31 @@
 </template>
 <script setup>
 import { SimpleBar } from "simplebar-vue3";
-import { watch, computed, inject, onMounted } from "@vue/runtime-core";
+import { watch, computed, onMounted } from "@vue/runtime-core";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useAppUtility } from "@/Composables/appUtiility";
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 const { iPropsValue } = useInertiaPropsUtility();
 const { mediaCheck, hasMenuAccess } = useAppUtility();
-const isCollapse = $ref(inject("isCollapse"));
+
+const isMobile = mediaCheck("lg");
 const menuDrawer = $ref();
 const currentActive = $ref("");
 const menuList = $ref(iPropsValue("app_menu"));
 
+const isCollapse = $ref(
+    localStorage.collapseMenu && localStorage.collapseMenu == "true"
+        ? true
+        : isMobile
+        ? true
+        : false
+);
 const showMenuDrawer = function () {
     menuDrawer = true;
 };
 const toggleDesktopMenu = function () {
     isCollapse = !isCollapse;
+    localStorage.collapseMenu = isCollapse;
 };
 onMounted(() => {
     window.addEventListener("resize", () => {

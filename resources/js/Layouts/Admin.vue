@@ -26,17 +26,14 @@ import { SimpleBar } from "simplebar-vue3";
 import SideNav from "@/Layouts/SideNav.vue";
 import heads from "@/Layouts/Head.vue";
 import moment from "moment";
-import { ref, provide, onMounted, watch } from "@vue/runtime-core";
+import { ref, onMounted, watch } from "@vue/runtime-core";
 import FlashMessage from "@/Layouts/FlashMessage.vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-import { useAppUtility } from "@/Composables/appUtiility";
 const { iPropsValue } = useInertiaPropsUtility();
-const { mediaCheck } = useAppUtility();
-const isMobile = mediaCheck("lg");
-const isCollapse = $ref(isMobile ? true : false);
+
 const refSideNav = $ref(null);
 const navComponentKey = $ref(0);
-provide("isCollapse", isCollapse);
+
 const showDrawer = () => refSideNav.showMenuDrawer();
 const toggleDesktopMenu = () => refSideNav.toggleDesktopMenu();
 watch(
