@@ -14,7 +14,7 @@ class {Model} extends Authenticatable
     {
         return {Model}Factory::new();
     }
-
+    protected $table = '{module_}s';
     protected $hidden = [
         'created_at',
         'updated_at',

@@ -10,6 +10,7 @@
                 :model="formData"
                 :rules="rules"
                 ref="formRef"
+                :label-position="mobileView ? 'top' : 'right'"
             >
                 <el-form-item
                     label="Name"
@@ -64,10 +65,13 @@ import { Edit, Search } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 //composable import
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
+import { useAppUtility } from "@/Composables/appUtiility";
 //variable declaration
 const FormVisible = $ref(false);
 const formLabelWidth = "140px";
 let { iPropsValue } = useInertiaPropsUtility();
+const { mediaCheck } = useAppUtility();
+const mobileView = $ref(mediaCheck("md"));
 let formRef = $ref();
 let FormType = $ref("Add");
 let editFormData = $ref(); //default edit form data
@@ -174,6 +178,11 @@ const showForm = function (formType, data = "") {
 let populateFormData = function (data) {
     formData.name = data.name;
 };
+onMounted(() => {
+    window.addEventListener("resize", () => {
+        mobileView = mediaCheck("md");
+    });
+});
 defineExpose({
     showForm,
 });

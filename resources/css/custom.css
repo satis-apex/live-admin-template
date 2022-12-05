@@ -29,8 +29,20 @@ select:focus {
   top: 20px !important;
   right: 18px !important;
 }
-
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
 /* 
 responsive hidden modified version of display .css(element plus)
 */
 @media only screen and (max-width:575.98px) { .hidden-xs-only { display: none !important } } @media only screen and (min-width:576px) { .hidden-sm-and-up { display: none !important } } @media only screen and (min-width:576px) and (max-width:767.98px) { .hidden-sm-only { display: none !important } } @media only screen and (max-width:767.98px) { .hidden-sm-and-down { display: none !important } } @media only screen and (min-width:768px) { .hidden-md-and-up { display: none !important } } @media only screen and (min-width:768px) and (max-width:991.98px) { .hidden-md-only { display: none !important } } @media only screen and (max-width:991.98px) { .hidden-md-and-down { display: none !important } } @media only screen and (min-width:992px) { .hidden-lg-and-up { display: none !important } } @media only screen and (min-width:992px) and (max-width:1199.98px) { .hidden-lg-only { display: none !important } } @media only screen and (max-width:1199.98px) { .hidden-lg-and-down { display: none !important } } @media only screen and (min-width:1200px) { .hidden-xl-and-up { display: none !important } } @media only screen and (min-width:1200px) and (max-width:1399.98px) { .hidden-xl-only { display: none !important } } @media only screen and (max-width:1399.98px) { .hidden-xl-and-down { display: none !important } } @media only screen and (min-width:1400px) { .hidden-2xl-only { display: none !important } }
+
+@media (width <= 600px) {
+  .el-dialog {
+    --el-dialog-width: 90% !important;
+  }
+}
