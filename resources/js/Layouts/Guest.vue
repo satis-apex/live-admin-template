@@ -4,6 +4,9 @@ import { Link } from "@inertiajs/inertia-vue3";
 </script>
 
 <template>
+    <div
+        class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-tr from-emerald-300 via-sky-300 to-blue-400"
+    >
         <div>
             <Link href="/">
                 <BreezeApplicationLogo class="h-16 fill-current text-black" />

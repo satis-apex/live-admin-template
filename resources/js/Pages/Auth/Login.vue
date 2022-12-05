@@ -69,7 +69,7 @@ export default {
 <template>
     <BreezeGuestLayout>
         <Head title="Log in" />
-
+        <h2 class="mb-4 text-gray-50 text-3xl text-center">Sign In</h2>
         <BreezeValidationErrors class="mb-4 bg-white/70 p-3 sm:rounded-lg" />
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
