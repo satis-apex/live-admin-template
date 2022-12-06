@@ -73,7 +73,7 @@ const formData = useForm({
     password: "",
     password_confirmation: "",
 });
-let showError = $ref(false);
+let showError = $ref(formData.hasErrors);
 let formVisible = $ref(props.parentFormVisible);
 watch(
     () => props.parentFormVisible,
@@ -116,19 +116,24 @@ const rules = reactive({
             message: "Please enter current password.",
         },
     ],
-    password: [{ required: true, validator: validatePass, trigger: "blur" }],
+    password: [
+        { required: true, validator: validatePass, trigger: "blur" },
+        {
+            min: 8,
+            message: "Password must be at-least 8 characters",
+            trigger: "blur",
+        },
+    ],
     password_confirmation: [
         { required: true, validator: validatePass2, trigger: "blur" },
     ],
 });
 
 const submitForm = (formEl) => {
-    showError = false;
     if (!formEl) return;
     formEl.validate((valid, fields) => {
         console.log(formEl);
         if (valid) {
-            console.log(valid);
             formData.patch(route("changePassword"), {
                 onFinish: () => {
                     formData.reset();
@@ -147,10 +152,9 @@ const submitForm = (formEl) => {
     });
 };
 watch(
-    () => iPropsValue("errors", "changePassword"),
+    () => formData.hasErrors,
     () => {
-        if (iPropsValue("errors", "changePassword")) showError = true;
-        else handleClose();
+        showError = formData.hasErrors;
     }
 );
 const resetForm = (formEl) => {
