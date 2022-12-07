@@ -26,7 +26,7 @@
                         size="small"
                         rounded
                         class="!px-2"
-                        :plain="darkMode"
+                        :plain="isDarkMode"
                     >
                         <fa icon="pen"
                     /></el-button>
@@ -44,7 +44,7 @@
                         size="small"
                         rounded
                         class="!px-2"
-                        :plain="darkMode"
+                        :plain="isDarkMode"
                         ><fa icon="trash"
                     /></el-button>
                 </el-tooltip>
@@ -58,7 +58,7 @@ import { useAppUtility } from "@/Composables/appUtiility";
 import { onMounted, watch } from "@vue/runtime-core";
 import PermissionLabel from "./PermissionLabel.vue";
 const { iPropsValue } = useInertiaPropsUtility();
-const { isDarkScheme } = useAppUtility();
+const { isDarkMode } = useAppUtility();
 const props = defineProps({
     menuItem: Object,
     activeTab: String,
@@ -68,12 +68,4 @@ const activeTab = $ref(props.activeTab);
 let menuItem = $ref(props.menuItem);
 const role = $ref(props.role);
 const emit = defineEmits(["deleteMenu", "editMenu"]);
-const darkMode = $ref(isDarkScheme());
-document.documentElement.addEventListener(
-    "change-color-scheme",
-    (e) => {
-        darkMode = isDarkScheme();
-    },
-    false
-);
 </script>

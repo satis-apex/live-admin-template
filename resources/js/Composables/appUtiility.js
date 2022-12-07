@@ -1,4 +1,5 @@
 import { usePage } from "@inertiajs/inertia-vue3";
+import { ref } from "@vue/runtime-core";
 
 export function useAppUtility() {
 
@@ -127,6 +128,14 @@ export function useAppUtility() {
 	};
 	//dark mode function
 	const isDarkScheme = () => localStorage.theme === "dark";
+	const isDarkMode = ref(isDarkScheme())
+	document.documentElement.addEventListener(
+		"change-color-scheme",
+		(e) => {
+			isDarkMode.value = isDarkScheme();
+		},
+		false
+	);
 
 	const setDarkScheme = () => {
 		// Whenever the user explicitly chooses dark mode
@@ -156,6 +165,7 @@ export function useAppUtility() {
 		hasMenuAccess,
 		loadScript,
 		isDarkScheme,
+		isDarkMode,
 		setDarkScheme,
 		setLightScheme,
 		setDefaultScheme

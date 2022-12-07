@@ -42,7 +42,7 @@
                         @click="emit('editMenu', menuItem)"
                         size="small"
                         rounded
-                        :plain="darkMode"
+                        :plain="isDarkMode"
                         class="!px-2"
                     >
                         <fa icon="pen"
@@ -63,7 +63,7 @@
                         @click="emit('deleteMenu', +menuItem.id)"
                         size="small"
                         rounded
-                        :plain="darkMode"
+                        :plain="isDarkMode"
                         class="!px-2"
                         ><fa icon="trash"
                     /></el-button>
@@ -77,18 +77,10 @@ import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { onMounted } from "@vue/runtime-core";
 import { useAppUtility } from "@/Composables/appUtiility";
 const { iPropsValue } = useInertiaPropsUtility();
-const { isDarkScheme } = useAppUtility();
+const { isDarkMode } = useAppUtility();
 const props = defineProps({
     menuItem: Object,
 });
 const menuItem = $ref(props.menuItem);
 const emit = defineEmits(["deleteMenu", "editMenu"]);
-const darkMode = $ref(isDarkScheme());
-document.documentElement.addEventListener(
-    "change-color-scheme",
-    (e) => {
-        darkMode = isDarkScheme();
-    },
-    false
-);
 </script>

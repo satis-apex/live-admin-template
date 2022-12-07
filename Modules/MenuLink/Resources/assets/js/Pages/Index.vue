@@ -24,7 +24,7 @@
                                         type="success"
                                         size="default"
                                         rounded
-                                        :plain="darkMode"
+                                        :plain="isDarkMode"
                                         @click="addForm"
                                         :icon="Plus"
                                     >
@@ -44,7 +44,7 @@
                                         type="success"
                                         size="default"
                                         rounded
-                                        :plain="darkMode"
+                                        :plain="isDarkMode"
                                         @click="saveMenuChanges()"
                                         :loading="saveMenuLoading"
                                         v-if="menuChangedStatus"
@@ -99,7 +99,7 @@ const addEditMenuForm = $ref(null);
 const saveMenuLoading = $ref(false);
 const { resetObjectKey } = useObjectUtility();
 const { iPropsValue } = useInertiaPropsUtility();
-const { isDarkScheme } = useAppUtility();
+const { isDarkMode } = useAppUtility();
 const changedMenus = $ref({});
 const renderNestable = (timeOut = 0) => {
     return new Promise((resolve) =>
@@ -180,14 +180,6 @@ const saveMenuChanges = function () {
         },
     });
 };
-const darkMode = $ref(isDarkScheme());
-document.documentElement.addEventListener(
-    "change-color-scheme",
-    (e) => {
-        darkMode = isDarkScheme();
-    },
-    false
-);
 </script>
 <script>
 export default {

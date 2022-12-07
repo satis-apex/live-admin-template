@@ -32,7 +32,7 @@
                                 placement="bottom"
                             >
                                 <el-button
-                                    :plain="darkMode"
+                                    :plain="isDarkMode"
                                     type="success"
                                     size="default"
                                     rounded
@@ -49,7 +49,7 @@
                                 placement="bottom"
                             >
                                 <el-button
-                                    :plain="darkMode"
+                                    :plain="isDarkMode"
                                     type="warning"
                                     size="default"
                                     rounded
@@ -65,7 +65,7 @@
 
             <el-col :span="6" class="item-right text-right">
                 <el-button
-                    :plain="darkMode"
+                    :plain="isDarkMode"
                     type="success"
                     :loading="exportLoading"
                     @click="exportTable()"
@@ -185,7 +185,7 @@ import { Plus, Delete, Search, DocumentAdd } from "@element-plus/icons-vue";
 //composable function import
 const { iPropsValue } = useInertiaPropsUtility();
 const { filterObjectWithGroupedValue } = useObjectUtility();
-const { mediaCheck, isDarkScheme } = useAppUtility();
+const { mediaCheck, isDarkMode } = useAppUtility();
 //variable declare
 const mobileView = $ref(mediaCheck("md"));
 const refAddEditForm = $ref(null);
@@ -363,14 +363,6 @@ onMounted(() => {
         mobileView = mediaCheck("md");
     });
 });
-const darkMode = $ref(isDarkScheme());
-document.documentElement.addEventListener(
-    "change-color-scheme",
-    (e) => {
-        darkMode = isDarkScheme();
-    },
-    false
-);
 </script>
 <script>
 export default {

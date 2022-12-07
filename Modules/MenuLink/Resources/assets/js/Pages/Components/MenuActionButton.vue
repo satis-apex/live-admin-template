@@ -11,7 +11,7 @@
                 type="primary"
                 size="default"
                 rounded
-                :plain="darkMode"
+                :plain="isDarkMode"
                 @click="expandAllMenu()"
             >
                 <fa icon="angles-down" />
@@ -28,7 +28,7 @@
                 type="primary"
                 size="default"
                 rounded
-                :plain="darkMode"
+                :plain="isDarkMode"
                 @click="collapseAllMenu()"
             >
                 <fa icon="angles-up" />
@@ -38,20 +38,11 @@
 </template>
 <script setup>
 import { useAppUtility } from "@/Composables/appUtiility";
-const { isDarkScheme } = useAppUtility();
+const { isDarkMode } = useAppUtility();
 const expandAllMenu = function () {
     jQuery(".dd").nestable("expandAll");
 };
 const collapseAllMenu = function () {
     jQuery(".dd").nestable("collapseAll");
 };
-
-const darkMode = $ref(isDarkScheme());
-document.documentElement.addEventListener(
-    "change-color-scheme",
-    (e) => {
-        darkMode = isDarkScheme();
-    },
-    false
-);
 </script>

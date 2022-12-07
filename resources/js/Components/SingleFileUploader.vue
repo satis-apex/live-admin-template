@@ -16,7 +16,7 @@
     >
         <template #trigger>
             <el-icon v-if="props.listType == 'picture-card'"><Plus /></el-icon>
-            <el-button v-else type="primary" :plain="darkMode"
+            <el-button v-else type="primary" :plain="isDarkMode"
                 >select file</el-button
             >
         </template>
@@ -36,7 +36,7 @@
 import { genFileId } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
 import { useAppUtility } from "@/Composables/appUtiility";
-const { isDarkScheme } = useAppUtility();
+const { isDarkMode } = useAppUtility();
 const props = defineProps({
     acceptExtension: { type: String, required: true },
     acceptSize: { type: Number, required: true },
@@ -143,14 +143,6 @@ const handlePictureCardPreview = (uploadFile) => {
 };
 
 defineExpose({ clearUploadFile });
-const darkMode = $ref(isDarkScheme());
-document.documentElement.addEventListener(
-    "change-color-scheme",
-    (e) => {
-        darkMode = isDarkScheme();
-    },
-    false
-);
 </script>
 
 <style>

@@ -32,7 +32,7 @@
                                 placement="bottom"
                             >
                                 <el-button
-                                    :plain="darkMode"
+                                    :plain="isDarkMode"
                                     type="success"
                                     :size="mobileView ? 'small' : 'default'"
                                     rounded
@@ -49,7 +49,7 @@
                                 placement="bottom"
                             >
                                 <el-button
-                                    :plain="darkMode"
+                                    :plain="isDarkMode"
                                     type="warning"
                                     :size="mobileView ? 'small' : 'default'"
                                     rounded
@@ -65,7 +65,7 @@
 
             <el-col :xs="4" :sm="4" :md="6" class="item-right text-right">
                 <el-button
-                    :plain="darkMode"
+                    :plain="isDarkMode"
                     :size="mobileView ? 'small' : 'default'"
                     type="success"
                     :loading="exportLoading"
@@ -227,7 +227,7 @@ import { pickBy, debounce } from "lodash-es";
 //composable function import
 const { iPropsValue } = useInertiaPropsUtility();
 const { filterObjectWithGroupedValue } = useObjectUtility();
-const { mediaCheck, isDarkScheme } = useAppUtility();
+const { mediaCheck, isDarkMode } = useAppUtility();
 //variable declare
 const mobileView = $ref(mediaCheck("md"));
 const refAddEditForm = $ref(null);
@@ -406,14 +406,6 @@ onMounted(() => {
         mobileView = mediaCheck("md");
     });
 });
-const darkMode = $ref(isDarkScheme());
-document.documentElement.addEventListener(
-    "change-color-scheme",
-    (e) => {
-        darkMode = isDarkScheme();
-    },
-    false
-);
 </script>
 <script>
 export default {
