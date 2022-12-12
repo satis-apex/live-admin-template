@@ -28,7 +28,6 @@
 </template>
 <script setup>
 import { UploadFilled } from "@element-plus/icons-vue";
-import { utils, read } from "xlsx";
 import { genFileId } from "element-plus";
 import { reactive } from "@vue/reactivity";
 const props = defineProps({
@@ -63,22 +62,26 @@ const handleUpload = function (file) {
     if (validateUpload(file.raw)) {
         const rawFile = file.raw;
         readerData(rawFile);
+        import("xlsx").then(async (xlsx) => {
+            await readerData(rawFile, xlsx);
+        });
         return;
     } else {
         handleRemove();
     }
 };
-const readerData = function (rawFile) {
+const readerData = function (rawFile, xlsx) {
+    if (!xlsx) return;
     loading = true;
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
             const data = e.target.result;
-            const workbook = read(data, { type: "array" });
+            const workbook = xlsx.read(data, { type: "array" });
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
-            const header = getHeaderRow(worksheet);
-            const results = utils.sheet_to_json(worksheet);
+            const header = getHeaderRow(worksheet, xlsx);
+            const results = xlsx.utils.sheet_to_json(worksheet);
             generateData({ header, results });
             loading = false;
             resolve();
@@ -86,19 +89,19 @@ const readerData = function (rawFile) {
         reader.readAsArrayBuffer(rawFile);
     });
 };
-const getHeaderRow = function (sheet) {
+const getHeaderRow = function (sheet, xlsx) {
     const headers = [];
-    const range = utils.decode_range(sheet["!ref"]);
+    const range = xlsx.utils.decode_range(sheet["!ref"]);
     let C;
     const R = range.s.r;
     /* start in the first row */
     for (C = range.s.c; C <= range.e.c; ++C) {
         /* walk every column in the range */
-        const cell = sheet[utils.encode_cell({ c: C, r: R })];
+        const cell = sheet[xlsx.utils.encode_cell({ c: C, r: R })];
         /* find the cell in the first row */
         let hdr = "UNKNOWN " + C; // <-- replace with your desired default
         if (cell && cell.t) {
-            hdr = utils.format_cell(cell);
+            hdr = xlsx.utils.format_cell(cell);
         }
         headers.push(hdr);
     }

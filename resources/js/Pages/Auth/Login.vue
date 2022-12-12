@@ -61,9 +61,6 @@ export default {
         color: #c10000;
         text-shadow: 1px 1px 4px #ffffff;
     }
-    .el-input {
-        --el-input-bg-color: #e9f0fe;
-    }
 }
 </style>
 <template>

@@ -67,10 +67,24 @@ export function useObjectUtility() {
 			return acc;
 		}, {});
 	}
-	const filterObject = function (objectArray, keys) {
+	const filterObject = function (objectArray, keys, caseSensitive = true) {
 		let filteredObj = [];
 		_.forEach(objectArray, obj => {
-			const filteringObj = _.pick(obj, keys);
+			let filteringObj
+			if (caseSensitive) {
+				filteringObj = _.pick(obj, keys);
+			}
+			else {
+				filteringObj = Object.fromEntries(Object.entries(obj).filter(([key]) => {
+					let hasKey = false;
+					keys.forEach(val => {
+						if (val.toLowerCase() == key.toLowerCase())
+							hasKey = true
+					});
+					return hasKey
+				}));
+			}
+
 			filteredObj.push(filteringObj);
 		});
 		return filteredObj;
