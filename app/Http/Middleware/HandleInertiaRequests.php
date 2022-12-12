@@ -108,7 +108,8 @@ class HandleInertiaRequests extends Middleware
                             'id' => $request->user()->id,
                             'role' => $request->user()->roles[0]->name
                         ]
-                    ]
+                    ],
+                    'isImpersonator' => session()->has('impersonator')
                 ]
 
                 : null,

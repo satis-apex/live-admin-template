@@ -108,6 +108,7 @@
             </el-col>
         </el-row>
     </el-header>
+
     <ChangeUserPassword
         @closeForm="closeForm()"
         :parentFormVisible="formVisible"
@@ -143,6 +144,7 @@ watch(
     }
 );
 const emit = defineEmits(["showMobileMenu", "toggleDesktopMenu"]);
+
 onMounted(() => {
     window.addEventListener("resize", () => {
         mobileMenu = mediaCheck("md");

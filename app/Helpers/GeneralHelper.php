@@ -3,6 +3,7 @@
 use Illuminate\Support\Str;
 use Modules\User\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -276,5 +277,17 @@ if (!\function_exists('readable')) {
                 )
             )
         );
+    }
+}
+
+if (!\function_exists('isAuthorized')) {
+    function isAuthorized(array $roles)
+    {
+        $userRole = Auth::user()->roles[0]->name;
+        if (\in_array($userRole, $roles)) {
+            return true;
+        }
+
+        return false;
     }
 }

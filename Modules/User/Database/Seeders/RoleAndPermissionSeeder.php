@@ -29,12 +29,18 @@ class RoleAndPermissionSeeder extends Seeder
         // gets all permissions via Gate::before rule; see AuthServiceProvider
         //Role::create(['name' => 'Super-Admin']);
         $role = Role::create(['name' => 'Su-Admin']);
-
-        foreach ($permissions as $permission) {
+        $suAdminPermissions = [
+            'Impersonate-create',
+            'Impersonate-delete',
+            ...$permissions
+        ];
+        foreach ($suAdminPermissions as $permission) {
             $role->givePermissionTo($permission);
         }
 
         $adminPermissions = [
+            'Impersonate-create',
+            'Impersonate-delete',
             ...$permissions
         ];
         $adminRole = Role::create(['name' => 'Admin']);

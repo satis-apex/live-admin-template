@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use Modules\User\Http\Controllers\ImpersonateController;
 use Modules\User\Http\Controllers\UserController;
 use Modules\User\Http\Controllers\UserProfileController;
 
@@ -14,4 +15,6 @@ Route::middleware(['auth'])->prefix('user')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::resource('profile/edit', UserProfileController::class, ['names' => 'userProfile']);
     Route::post('profile/avatar', [UserProfileController::class, 'updateAvatar'])->name('updateAvatar');
+    Route::post('user/impersonate', [ImpersonateController::class, 'store'])->name('user.impersonate');
+    Route::delete('user/impersonate', [ImpersonateController::class, 'destroy'])->name('user.revert-impersonate');
 });
