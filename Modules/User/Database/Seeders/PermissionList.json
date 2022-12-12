@@ -19,5 +19,9 @@
     "DataTable-access",
     "DataTable-create",
     "DataTable-edit",
-    "DataTable-delete"
+    "DataTable-delete",
+    "Staff-access",
+    "Staff-create",
+    "Staff-edit",
+    "Staff-delete"
 ]

@@ -3,5 +3,6 @@
     "User": true,
     "AppSetting": true,
     "UserRole": true,
-    "DataTable": true
+    "DataTable": true,
+    "Staff": true
 }
