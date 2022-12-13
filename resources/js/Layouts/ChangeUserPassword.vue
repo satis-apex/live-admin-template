@@ -5,10 +5,6 @@
         width="40%"
         :before-close="handleClose"
         ><template #default>
-            <ValidationErrors
-                :errors="iPropsValue('errors', 'changePassword')"
-                v-if="showError"
-            />
             <el-form
                 ref="formDataRef"
                 :model="formData"
@@ -17,7 +13,11 @@
                 :scroll-to-error="true"
                 @submit.prevent
             >
-                <el-form-item label="Current Password" prop="current_password">
+                <el-form-item
+                    label="Current Password"
+                    prop="current_password"
+                    :error="formErrors.current_password"
+                >
                     <el-input
                         v-model="formData.current_password"
                         type="password"
@@ -25,7 +25,11 @@
                         show-password
                     />
                 </el-form-item>
-                <el-form-item label="Password" prop="password">
+                <el-form-item
+                    label="Password"
+                    prop="password"
+                    :error="formErrors.password"
+                >
                     <el-input
                         v-model="formData.password"
                         type="password"
@@ -128,16 +132,23 @@ const rules = reactive({
         { required: true, validator: validatePass2, trigger: "blur" },
     ],
 });
-
+const formErrors = reactive({
+    current_password: null,
+    password: null,
+});
 const submitForm = (formEl) => {
     if (!formEl) return;
     formEl.validate((valid, fields) => {
-        console.log(formEl);
         if (valid) {
+            clearServerValidationError();
             formData.patch(route("changePassword"), {
                 onFinish: () => {
-                    formData.reset();
-                    formEl.resetFields();
+                    if (formData.hasErrors) {
+                        loadServerValidationError();
+                    } else {
+                        clearServerValidationError();
+                        resetForm();
+                    }
                 },
             });
         } else {
@@ -151,15 +162,19 @@ const submitForm = (formEl) => {
         }
     });
 };
-watch(
-    () => formData.hasErrors,
-    () => {
-        showError = formData.hasErrors;
-    }
-);
+const loadServerValidationError = () => {
+    formErrors.current_password =
+        formData.errors.changePassword.current_password;
+    formErrors.password = formData.errors.changePassword.password;
+};
+const clearServerValidationError = () => {
+    formErrors.current_password = null;
+    formErrors.password = null;
+};
 const resetForm = (formEl) => {
     if (!formEl) return;
     showError = false;
+    formData.reset();
     formEl.resetFields();
 };
 </script>
