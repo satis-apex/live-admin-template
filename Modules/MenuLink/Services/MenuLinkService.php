@@ -229,7 +229,7 @@ class MenuLinkService
         $existingLink = [];
         $app_menu = json_decode($existingMenu);
         foreach ($app_menu as $menu) {
-            if ($menu->type != 'child') {
+            if ($menu->type == 'parent-single') {
                 $existingLink[] = $menu->link;
             } else {
                 foreach ($menu->children as $subMenu) {
