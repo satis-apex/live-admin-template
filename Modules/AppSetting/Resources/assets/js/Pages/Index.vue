@@ -14,7 +14,6 @@
 //composable imports
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useObjectUtility } from "@/Composables/objectUtility";
-import { useAppUtility } from "@/Composables/appUtiility";
 
 //library imports
 import { markRaw, onMounted, reactive, watch, ref } from "@vue/runtime-core";
@@ -27,9 +26,9 @@ import { Plus, Delete, Search, DocumentAdd } from "@element-plus/icons-vue";
 //composable function import
 const { iPropsValue } = useInertiaPropsUtility();
 const { filterObjectWithGroupedValue } = useObjectUtility();
-const { mediaCheck } = useAppUtility();
+
 //variable declare
-const mobileView = $ref(mediaCheck("md"));
+
 const refAddEditForm = $ref(null);
 
 const defaultData = $ref(iPropsValue("appInfo"));
@@ -39,13 +38,6 @@ watch(
         defaultData = iPropsValue("appInfo");
     }
 );
-
-//page event cycle
-onMounted(() => {
-    window.addEventListener("resize", () => {
-        mobileView = mediaCheck("md");
-    });
-});
 </script>
 <script>
 export default {

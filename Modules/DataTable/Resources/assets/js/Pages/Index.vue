@@ -34,7 +34,7 @@
                                 <el-button
                                     :plain="isDarkMode"
                                     type="success"
-                                    :size="mobileView ? 'small' : 'default'"
+                                    :size="isScreenMd ? 'small' : 'default'"
                                     rounded
                                     @click="addForm"
                                     :icon="Plus"
@@ -51,7 +51,7 @@
                                 <el-button
                                     :plain="isDarkMode"
                                     type="warning"
-                                    :size="mobileView ? 'small' : 'default'"
+                                    :size="isScreenMd ? 'small' : 'default'"
                                     rounded
                                     @click="addExcelForm"
                                     :icon="DocumentAdd"
@@ -66,7 +66,7 @@
             <el-col :xs="4" :sm="4" :md="6" class="item-right text-right">
                 <el-button
                     :plain="isDarkMode"
-                    :size="mobileView ? 'small' : 'default'"
+                    :size="isScreenMd ? 'small' : 'default'"
                     type="success"
                     :loading="exportLoading"
                     @click="exportTable()"
@@ -109,7 +109,7 @@
                             order: dataQuery.direction,
                         }"
                     >
-                        <el-table-column v-if="mobileView" type="expand">
+                        <el-table-column v-if="isScreenMd" type="expand">
                             <template #default="props">
                                 <div class="ml-28">
                                     <p class="mb-2">
@@ -132,7 +132,7 @@
                             :index="indexMethod"
                             fixed="left"
                             width="62px"
-                            v-if="!mobileView"
+                            v-if="!isScreenMd"
                         />
                         <el-table-column
                             :label="tableColumnNames.name"
@@ -144,12 +144,12 @@
                             :label="tableColumnNames.date"
                             prop="date"
                             :formatter="dateFormatter"
-                            v-if="!mobileView && isViewableColumn('date')"
+                            v-if="!isScreenMd && isViewableColumn('date')"
                         />
                         <el-table-column
                             sortable
                             :label="tableColumnNames.address"
-                            v-if="!mobileView && isViewableColumn('address')"
+                            v-if="!isScreenMd && isViewableColumn('address')"
                             prop="address"
                         />
                         <el-table-column
@@ -176,7 +176,7 @@
                         <el-table-column
                             align="right"
                             fixed="right"
-                            :width="mobileView ? '70px' : '140px'"
+                            :width="isScreenMd ? '70px' : '140px'"
                             label="Action"
                         >
                             <template #default="scope">
@@ -227,9 +227,8 @@ import { pickBy, debounce } from "lodash-es";
 //composable function import
 const { iPropsValue } = useInertiaPropsUtility();
 const { filterObjectWithGroupedValue } = useObjectUtility();
-const { mediaCheck, isDarkMode } = useAppUtility();
+const { isScreenMd, isDarkMode } = useAppUtility();
 //variable declare
-const mobileView = $ref(mediaCheck("md"));
 const refAddEditForm = $ref(null);
 const refAddByExcelForm = $ref(null);
 const refViewForm = $ref(null);
@@ -400,12 +399,6 @@ const formatJson = (filterVal, jsonData) => {
     );
 };
 
-//page event cycle
-onMounted(() => {
-    window.addEventListener("resize", () => {
-        mobileView = mediaCheck("md");
-    });
-});
 </script>
 <script>
 export default {

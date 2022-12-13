@@ -309,9 +309,8 @@ import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useAppUtility } from "@/Composables/appUtiility";
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 const { iPropsValue } = useInertiaPropsUtility();
-const { mediaCheck, hasMenuAccess } = useAppUtility();
+const { isScreenLg, hasMenuAccess } = useAppUtility();
 
-const isMobile = mediaCheck("lg");
 const menuDrawer = $ref();
 const currentActive = $ref("");
 const menuList = $ref(iPropsValue("app_menu"));
@@ -319,7 +318,7 @@ const menuList = $ref(iPropsValue("app_menu"));
 const isCollapse = $ref(
     localStorage.collapseMenu && localStorage.collapseMenu == "true"
         ? true
-        : isMobile
+        : isScreenLg.value
         ? true
         : false
 );
@@ -330,11 +329,6 @@ const toggleDesktopMenu = function () {
     isCollapse = !isCollapse;
     localStorage.collapseMenu = isCollapse;
 };
-onMounted(() => {
-    window.addEventListener("resize", () => {
-        isCollapse = mediaCheck("lg");
-    });
-});
 defineExpose({
     showMenuDrawer,
     toggleDesktopMenu,

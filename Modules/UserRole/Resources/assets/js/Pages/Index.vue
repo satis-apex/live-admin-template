@@ -102,7 +102,7 @@
                         border
                         max-height="70vh"
                     >
-                        <el-table-column v-if="mobileView" type="expand">
+                        <el-table-column v-if="isScreenMd" type="expand">
                             <template #default="props">
                                 <div class="ml-28">
                                     <p class="mb-2">
@@ -129,7 +129,7 @@
                         <el-table-column
                             :label="tableColumnNames.users_count"
                             v-if="
-                                !mobileView && isViewableColumn('users_count')
+                                !isScreenMd && isViewableColumn('users_count')
                             "
                             prop="users_count"
                         />
@@ -185,9 +185,8 @@ import { Plus, Delete, Search, DocumentAdd } from "@element-plus/icons-vue";
 //composable function import
 const { iPropsValue } = useInertiaPropsUtility();
 const { filterObjectWithGroupedValue } = useObjectUtility();
-const { mediaCheck, isDarkMode } = useAppUtility();
+const { isScreenMd, isDarkMode } = useAppUtility();
 //variable declare
-const mobileView = $ref(mediaCheck("md"));
 const refAddEditForm = $ref(null);
 const refAddByExcelForm = $ref(null);
 const refViewForm = $ref(null);
@@ -359,9 +358,6 @@ const formatJson = (filterVal, jsonData) => {
 //page event cycle
 onMounted(() => {
     changePage();
-    window.addEventListener("resize", () => {
-        mobileView = mediaCheck("md");
-    });
 });
 </script>
 <script>

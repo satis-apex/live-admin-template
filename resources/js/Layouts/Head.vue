@@ -5,7 +5,7 @@
                 <div
                     class="menu-toggler block"
                     @click="
-                        mobileMenu
+                        isScreenMd
                             ? emit('showMobileMenu')
                             : emit('toggleDesktopMenu')
                     "
@@ -128,7 +128,7 @@ import { inject, onMounted, watch } from "@vue/runtime-core";
 import ChangeUserPassword from "@/Layouts/ChangeUserPassword.vue";
 import { useAppUtility } from "@/Composables/appUtiility";
 // import { set } from "@vueuse/shared";
-const { mediaCheck } = useAppUtility();
+const { isScreenMd } = useAppUtility();
 const { iPropsValue } = useInertiaPropsUtility();
 const formVisible = $ref(false);
 const headDropdown = $ref();
@@ -136,7 +136,7 @@ const breadcrumb = $ref(iPropsValue("breadcrumb"));
 const closeForm = function () {
     formVisible = false;
 };
-const mobileMenu = $ref(mediaCheck("md"));
+
 watch(
     () => iPropsValue("breadcrumb"),
     () => {
@@ -144,12 +144,6 @@ watch(
     }
 );
 const emit = defineEmits(["showMobileMenu", "toggleDesktopMenu"]);
-
-onMounted(() => {
-    window.addEventListener("resize", () => {
-        mobileMenu = mediaCheck("md");
-    });
-});
 </script>
 <style scoped>
 .custom-header {
