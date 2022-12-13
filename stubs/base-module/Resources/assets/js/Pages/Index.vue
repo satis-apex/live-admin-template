@@ -5,6 +5,7 @@
             v-if="iPropsValue('userCan', 'massAdd')"
             ref="refAddByExcelForm"
             :parentFormInput="formInputNames"
+            @export-template="exportTemplate"
         />
         <el-row class="mb-3 justify-between" :gutter="20">
             <el-col :xs="12" :sm="12" :md="10">
@@ -102,7 +103,7 @@
                         border
                         max-height="70vh"
                     >
-                        <el-table-column v-if="mobileView" type="expand">
+                        <el-table-column v-if="isScreenMd" type="expand">
                             <template #default="props">
                                 <div class="ml-28">
                                     <p class="mb-2">
@@ -136,11 +137,11 @@
                             :label="tableColumnNames.date"
                             prop="date"
                             :formatter="dateFormatter"
-                            v-if="!mobileView && isViewableColumn('date')"
+                            v-if="!isScreenMd && isViewableColumn('date')"
                         />
                         <el-table-column
                             :label="tableColumnNames.address"
-                            v-if="!mobileView && isViewableColumn('address')"
+                            v-if="!isScreenMd && isViewableColumn('address')"
                             prop="address"
                         />
                         <el-table-column
@@ -215,9 +216,8 @@ import { Plus, Delete, Search, DocumentAdd } from "@element-plus/icons-vue";
 //composable function import
 const { iPropsValue } = useInertiaPropsUtility();
 const { filterObjectWithGroupedValue } = useObjectUtility();
-const { mediaCheck, isDarkMode } = useAppUtility();
+const { isScreenMd, isDarkMode } = useAppUtility();
 //variable declare
-const mobileView = $ref(mediaCheck("md"));
 const refAddEditForm = $ref(null);
 const refAddByExcelForm = $ref(null);
 const refViewForm = $ref(null);
@@ -377,6 +377,26 @@ const exportTable = () => {
             exportLoading = false;
         });
 };
+const exportTemplate = () => {
+    const exportNow = function (excel) {
+        return new Promise((resolve) => {
+            const tHeader = Object.keys(formInputNames);
+
+            const data = [];
+            excel.export_json_to_excel({
+                header: tHeader,
+                data,
+                filename: exportTableOption.fileName + "ExcelTemplate",
+                autoWidth: exportTableOption?.autoWidth ?? true,
+                bookType: exportTableOption?.fileType ?? "xlsx",
+            });
+            resolve("resolved");
+        });
+    };
+    import("@/Export2Excel").then(async (excel) => {
+        await exportNow(excel);
+    });
+};
 const formatJson = (filterVal, jsonData) => {
     return jsonData.map((v) =>
         filterVal.map((j) => {
@@ -391,9 +411,6 @@ const formatJson = (filterVal, jsonData) => {
 //page event cycle
 onMounted(() => {
     changePage();
-    window.addEventListener("resize", () => {
-        mobileView = mediaCheck("md");
-    });
 });
 </script>
 <script>

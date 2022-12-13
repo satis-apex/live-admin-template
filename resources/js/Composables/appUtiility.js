@@ -126,6 +126,10 @@ export function useAppUtility() {
 		script.src = url;
 		document.getElementsByTagName("head")[0].appendChild(script);
 	};
+	const isScreenMd = ref(mediaCheck("md"))
+	window.addEventListener("resize", () => {
+		isScreenMd.value = mediaCheck("md");
+	});
 	//dark mode function
 	const isDarkScheme = () => localStorage.theme === "dark";
 	const isDarkMode = ref(isDarkScheme())
@@ -162,6 +166,7 @@ export function useAppUtility() {
 		themeOption,
 		verifyRole,
 		mediaCheck,
+		isScreenMd,
 		hasMenuAccess,
 		loadScript,
 		isDarkScheme,

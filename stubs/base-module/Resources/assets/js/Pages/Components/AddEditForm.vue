@@ -10,7 +10,7 @@
                 :model="formData"
                 :rules="rules"
                 ref="formRef"
-                :label-position="mobileView ? 'top' : 'right'"
+                :label-position="isScreenMd ? 'top' : 'right'"
             >
                 <el-form-item
                     label="Name"
@@ -70,8 +70,7 @@ import { useAppUtility } from "@/Composables/appUtiility";
 const FormVisible = $ref(false);
 const formLabelWidth = "140px";
 let { iPropsValue } = useInertiaPropsUtility();
-const { mediaCheck } = useAppUtility();
-const mobileView = $ref(mediaCheck("md"));
+const { isScreenMd } = useAppUtility();
 let formRef = $ref();
 let FormType = $ref("Add");
 let editFormData = $ref(); //default edit form data
@@ -79,7 +78,7 @@ const props = defineProps({
     parentFormInput: Object,
 });
 const formData = useForm({
-    name: "",
+    ...props.parentFormInput,
 });
 const rules = reactive({
     name: [
@@ -178,11 +177,6 @@ const showForm = function (formType, data = "") {
 let populateFormData = function (data) {
     formData.name = data.name;
 };
-onMounted(() => {
-    window.addEventListener("resize", () => {
-        mobileView = mediaCheck("md");
-    });
-});
 defineExpose({
     showForm,
 });
