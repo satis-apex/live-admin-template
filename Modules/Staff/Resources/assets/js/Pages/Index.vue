@@ -9,6 +9,7 @@
             v-if="iPropsValue('userCan', 'massAdd')"
             ref="refAddByExcelForm"
             :parentFormInput="formInputNames"
+            @export-template="exportTemplate"
         />
         <el-row class="mb-3 justify-between" :gutter="20">
             <el-col :xs="12" :sm="12" :md="10">
@@ -106,7 +107,7 @@
                         border
                         max-height="70vh"
                     >
-                        <el-table-column v-if="mobileView" type="expand">
+                        <el-table-column v-if="isScreenMd" type="expand">
                             <template #default="props">
                                 <div class="ml-28">
                                     <p class="mb-2">
@@ -145,11 +146,11 @@
                             :label="tableColumnNames.date"
                             prop="date"
                             :formatter="dateFormatter"
-                            v-if="!mobileView && isViewableColumn('date')"
+                            v-if="!isScreenMd && isViewableColumn('date')"
                         />
                         <el-table-column
                             :label="tableColumnNames.address"
-                            v-if="!mobileView && isViewableColumn('address')"
+                            v-if="!isScreenMd && isViewableColumn('address')"
                             prop="address"
                         />
                         <el-table-column
@@ -164,19 +165,18 @@
                             filter-placement="bottom-end"
                         >
                             <template #default="scope">
-                                <el-tag
+                                <StatusBadge
                                     :type="
                                         scope.row.account != null
                                             ? 'success'
                                             : 'danger'
                                     "
-                                    disable-transitions
                                     >{{
                                         scope.row.account != null
                                             ? "active"
                                             : "not created"
-                                    }}</el-tag
-                                >
+                                    }}
+                                </StatusBadge>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -292,6 +292,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 import AddEditForm from "./Components/AddEditForm.vue";
 import AddByExcelForm from "./Components/AddByExcelForm.vue";
 import ViewForm from "./Components/ViewForm.vue";
+import StatusBadge from "@/Components/StatusBadge.vue";
 import moment from "moment";
 import {
     Plus,
@@ -305,9 +306,8 @@ import {
 //composable function import
 const { iPropsValue } = useInertiaPropsUtility();
 const { filterObjectWithGroupedValue } = useObjectUtility();
-const { mediaCheck, isDarkMode } = useAppUtility();
+const { isScreenMd, isDarkMode } = useAppUtility();
 //variable declare
-const mobileView = $ref(mediaCheck("md"));
 const refAddEditForm = $ref(null);
 const refAddByExcelForm = $ref(null);
 const refViewForm = $ref(null);
@@ -326,7 +326,14 @@ const exportTableOption = reactive({
     fileName: "staffList",
 });
 const formInputNames = {
-    name: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    phone: "",
+    gender: "",
+    email: "",
+    address: "",
+    joinedDate: "",
 };
 const addForm = () => refAddEditForm.showForm("Add");
 const addExcelForm = () => refAddByExcelForm.showForm();
@@ -475,6 +482,31 @@ const exportTable = () => {
             exportLoading = false;
         });
 };
+const exportTemplate = () => {
+    exportLoading = true;
+    const exportNow = function (excel) {
+        return new Promise((resolve) => {
+            const tHeader = Object.keys(formInputNames);
+
+            const data = [];
+            excel.export_json_to_excel({
+                header: tHeader,
+                data,
+                filename: exportTableOption.fileName + "ExcelTemplate",
+                autoWidth: exportTableOption?.autoWidth ?? true,
+                bookType: exportTableOption?.fileType ?? "xlsx",
+            });
+            resolve("resolved");
+        });
+    };
+    import("@/Export2Excel")
+        .then(async (excel) => {
+            await exportNow(excel);
+        })
+        .then(() => {
+            exportLoading = false;
+        });
+};
 const formatJson = (filterVal, jsonData) => {
     return jsonData.map((v) =>
         filterVal.map((j) => {
@@ -570,9 +602,6 @@ const impersonateAccount = (rowData) => {
 //page event cycle
 onMounted(() => {
     changePage();
-    window.addEventListener("resize", () => {
-        mobileView = mediaCheck("md");
-    });
 });
 </script>
 <script>

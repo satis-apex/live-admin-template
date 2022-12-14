@@ -14,7 +14,7 @@ class StaffService
         $this->staff = $staff;
     }
 
-    public function add()
+    public function add($payload)
     {
         DB::beginTransaction();
         try {
@@ -22,7 +22,7 @@ class StaffService
                 'first_name' => request('firstName'),
                 'middle_name' => request('middleName'),
                 'last_name' => request('lastName'),
-                'contact' => request('contact'),
+                'phone' => request('phone'),
                 'gender' => request('gender'),
                 'email' => request('email'),
                 'address' => request('address'),
@@ -92,18 +92,19 @@ class StaffService
         $userRole = request('role');
         DB::beginTransaction();
         try {
-            if ($previousUserRole != $userRole) {
+            if ($previousUserRole != '' && $previousUserRole != $userRole) {
                 $staffData->account->removeRole($previousUserRole);
                 $staffData->account->assignRole($userRole);
             }
             $staff = $staffData->update([
-                'first_name' => request('first_name'),
-                'middle_name' => request('middle_name'),
-                'last_name' => request('last_name'),
-                'contact' => request('contact'),
+                'first_name' => request('firstName'),
+                'middle_name' => request('middleName'),
+                'last_name' => request('lastName'),
+                'phone' => request('phone'),
                 'gender' => request('gender'),
                 'email' => request('email'),
                 'address' => request('address'),
+                'joined_date' => request('joinedDate'),
             ]);
 
             if (request()->has('userImage') && request('userImage') != null) {
@@ -161,7 +162,6 @@ class StaffService
                 });
                 DB::commit();
                 return $user->assignRole('staff');
-
             }
         } catch (QueryException $e) {
             //database related exception

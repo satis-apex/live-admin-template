@@ -1,7 +1,6 @@
 <?php
 namespace Modules\Staff\Models;
 
-use Illuminate\Support\Carbon;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Modules\Staff\Database\Factories\StaffFactory;
@@ -33,11 +32,6 @@ class Staff extends Authenticatable implements HasMedia
     public function getFullNameAttribute()
     {
         return $this->first_name . ' ' . ($this->middle_name ? $this->middle_name . ' ' : '') . $this->last_name;
-    }
-
-    public function setJoinedDateAttribute()
-    {
-        return $this->joined_date = Carbon::now();
     }
 
     public function registerMediaCollections(): void

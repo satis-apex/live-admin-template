@@ -7,6 +7,8 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Facades\Modules\Staff\Services\StaffService;
+use Modules\Staff\Http\Requests\StoreStaffRequest;
+use Modules\Staff\Http\Requests\UpdateStaffRequest;
 
 class StaffController extends Controller
 {
@@ -45,10 +47,11 @@ class StaffController extends Controller
         );
     }
 
-    public function store()
+    public function store(StoreStaffRequest $request)
     {
+        $request->validated();
         try {
-            StaffService::add();
+            StaffService::add($request);
         } catch (\Exception $e) {
             return Redirect::route($this->routeName . '.index')->with('error', $e->getMessage());
         }
@@ -65,10 +68,11 @@ class StaffController extends Controller
         return Redirect::route($this->routeName . '.index')->with('success', 'Multiple Data Added Successfully');
     }
 
-    public function update(int $id)
+    public function update(UpdateStaffRequest $request, int $id)
     {
+        $request->validated();
         try {
-            StaffService::update($id);
+            StaffService::update($request, $id);
         } catch (\Exception $e) {
             return Redirect::route($this->routeName . '.index')->with('error', $e->getMessage());
         }

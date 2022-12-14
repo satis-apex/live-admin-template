@@ -12,7 +12,7 @@ return new class() extends Migration {
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
-            $table->string('contact')->nullable();
+            $table->string('phone')->nullable();
             $table->string('gender');
             $table->date('joined_date')->nullable();
             $table->string('email')->unique();
