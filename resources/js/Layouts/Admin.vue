@@ -54,7 +54,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 const { iPropsValue } = useInertiaPropsUtility();
 
 const refSideNav = $ref(null);
-const navComponentKey = $ref(0);
+let navComponentKey = $ref(0);
 
 const showDrawer = () => refSideNav.showMenuDrawer();
 const toggleDesktopMenu = () => refSideNav.toggleDesktopMenu();

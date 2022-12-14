@@ -37,82 +37,10 @@
   --complementary_color: #FFBA00;
   --body-bg:#F6F6F6;
 }
-
-
-// Body
-// $body-bg: var(--body-bg);
-
-// Brands
-// $primary-color: var(--primary-color);
-// $primary-dark-color: #0071AD;
-// $primary-light-color: #0AA9FF;
-// $primary-lightest-color: #31B5FC;
-// $brand-complementary: #FFBA00;
-// $brand-info: #8eb4cb;
-// $brand-success: #608878;
-// $brand-warning: #cbb956;
-// $brand-danger:  #bf5329;
-
-// Typography
-// $font-family-sans-serif: "Raleway", sans-serif;
-// $font-size-base: 14px;
-// $line-height-base: 1.6;
-// $text-color: #636b6f;
-
-// Navbar
-// $navbar-default-bg: #fff;
-
-// Buttons
-// $btn-default-color: $text-color;
-
-// Inputs
-// $input-border: lighten($text-color, 40%);
-// $input-border-focus: lighten($primary-color, 25%);
-// $input-color-placeholder: lighten($text-color, 30%);
-
-// Panels
-// $panel-default-heading-bg: #fff;
-
-.bg-primary
-{
-	background-color: var(--primary-color);
-}
-.bg-primary-light
-{
-	background-color: var(--primary-light-color);
-}
-.bg-primary-lightest
-{
-	background-color: var(--primary-lightest-color);
-}
-.bg-primary-dark
-{
-  background-color: var(--primary-dark-color);
-}
-.bg-primary-light
-{
-  background-color: var(--primary-light-color);
-}
-.bg-complementary
-{
-  background-color: var(--complementary_color);
-}
-.bg-body
-{
-  background-color: var(--body-bg);
-}
-.text-primary
-{
-  color: var(--primary-color);
-}
-.el-input__inner[type=number],.el-input__inner[type=number]:hover
-input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button
-{
-  -webkit-appearance: none; 
-  -moz-appearance: textfield;
-  margin: 0; 
-}
-::selection {
-  background: #409eff;
-  color: #ffffff;
+html.dark{
+  --active-highlight: #e1e1e1;
+  --primary-color: #009ef7;
+  --menu-active-color: #1e1e1e;
+  --complementary_color: #FFBA00;
+  --body-bg:#121212;
 }

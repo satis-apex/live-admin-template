@@ -1,10 +1,4 @@
 html.dark{
-    --active-highlight: #e1e1e1;
-    --primary-color: #009ef7;
-    --menu-active-color: #1e1e1e;
-    --complementary_color: #FFBA00;
-    --body-bg:#121212;
-    
     .el-menu-item,.el-sub-menu__title
     {
         color:#9f9f9f
@@ -51,5 +45,15 @@ html.dark{
     }
     .el-button {
         --el-button-divide-border-color:#626262;
+    }
+    /* Change the white to any color */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active{
+        -webkit-box-shadow: 0 0 0 30px #121212 inset !important;
+    }
+    .dd-placeholder {
+        background: #2e2e2e;
     }
 }

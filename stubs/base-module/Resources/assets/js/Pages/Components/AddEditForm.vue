@@ -11,11 +11,14 @@
                 :rules="rules"
                 ref="formRef"
                 :label-position="isScreenMd ? 'top' : 'right'"
+                :scroll-to-error="true"
+                status-icon
             >
                 <el-form-item
                     label="Name"
                     :label-width="formLabelWidth"
                     prop="name"
+                    :error="formErrors.name"
                 >
                     <el-input
                         v-model="formData.name"
@@ -78,7 +81,9 @@ const props = defineProps({
     parentFormInput: Object,
 });
 const formData = useForm({
+    _method: "POST",
     ...props.parentFormInput,
+    id: "",
 });
 const rules = reactive({
     name: [
@@ -94,8 +99,10 @@ const submitForm = async (formEl) => {
     await formEl.validate((valid, fields) => {
         if (valid) {
             if (FormType == "Add") {
+                formData._method = "POST";
                 create();
             } else {
+                formData._method = "PATCH";
                 update();
             }
         } else {
@@ -125,6 +132,7 @@ const create = async function () {
         icon: markRaw(Edit),
         callback: (action) => {
             if (action == "confirm") {
+                clearServerValidationError();
                 formData.post(route("{routeName}.store"), {
                     preserveScroll: true,
                     onSuccess: () => {
@@ -141,8 +149,9 @@ const update = function () {
         icon: markRaw(Edit),
         callback: (action) => {
             if (action == "confirm") {
+                clearServerValidationError();
                 try {
-                    formData.patch(
+                    formData.post(
                         route("{routeName}.update", editFormData.id),
                         {
                             preserveScroll: true,
@@ -174,7 +183,28 @@ const showForm = function (formType, data = "") {
         populateFormData(data);
     }
 };
+watch(
+    () => formData.errors,
+    () => {
+        if (formData.hasErrors) {
+            loadServerValidationError();
+        } else {
+            clearServerValidationError();
+            resetForm();
+        }
+    }
+);
+const formErrors = reactive({
+    name: null,
+});
+const loadServerValidationError = () => {
+    formErrors.name = formData.errors.name;
+};
+const clearServerValidationError = () => {
+    formErrors.name = null;
+};
 let populateFormData = function (data) {
+    formData.id = data.id;
     formData.name = data.name;
 };
 defineExpose({

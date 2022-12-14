@@ -29,13 +29,7 @@ select:focus {
   top: 20px !important;
   right: 18px !important;
 }
-/* Change the white to any color */
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
-}
+
 /* 
 responsive hidden modified version of display .css(element plus)
 */

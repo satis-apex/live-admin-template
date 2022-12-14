@@ -20,6 +20,7 @@
         "unplugin-auto-import": "^0.10.1",
         "unplugin-vue-components": "^0.21.2",
         "vite": "^3.0.0",
+        "sass": "^1.54.0",
         "vue": "^3.2.31"
     },
     "dependencies": {
@@ -32,8 +33,6 @@
         "element-plus": "^2.2.11",
         "file-saver": "^2.0.5",
         "moment": "^2.29.4",
-        "nestable2": "^1.6.0",
-        "sass": "^1.54.0",
         "simplebar": "^5.3.8",
         "simplebar-vue3": "^0.2.0",
         "xlsx": "^0.18.5"

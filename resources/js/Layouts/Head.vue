@@ -130,9 +130,9 @@ import { useAppUtility } from "@/Composables/appUtiility";
 // import { set } from "@vueuse/shared";
 const { isScreenMd } = useAppUtility();
 const { iPropsValue } = useInertiaPropsUtility();
-const formVisible = $ref(false);
+let formVisible = $ref(false);
 const headDropdown = $ref();
-const breadcrumb = $ref(iPropsValue("breadcrumb"));
+let breadcrumb = $ref(iPropsValue("breadcrumb"));
 const closeForm = function () {
     formVisible = false;
 };
