@@ -5,6 +5,14 @@
         title="Add Staff from Excel"
     >
         <template #default>
+            <div class="flex justify-center">
+                <p
+                    @click="emit('exportTemplate')"
+                    class="cursor-pointer hover:underline mb-4 text-primary"
+                >
+                    <fa icon="file-excel" /> Download Sample Excel Template
+                </p>
+            </div>
             <ExcelUpload ref="refExcelUpload" :on-success="handleSuccess" />
             <el-table
                 :data="tableData"
@@ -122,7 +130,7 @@ const handleSuccess = function ({ results, header }) {
     formData.massRecord = tableData;
     tableHeader = keys;
 };
-
+const emit = defineEmits(["getSample"]);
 defineExpose({
     showForm,
 });

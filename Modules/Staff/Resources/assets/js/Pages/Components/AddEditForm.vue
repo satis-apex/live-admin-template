@@ -10,146 +10,158 @@
                 :model="formData"
                 :rules="rules"
                 ref="formRef"
-                :label-position="mobileView ? 'top' : 'right'"
+                label-position="top"
                 :scroll-to-error="true"
                 status-icon
             >
-                <el-form-item
-                    label="First Name"
-                    :label-width="formLabelWidth"
-                    prop="firstName"
-                >
-                    <el-input
-                        v-model="formData.firstName"
-                        placeholder="First Name"
-                        autocomplete="off"
-                    />
-                </el-form-item>
-                <el-form-item
-                    label="Middle Name"
-                    :label-width="formLabelWidth"
-                    prop="middleName"
-                >
-                    <el-input
-                        v-model="formData.middleName"
-                        placeholder="Middle Name"
-                        autocomplete="off"
-                    />
-                </el-form-item>
-                <el-form-item
-                    label="Last Name"
-                    :label-width="formLabelWidth"
-                    prop="lastName"
-                >
-                    <el-input
-                        v-model="formData.lastName"
-                        placeholder="Last Name"
-                        autocomplete="off"
-                    />
-                </el-form-item>
-                <el-form-item
-                    label="Email"
-                    :label-width="formLabelWidth"
-                    prop="email"
-                >
-                    <el-input
-                        v-model="formData.email"
-                        placeholder="Email"
-                        autocomplete="off"
-                    />
-                </el-form-item>
-                <el-form-item
-                    label="Phone"
-                    :label-width="formLabelWidth"
-                    prop="phone"
-                >
-                    <el-input
-                        v-model.number="formData.phone"
-                        placeholder="Phone Number"
-                        autocomplete="off"
-                    />
-                </el-form-item>
-                <el-form-item
-                    label="Address"
-                    :label-width="formLabelWidth"
-                    prop="address"
-                >
-                    <el-input
-                        v-model="formData.address"
-                        placeholder="Address"
-                        autocomplete="off"
-                    />
-                </el-form-item>
-                <el-form-item
-                    label="Gender"
-                    :label-width="formLabelWidth"
-                    prop="gender"
-                >
-                    <el-radio-group v-model="formData.gender">
-                        <el-radio label="Male" />
-                        <el-radio label="Female" />
-                        <el-radio label="Other" />
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item
-                    label="Joined Date"
-                    :label-width="formLabelWidth"
-                    prop="joinedDate"
-                >
-                    <el-date-picker
-                        v-model="formData.joinedDate"
-                        type="date"
-                        placeholder="Pick a day"
-                        format="YYYY/MM/DD"
-                        value-format="YYYY-MM-DD"
-                    />
-                </el-form-item>
-                <el-form-item
-                    v-if="FormType.toLowerCase() == 'add'"
-                    label="Create Account"
-                    :label-width="formLabelWidth"
-                    prop="accountCreate"
-                >
-                    <el-switch
-                        @change="accountCreateCheck"
-                        v-model="formData.accountCreate"
-                    />
-                </el-form-item>
-                <el-form-item
-                    v-if="
-                        FormType.toLowerCase() == 'add' &&
-                        formData.accountCreate
-                    "
-                    label="Role"
-                    :label-width="formLabelWidth"
-                    prop="role"
-                >
-                    <el-select
-                        v-model="formData.role"
-                        placeholder="Select Role"
-                    >
-                        <el-option
-                            v-for="(role, key) in roles"
-                            :key="key"
-                            :label="role.name"
-                            :value="role.name"
-                        />
-                    </el-select>
-                </el-form-item>
-                <el-form-item
-                    label="Profile Picture"
-                    :label-width="formLabelWidth"
-                    prop="userImage"
-                >
-                    <SingleFileUploader
-                        ref="refImageUpload"
-                        :acceptExtension="'.jpg, .jpeg'"
-                        :acceptSize="2048"
-                        :listType="'picture-card'"
-                        @uplodable="uplodableImage"
-                        @clearUplodable="uplodableImage"
-                    />
-                </el-form-item>
+                <el-row :gutter="10">
+                    <el-col :lg="8">
+                        <el-form-item label="First Name" prop="firstName">
+                            <el-input
+                                v-model="formData.firstName"
+                                placeholder="First Name"
+                                autocomplete="off"
+                            />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="8">
+                        <el-form-item label="Middle Name" prop="middleName">
+                            <el-input
+                                v-model="formData.middleName"
+                                placeholder="Middle Name"
+                                autocomplete="off"
+                            />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="8">
+                        <el-form-item label="Last Name" prop="lastName">
+                            <el-input
+                                v-model="formData.lastName"
+                                placeholder="Last Name"
+                                autocomplete="off"
+                            />
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                    <el-col :lg="12">
+                        <el-form-item
+                            label="Email"
+                            prop="email"
+                            :error="formErrors.email"
+                        >
+                            <el-input
+                                v-model="formData.email"
+                                placeholder="Email"
+                                autocomplete="off"
+                            />
+                        </el-form-item>
+                    </el-col>
+
+                    <el-col :lg="12">
+                        <el-form-item label="Gender" prop="gender">
+                            <el-radio-group v-model="formData.gender">
+                                <el-radio label="Male" />
+                                <el-radio label="Female" />
+                                <el-radio label="Other" />
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                    <el-col :lg="12">
+                        <el-form-item label="Address" prop="address">
+                            <el-input
+                                v-model="formData.address"
+                                placeholder="Address"
+                                autocomplete="off"
+                            />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="12">
+                        <el-form-item label="Phone" prop="phone">
+                            <el-input
+                                maxlength="10"
+                                v-model.number="formData.phone"
+                                placeholder="Phone Number"
+                                autocomplete="off"
+                                show-word-limit
+                                :formatter="
+                                    (value) => value.replace(/[^\d]/g, '')
+                                "
+                                :parser="(value) => value.replace(/[^\d]/g, '')"
+                            />
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                    <el-col :lg="12">
+                        <el-row>
+                            <el-col :span="24">
+                                <el-form-item
+                                    label="Joined Date"
+                                    prop="joinedDate"
+                                >
+                                    <el-date-picker
+                                        class="date-picker"
+                                        v-model="formData.joinedDate"
+                                        type="date"
+                                        placeholder="Pick a day"
+                                        format="YYYY/MM/DD"
+                                        value-format="YYYY-MM-DD"
+                                        style="width: 100%"
+                                    />
+                                </el-form-item>
+                            </el-col>
+                            <el-col>
+                                <el-form-item
+                                    v-if="FormType.toLowerCase() == 'add'"
+                                    label="Create Account"
+                                    prop="accountCreate"
+                                >
+                                    <el-switch
+                                        @change="accountCreateCheck"
+                                        v-model="formData.accountCreate"
+                                    />
+                                </el-form-item>
+                            </el-col>
+                            <el-col>
+                                <el-form-item
+                                    v-if="
+                                        formData.accountCreate || formData.role
+                                    "
+                                    label="Role"
+                                    prop="role"
+                                >
+                                    <el-select
+                                        v-model="formData.role"
+                                        placeholder="Select Role"
+                                    >
+                                        <el-option
+                                            v-for="(role, key) in roles"
+                                            :key="key"
+                                            :label="role.name"
+                                            :value="role.name"
+                                        />
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-col>
+
+                    <el-col :lg="12">
+                        <el-form-item label="Profile Picture" prop="userImage">
+                            <SingleFileUploader
+                                ref="refImageUpload"
+                                :acceptExtension="'.jpg, .jpeg'"
+                                :acceptSize="2048"
+                                :listType="'picture-card'"
+                                @uplodable="uplodableImage"
+                                @clearUplodable="uplodableImage"
+                            />
+                        </el-form-item>
+                    </el-col>
+                </el-row>
             </el-form>
         </template>
         <template #footer>
@@ -181,7 +193,7 @@
 </style>
 <script setup>
 //library import
-import { reactive, markRaw, onMounted } from "@vue/runtime-core";
+import { reactive, markRaw, onMounted, watch } from "@vue/runtime-core";
 import { Edit, Search } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import SingleFileUploader from "@/Components/SingleFileUploader.vue";
@@ -192,7 +204,7 @@ import { useAppUtility } from "@/Composables/appUtiility";
 const FormVisible = $ref(false);
 const formLabelWidth = "140px";
 let { iPropsValue } = useInertiaPropsUtility();
-const { mediaCheck } = useAppUtility();
+const { isScreenMd } = useAppUtility();
 let refImageUpload = $ref(null);
 let formRef = $ref();
 let FormType = $ref("Add");
@@ -202,22 +214,25 @@ const props = defineProps({
     roles: Array,
 });
 const roles = props.roles;
-const mobileView = $ref(mediaCheck("md"));
-
+const existEmail = $ref([]);
 const formData = useForm({
     _method: "POST",
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    phone: "",
-    gender: "",
-    email: "",
-    address: "",
-    joinedDate: "",
+    ...props.parentFormInput,
     accountCreate: false,
     role: "",
     userImage: "",
+    previousRole: "",
+    id: "",
 });
+const isUniqueEmail = (rule, value, callback) => {
+    setTimeout(() => {
+        if (existEmail.includes(value)) {
+            callback(new Error("The email has already been taken."));
+        } else {
+            callback();
+        }
+    }, 500);
+};
 const rules = reactive({
     firstName: [
         {
@@ -247,6 +262,7 @@ const rules = reactive({
             message: "Please input valid Email",
             trigger: "blur",
         },
+        { validator: isUniqueEmail, trigger: "blur" },
     ],
     role: [
         {
@@ -304,6 +320,7 @@ const create = async function () {
         icon: markRaw(Edit),
         callback: (action) => {
             if (action == "confirm") {
+                clearServerValidationError();
                 formData.post(route("staff.store"), {
                     preserveScroll: true,
                     onSuccess: () => {
@@ -314,6 +331,7 @@ const create = async function () {
         },
     });
 };
+
 const update = function () {
     ElMessageBox.confirm("You are trying to edit. Continue?", "Warning", {
         type: "warning",
@@ -321,6 +339,7 @@ const update = function () {
         callback: (action) => {
             if (action == "confirm") {
                 try {
+                    clearServerValidationError();
                     formData.post(route("staff.update", editFormData.id), {
                         preserveScroll: true,
                         onSuccess: () => {
@@ -350,7 +369,31 @@ const showForm = function (formType, data = "") {
         populateFormData(data);
     }
 };
+watch(
+    () => formData.errors,
+    () => {
+        if (formData.hasErrors) {
+            loadServerValidationError();
+        } else {
+            clearServerValidationError();
+            resetForm();
+        }
+    }
+);
+const formErrors = reactive({
+    email: null,
+});
+const loadServerValidationError = () => {
+    formErrors.email = formData.errors.email;
+    if (formData.email && existEmail.indexOf(formData.email) === -1) {
+        existEmail.push(formData.email);
+    }
+};
+const clearServerValidationError = () => {
+    formErrors.email = null;
+};
 let populateFormData = function (data) {
+    formData.id = data.id;
     formData.firstName = data.first_name;
     formData.middleName = data.middle_name;
     formData.lastName = data.last_name;
@@ -359,17 +402,13 @@ let populateFormData = function (data) {
     formData.email = data.email;
     formData.address = data.address;
     formData.joinedDate = data.joined_date;
+    formData.role = formData.previousRole = data.account?.roles[0].name;
 };
-onMounted(() => {
-    window.addEventListener("resize", () => {
-        mobileView = mediaCheck("md");
-    });
-});
 defineExpose({
     showForm,
 });
 </script>
-<style scoped>
+<style lang="scss" scoped>
 li.icon {
     height: 50px;
     display: inline-flex;
@@ -385,5 +424,12 @@ li.icon:hover {
 ul.icon-picker {
     border-top: 1px solid var(--el-border-color);
     border-left: 1px solid var(--el-border-color);
+}
+</style>
+<style lang="scss">
+.date-picker {
+    .el-input__wrapper {
+        width: 100%;
+    }
 }
 </style>
