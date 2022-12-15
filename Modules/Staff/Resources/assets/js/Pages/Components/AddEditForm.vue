@@ -9,34 +9,42 @@
                 @submit.prevent
                 :model="formData"
                 :rules="rules"
-                ref="formRef"
+                ref="refForm"
                 label-position="top"
                 :scroll-to-error="true"
                 status-icon
             >
                 <el-row :gutter="10">
                     <el-col :lg="8">
-                        <el-form-item label="First Name" prop="firstName">
+                        <el-form-item
+                            label="First Name"
+                            prop="first_name"
+                            :error="formErrors.first_name"
+                        >
                             <el-input
-                                v-model="formData.firstName"
+                                v-model="formData.first_name"
                                 placeholder="First Name"
                                 autocomplete="off"
                             />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8">
-                        <el-form-item label="Middle Name" prop="middleName">
+                        <el-form-item label="Middle Name" prop="middle_name">
                             <el-input
-                                v-model="formData.middleName"
+                                v-model="formData.middle_name"
                                 placeholder="Middle Name"
                                 autocomplete="off"
                             />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8">
-                        <el-form-item label="Last Name" prop="lastName">
+                        <el-form-item
+                            label="Last Name"
+                            prop="last_name"
+                            :error="formErrors.last_name"
+                        >
                             <el-input
-                                v-model="formData.lastName"
+                                v-model="formData.last_name"
                                 placeholder="Last Name"
                                 autocomplete="off"
                             />
@@ -59,7 +67,11 @@
                     </el-col>
 
                     <el-col :lg="12">
-                        <el-form-item label="Gender" prop="gender">
+                        <el-form-item
+                            label="Gender"
+                            prop="gender"
+                            :error="formErrors.gender"
+                        >
                             <el-radio-group v-model="formData.gender">
                                 <el-radio label="Male" />
                                 <el-radio label="Female" />
@@ -100,11 +112,11 @@
                             <el-col :span="24">
                                 <el-form-item
                                     label="Joined Date"
-                                    prop="joinedDate"
+                                    prop="joined_date"
                                 >
                                     <el-date-picker
                                         class="date-picker"
-                                        v-model="formData.joinedDate"
+                                        v-model="formData.joined_date"
                                         type="date"
                                         placeholder="Pick a day"
                                         format="YYYY/MM/DD"
@@ -117,18 +129,18 @@
                                 <el-form-item
                                     v-if="FormType.toLowerCase() == 'add'"
                                     label="Create Account"
-                                    prop="accountCreate"
+                                    prop="account_create"
                                 >
                                     <el-switch
-                                        @change="accountCreateCheck"
-                                        v-model="formData.accountCreate"
+                                        @change="checkAccountCreate"
+                                        v-model="formData.account_create"
                                     />
                                 </el-form-item>
                             </el-col>
                             <el-col>
                                 <el-form-item
                                     v-if="
-                                        formData.accountCreate || formData.role
+                                        formData.account_create || formData.role
                                     "
                                     label="Role"
                                     prop="role"
@@ -150,7 +162,7 @@
                     </el-col>
 
                     <el-col :lg="12">
-                        <el-form-item label="Profile Picture" prop="userImage">
+                        <el-form-item label="Profile Picture" prop="user_image">
                             <SingleFileUploader
                                 ref="refImageUpload"
                                 :acceptExtension="'.jpg, .jpeg'"
@@ -170,27 +182,13 @@
                 <el-button
                     type="primary"
                     :loading="formData.processing"
-                    @click="submitForm(formRef)"
+                    @click="submitForm(refForm)"
                     >{{ FormType == "Add" ? "Add" : "Update" }}</el-button
                 >
             </span>
         </template>
     </el-dialog>
 </template>
-<style scoped>
-.el-button--text {
-    margin-right: 15px;
-}
-.el-select {
-    width: 300px;
-}
-.el-input {
-    width: 300px;
-}
-.dialog-footer button:first-child {
-    margin-right: 10px;
-}
-</style>
 <script setup>
 //library import
 import { reactive, markRaw, onMounted, watch } from "@vue/runtime-core";
@@ -201,47 +199,50 @@ import SingleFileUploader from "@/Components/SingleFileUploader.vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useAppUtility } from "@/Composables/appUtiility";
 //variable declaration
-const FormVisible = $ref(false);
-const formLabelWidth = "140px";
-let { iPropsValue } = useInertiaPropsUtility();
+const { iPropsValue } = useInertiaPropsUtility();
 const { isScreenMd } = useAppUtility();
-let refImageUpload = $ref(null);
-let formRef = $ref();
-let FormType = $ref("Add");
-let editFormData = $ref(); //default edit form data
 const props = defineProps({
     parentFormInput: Object,
     roles: Array,
 });
+const FormVisible = $ref(false);
+const formLabelWidth = "140px";
+const refImageUpload = $ref(null);
+const refForm = $ref();
+const FormType = $ref("Add");
+const editFormData = $ref(); //default edit form data
 const roles = props.roles;
-const existEmail = $ref([]);
+const existEmail = new Set();
 const formData = useForm({
     _method: "POST",
     ...props.parentFormInput,
-    accountCreate: false,
+    account_create: false,
     role: "",
-    userImage: "",
-    previousRole: "",
+    user_image: "",
+    previous_role: "",
     id: "",
 });
+const checkAccountCreate = () => {
+    if (formData.account_create) {
+        rules.role[0].required = true;
+    }
+};
 const isUniqueEmail = (rule, value, callback) => {
-    setTimeout(() => {
-        if (existEmail.includes(value)) {
-            callback(new Error("The email has already been taken."));
-        } else {
-            callback();
-        }
-    }, 500);
+    if (existEmail.has(value.toLowerCase())) {
+        callback(new Error("The email has already been taken."));
+    } else {
+        callback();
+    }
 };
 const rules = reactive({
-    firstName: [
+    first_name: [
         {
             required: true,
             message: "Please input First Name",
             trigger: "blur",
         },
     ],
-    lastName: [
+    last_name: [
         {
             required: true,
             message: "Please input Last Name",
@@ -272,13 +273,51 @@ const rules = reactive({
         },
     ],
 });
-const accountCreateCheck = () => {
-    if (formData.accountCreate) {
-        rules.role[0].required = true;
+const formErrors = reactive({
+    first_name: null,
+    last_name: null,
+    email: null,
+    gender: null,
+});
+
+const loadServerValidationError = () => {
+    Object.assign(formErrors, formData.errors);
+    if (formData.errors.email) existEmail.add(formData.email);
+};
+const clearServerValidationError = () => {
+    for (const key in formErrors) {
+        formErrors[key] = null;
     }
 };
 const uplodableImage = (file) => {
-    formData.userImage = file;
+    formData.user_image = file;
+};
+const resetForm = (formEl) => {
+    if (!formEl) return;
+    refImageUpload.clearUploadFile();
+    uplodableImage();
+    formEl.resetFields();
+    formData.reset();
+};
+const closeForm = () => {
+    FormVisible = false;
+    resetForm(refForm);
+    formData.reset();
+};
+const showForm = function (formType, data = "") {
+    FormVisible = true;
+    formData.reset();
+    FormType = formType;
+    if (formType === "Add") {
+    }
+    if (formType === "Edit") {
+        editFormData = data;
+        populateFormData(data);
+    }
+};
+const populateFormData = function (data) {
+    Object.assign(formData, data);
+    formData.role = formData.previous_role = data.account?.roles[0].name;
 };
 const submitForm = async (formEl) => {
     if (!formEl) return;
@@ -302,18 +341,6 @@ const submitForm = async (formEl) => {
         }
     });
 };
-const resetForm = (formEl) => {
-    if (!formEl) return;
-    refImageUpload.clearUploadFile();
-    uplodableImage();
-    formEl.resetFields();
-    formData.reset();
-};
-const closeForm = () => {
-    FormVisible = false;
-    resetForm(formRef);
-    formData.reset();
-};
 const create = async function () {
     ElMessageBox.confirm("You are trying to Add. Continue?", "Warning", {
         type: "warning",
@@ -324,14 +351,17 @@ const create = async function () {
                 formData.post(route("staff.store"), {
                     preserveScroll: true,
                     onSuccess: () => {
+                        existEmail.add(formData.email.toLowerCase());
                         closeForm();
+                    },
+                    onError: (errors) => {
+                        loadServerValidationError();
                     },
                 });
             }
         },
     });
 };
-
 const update = function () {
     ElMessageBox.confirm("You are trying to edit. Continue?", "Warning", {
         type: "warning",
@@ -343,7 +373,12 @@ const update = function () {
                     formData.post(route("staff.update", editFormData.id), {
                         preserveScroll: true,
                         onSuccess: () => {
+                            existEmail.delete(editFormData.email.toLowerCase());
+                            existEmail.add(formData.email.toLowerCase());
                             closeForm();
+                        },
+                        onError: (errors) => {
+                            loadServerValidationError();
                         },
                     });
                 } catch (error) {
@@ -358,52 +393,7 @@ const update = function () {
         },
     });
 };
-const showForm = function (formType, data = "") {
-    FormVisible = true;
-    formData.reset();
-    FormType = formType;
-    if (formType === "Add") {
-    }
-    if (formType === "Edit") {
-        editFormData = data;
-        populateFormData(data);
-    }
-};
-watch(
-    () => formData.errors,
-    () => {
-        if (formData.hasErrors) {
-            loadServerValidationError();
-        } else {
-            clearServerValidationError();
-            resetForm();
-        }
-    }
-);
-const formErrors = reactive({
-    email: null,
-});
-const loadServerValidationError = () => {
-    formErrors.email = formData.errors.email;
-    if (formData.email && existEmail.indexOf(formData.email) === -1) {
-        existEmail.push(formData.email);
-    }
-};
-const clearServerValidationError = () => {
-    formErrors.email = null;
-};
-let populateFormData = function (data) {
-    formData.id = data.id;
-    formData.firstName = data.first_name;
-    formData.middleName = data.middle_name;
-    formData.lastName = data.last_name;
-    formData.phone = data.phone;
-    formData.gender = data.gender;
-    formData.email = data.email;
-    formData.address = data.address;
-    formData.joinedDate = data.joined_date;
-    formData.role = formData.previousRole = data.account?.roles[0].name;
-};
+
 defineExpose({
     showForm,
 });

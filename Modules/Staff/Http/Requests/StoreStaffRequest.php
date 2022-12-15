@@ -1,7 +1,6 @@
 <?php
 namespace Modules\Staff\Http\Requests;
 
-use Modules\User\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -15,7 +14,10 @@ class StoreStaffRequest extends FormRequest
     public function rules() :array
     {
         return [
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]
+            'first_name' => ['required', 'max:255'],
+            'last_name' => ['required', 'max:255'],
+            'gender' => ['required', 'in:Male,Female,Other'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:staffs,email', 'unique:users,email']
         ];
     }
 }

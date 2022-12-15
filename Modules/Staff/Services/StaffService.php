@@ -19,16 +19,16 @@ class StaffService
         DB::beginTransaction();
         try {
             $staff = $this->staff->create([
-                'first_name' => request('firstName'),
-                'middle_name' => request('middleName'),
-                'last_name' => request('lastName'),
+                'first_name' => request('first_name'),
+                'middle_name' => request('middle_name'),
+                'last_name' => request('last_name'),
                 'phone' => request('phone'),
                 'gender' => request('gender'),
                 'email' => request('email'),
                 'address' => request('address'),
-                'joined_date' => request('joinedDate'),
+                'joined_date' => request('joined_date'),
             ]);
-            if (request()->has('userImage') && request('userImage') != null) {
+            if (request()->has('user_image') && request('user_image') != null) {
                 $staff->addMediaFromRequest('avatar')->toMediaCollection('avatar');
             }
             // If all good then store all the records to the relivent table
@@ -51,7 +51,7 @@ class StaffService
                     $subject = 'User Account Credential';
                     Mail::send('staff::emails.mail', $templateData, function ($message) use ($to_name, $to_email, $subject) {
                         $message->to($to_email, $to_name)->subject($subject);
-                        $message->from('No-Reply.liveadmin@gmail.com', 'No-Reply');
+                        $message->from(env('MAIL_FROM_ADDRESS'), 'No-Reply');
                     });
                 }
 
@@ -97,18 +97,18 @@ class StaffService
                 $staffData->account->assignRole($userRole);
             }
             $staff = $staffData->update([
-                'first_name' => request('firstName'),
-                'middle_name' => request('middleName'),
-                'last_name' => request('lastName'),
+                'first_name' => request('first_name'),
+                'middle_name' => request('middle_name'),
+                'last_name' => request('last_name'),
                 'phone' => request('phone'),
                 'gender' => request('gender'),
                 'email' => request('email'),
                 'address' => request('address'),
-                'joined_date' => request('joinedDate'),
+                'joined_date' => request('joined_date'),
             ]);
 
-            if (request()->has('userImage') && request('userImage') != null) {
-                $staffData->addMediaFromRequest('userImage')->toMediaCollection('avatar');
+            if (request()->has('user_image') && request('user_image') != null) {
+                $staffData->addMediaFromRequest('user_image')->toMediaCollection('avatar');
             }
 
             //If all good then store all the records to the relivent table

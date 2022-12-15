@@ -326,14 +326,14 @@ const exportTableOption = reactive({
     fileName: "staffList",
 });
 const formInputNames = {
-    firstName: "",
-    middleName: "",
-    lastName: "",
+    first_name: "",
+    middle_name: "",
+    last_name: "",
     phone: "",
     gender: "",
     email: "",
     address: "",
-    joinedDate: "",
+    joined_date: "",
 };
 const addForm = () => refAddEditForm.showForm("Add");
 const addExcelForm = () => refAddByExcelForm.showForm();

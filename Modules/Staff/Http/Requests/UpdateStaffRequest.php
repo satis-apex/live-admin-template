@@ -14,8 +14,11 @@ class UpdateStaffRequest extends FormRequest
     public function rules()
     {
         return [
+            'first_name' => ['required', 'max:255'],
+            'last_name' => ['required', 'max:255'],
+            'gender' => ['required', 'in:Male,Female,Other'],
             'email' => [
-                'required', 'string', 'email', 'max:255', 'unique:staffs,email,' . request()->id
+                'required', 'string', 'email', 'max:255', 'unique:users,email', 'unique:staffs,email,' . request()->id
             ],
         ];
     }
