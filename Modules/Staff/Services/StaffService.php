@@ -14,7 +14,7 @@ class StaffService
         $this->staff = $staff;
     }
 
-    public function add($payload)
+    public function add()
     {
         DB::beginTransaction();
         try {

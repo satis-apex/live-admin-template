@@ -373,8 +373,15 @@ const update = function () {
                     formData.post(route("staff.update", editFormData.id), {
                         preserveScroll: true,
                         onSuccess: () => {
-                            existEmail.delete(editFormData.email.toLowerCase());
-                            existEmail.add(formData.email.toLowerCase());
+                            if (
+                                editFormData.email.toLowerCase() !==
+                                formData.email.toLowerCase()
+                            ) {
+                                existEmail.delete(
+                                    editFormData.email.toLowerCase()
+                                );
+                                existEmail.add(formData.email.toLowerCase());
+                            }
                             closeForm();
                         },
                         onError: (errors) => {

@@ -22,7 +22,9 @@ class StaffController extends Controller
     public function index()
     {
         $staffList = Staff::query()
-        ->with('account.roles')
+        ->with(['account.roles' => function ($query) {
+            $query->select('id', 'name');
+        }])
         ->latest()
         ->get();
         $userRole = request()->user()->roles[0]->name;
@@ -51,7 +53,7 @@ class StaffController extends Controller
     {
         $request->validated();
         try {
-            StaffService::add($request);
+            StaffService::add();
         } catch (\Exception $e) {
             return Redirect::route($this->routeName . '.index')->with('error', $e->getMessage());
         }
@@ -72,7 +74,7 @@ class StaffController extends Controller
     {
         $request->validated();
         try {
-            StaffService::update($request, $id);
+            StaffService::update($id);
         } catch (\Exception $e) {
             return Redirect::route($this->routeName . '.index')->with('error', $e->getMessage());
         }
