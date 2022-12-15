@@ -9,7 +9,7 @@
                 @submit.prevent
                 :model="formData"
                 :rules="rules"
-                ref="formRef"
+                ref="refForm"
                 :label-position="isScreenMd ? 'top' : 'right'"
                 :scroll-to-error="true"
                 status-icon
@@ -40,27 +40,13 @@
                 <el-button
                     type="primary"
                     :loading="formData.processing"
-                    @click="submitForm(formRef)"
+                    @click="submitForm(refForm)"
                     >{{ FormType == "Add" ? "Add" : "Update" }}</el-button
                 >
             </span>
         </template>
     </el-dialog>
 </template>
-<style scoped>
-.el-button--text {
-    margin-right: 15px;
-}
-.el-select {
-    width: 300px;
-}
-.el-input {
-    width: 300px;
-}
-.dialog-footer button:first-child {
-    margin-right: 10px;
-}
-</style>
 <script setup>
 //library import
 import { reactive, markRaw } from "@vue/runtime-core";
@@ -70,13 +56,13 @@ import { useForm } from "@inertiajs/inertia-vue3";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useAppUtility } from "@/Composables/appUtiility";
 //variable declaration
+const { iPropsValue } = useInertiaPropsUtility();
+const { isScreenMd } = useAppUtility();
+const FormType = $ref("Add");
+const refForm = $ref();
 const FormVisible = $ref(false);
 const formLabelWidth = "140px";
-let { iPropsValue } = useInertiaPropsUtility();
-const { isScreenMd } = useAppUtility();
-let formRef = $ref();
-let FormType = $ref("Add");
-let editFormData = $ref(); //default edit form data
+const editFormData = $ref(); //default edit form data
 const props = defineProps({
     parentFormInput: Object,
 });
@@ -94,6 +80,41 @@ const rules = reactive({
         },
     ],
 });
+const formErrors = reactive({
+    name: null,
+});
+const loadServerValidationError = () => {
+    Object.assign(formErrors, formData.errors);
+};
+const clearServerValidationError = () => {
+    for (const key in formErrors) {
+        formErrors[key] = null;
+    }
+};
+const resetForm = (formEl) => {
+    if (!formEl) return;
+    formEl.resetFields();
+    formData.reset();
+};
+const closeForm = () => {
+    FormVisible = false;
+    resetForm(refForm);
+    formData.reset();
+};
+const showForm = function (formType, data = "") {
+    FormVisible = true;
+    formData.reset();
+    FormType = formType;
+    if (formType === "Add") {
+    }
+    if (formType === "Edit") {
+        editFormData = data;
+        populateFormData(data);
+    }
+};
+const populateFormData = function (data) {
+    Object.assign(formData, data);
+};
 const submitForm = async (formEl) => {
     if (!formEl) return;
     await formEl.validate((valid, fields) => {
@@ -116,16 +137,6 @@ const submitForm = async (formEl) => {
         }
     });
 };
-const resetForm = (formEl) => {
-    if (!formEl) return;
-    formEl.resetFields();
-    formData.reset();
-};
-const closeForm = () => {
-    FormVisible = false;
-    resetForm(formRef);
-    formData.reset();
-};
 const create = async function () {
     ElMessageBox.confirm("You are trying to Add. Continue?", "Warning", {
         type: "warning",
@@ -137,6 +148,9 @@ const create = async function () {
                     preserveScroll: true,
                     onSuccess: () => {
                         closeForm();
+                    },
+                    onError: (errors) => {
+                        loadServerValidationError();
                     },
                 });
             }
@@ -158,6 +172,9 @@ const update = function () {
                             onSuccess: () => {
                                 closeForm();
                             },
+                            onError: (errors) => {
+                                loadServerValidationError();
+                            },
                         }
                     );
                 } catch (error) {
@@ -171,41 +188,6 @@ const update = function () {
             }
         },
     });
-};
-const showForm = function (formType, data = "") {
-    FormVisible = true;
-    formData.reset();
-    FormType = formType;
-    if (formType === "Add") {
-    }
-    if (formType === "Edit") {
-        editFormData = data;
-        populateFormData(data);
-    }
-};
-watch(
-    () => formData.errors,
-    () => {
-        if (formData.hasErrors) {
-            loadServerValidationError();
-        } else {
-            clearServerValidationError();
-            resetForm();
-        }
-    }
-);
-const formErrors = reactive({
-    name: null,
-});
-const loadServerValidationError = () => {
-    formErrors.name = formData.errors.name;
-};
-const clearServerValidationError = () => {
-    formErrors.name = null;
-};
-let populateFormData = function (data) {
-    formData.id = data.id;
-    formData.name = data.name;
 };
 defineExpose({
     showForm,

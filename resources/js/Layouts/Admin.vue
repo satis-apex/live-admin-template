@@ -54,7 +54,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 const { iPropsValue } = useInertiaPropsUtility();
 
 const refSideNav = $ref(null);
-let navComponentKey = $ref(0);
+const navComponentKey = $ref(0);
 
 const showDrawer = () => refSideNav.showMenuDrawer();
 const toggleDesktopMenu = () => refSideNav.toggleDesktopMenu();
@@ -99,16 +99,6 @@ const leaveImpersonate = () => {
 };
 onMounted(() => {
     setAppThemeColor();
-    // document.documentElement.style.setProperty("--el-color-primary", "pink");
-    // document.documentElement.style.setProperty("--el-menu-text-color", "pink");
-    // document.documentElement.style.setProperty(
-    //     "--el-menu-active-color",
-    //     "pink"
-    // );
-    // document.documentElement.style.setProperty(
-    //     "--el-color-primary-light-3",
-    //     "pink"
-    // );
 });
 </script>
 

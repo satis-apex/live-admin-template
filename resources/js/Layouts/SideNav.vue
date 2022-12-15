@@ -311,11 +311,11 @@ import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 const { iPropsValue } = useInertiaPropsUtility();
 const { isScreenLg, hasMenuAccess } = useAppUtility();
 
-let menuDrawer = $ref();
+const menuDrawer = $ref();
 const currentActive = $ref("");
 const menuList = $ref(iPropsValue("app_menu"));
 
-let isCollapse = $ref(
+const isCollapse = $ref(
     localStorage.collapseMenu && localStorage.collapseMenu == "true"
         ? true
         : isScreenLg.value
