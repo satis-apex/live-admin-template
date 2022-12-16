@@ -309,6 +309,7 @@ const changePage = (val = 1) => {
                 let hasValue = false;
                 viewableColumn.forEach((value) => {
                     if (
+                        data[value] &&
                         data[value]
                             .toString()
                             .toLowerCase()
@@ -335,6 +336,7 @@ const searchFilter = () => {
         let hasValue = false;
         viewableColumn.forEach((value) => {
             if (
+                data[value] &&
                 data[value]
                     .toString()
                     .toLowerCase()
