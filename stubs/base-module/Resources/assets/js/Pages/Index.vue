@@ -137,11 +137,11 @@
                             :label="tableColumnNames.date"
                             prop="date"
                             :formatter="dateFormatter"
-                            v-if="!isScreenMd && isViewableColumn('date')"
+                            v-if="isViewableColumn('date')"
                         />
                         <el-table-column
                             :label="tableColumnNames.address"
-                            v-if="!isScreenMd && isViewableColumn('address')"
+                            v-if="isViewableColumn('address')"
                             prop="address"
                         />
                         <el-table-column
@@ -218,11 +218,14 @@ const { iPropsValue } = useInertiaPropsUtility();
 const { filterObjectWithGroupedValue } = useObjectUtility();
 const { isScreenMd, isDarkMode } = useAppUtility();
 //variable declare
+const isMobile = $ref(isScreenMd);
 const refAddEditForm = $ref(null);
 const refAddByExcelForm = $ref(null);
 const refViewForm = $ref(null);
 const exportLoading = $ref(false);
-const viewableColumn = $ref(["name", "status", "address"]);
+const viewableColumn = $ref(
+    !isMobile ? ["name", "status", "address"] : ["name", "status"]
+);
 const tableColumnNames = {
     name: "Full Name",
     status: "Status",
@@ -285,6 +288,14 @@ watch(
     () => {
         dataList = iPropsValue("{moduleC}List");
         changePage(currentPage);
+    }
+);
+watch(
+    () => isMobile,
+    () => {
+        viewableColumn = !isMobile
+            ? ["name", "status", "address"]
+            : ["name", "status"];
     }
 );
 const changePageSize = (val) => {

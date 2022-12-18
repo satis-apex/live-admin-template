@@ -114,18 +114,32 @@
                                         Full Name: {{ props.row.fullName }}
                                     </p>
                                     <p class="mb-2">
-                                        date: {{ props.row.date }}
+                                        Email: {{ props.row.email }}
                                     </p>
                                     <p class="mb-2">
-                                        Address: {{ props.row.address }}
+                                        Joined Date:
+                                        {{ props.row.joined_date ?? "-" }}
+                                    </p>
+                                    <p class="mb-2">
+                                        Address: {{ props.row.address ?? "-" }}
+                                    </p>
+                                    <p class="mb-2">
+                                        Phone: {{ props.row.phone ?? "-" }}
                                     </p>
                                     <p class="mb-2">
                                         Account Status:
-                                        {{
-                                            props.row.account != null
-                                                ? "Active"
-                                                : "Not created"
-                                        }}
+                                        <StatusBadge
+                                            :type="
+                                                props.row.account != null
+                                                    ? 'success'
+                                                    : 'danger'
+                                            "
+                                            >{{
+                                                props.row.account != null
+                                                    ? "active"
+                                                    : "not created"
+                                            }}
+                                        </StatusBadge>
                                     </p>
                                 </div>
                             </template>
@@ -137,26 +151,36 @@
                             width="50px"
                         />
                         <el-table-column
-                            :label="tableColumnNames.name"
+                            :label="tableColumnNames.fullName"
                             sortable
                             prop="fullName"
-                            v-if="isViewableColumn('name')"
+                            v-if="isViewableColumn('fullName')"
                         />
                         <el-table-column
-                            :label="tableColumnNames.date"
-                            prop="date"
-                            :formatter="dateFormatter"
-                            v-if="!isScreenMd && isViewableColumn('date')"
+                            :label="tableColumnNames.email"
+                            v-if="isViewableColumn('email')"
+                            prop="email"
                         />
                         <el-table-column
                             :label="tableColumnNames.address"
-                            v-if="!isScreenMd && isViewableColumn('address')"
+                            v-if="isViewableColumn('address')"
                             prop="address"
                         />
+
                         <el-table-column
-                            :label="tableColumnNames.status"
-                            prop="status"
-                            v-if="isViewableColumn('status')"
+                            :label="tableColumnNames.phone"
+                            v-if="isViewableColumn('phone')"
+                            prop="phone"
+                        />
+                        <el-table-column
+                            :label="tableColumnNames.joined_date"
+                            prop="joined_date"
+                            :formatter="dateFormatter"
+                            v-if="isViewableColumn('joined_date')"
+                        />
+                        <el-table-column
+                            :label="tableColumnNames.account_status"
+                            v-if="isViewableColumn('account_status')"
                             :filters="[
                                 { text: 'active', value: 'active' },
                                 { text: 'not created', value: 'not created' },
@@ -182,8 +206,8 @@
                         <el-table-column
                             align="center"
                             fixed="right"
-                            width="140px"
                             label="Action"
+                            width="75px"
                         >
                             <template #default="scope">
                                 <el-dropdown trigger="click">
@@ -308,21 +332,44 @@ const { iPropsValue } = useInertiaPropsUtility();
 const { filterObjectWithGroupedValue } = useObjectUtility();
 const { isScreenMd, isDarkMode } = useAppUtility();
 //variable declare
+const isMobile = $ref(isScreenMd);
 const refAddEditForm = $ref(null);
 const refAddByExcelForm = $ref(null);
 const refViewForm = $ref(null);
 const exportLoading = $ref(false);
-const viewableColumn = $ref(["name", "status", "address"]);
+const viewableColumn = $ref(
+    !isMobile
+        ? ["fullName", "email", "address", "account_status", "joined_date"]
+        : ["fullName", "account_status"]
+);
 const tableColumnNames = {
-    name: "Full Name",
-    status: "Account Status",
+    fullName: "Full Name",
+    email: "Email",
     address: "Address",
-    date: "Date",
+    phone: "Phone",
+    joined_date: "Joined Date",
+    account_status: "Account Status",
 };
 //export table column refrence
 const exportTableOption = reactive({
-    header: ["Name", "Date"],
-    headerValue: ["name", "date"],
+    header: [
+        "First Name",
+        "Middle Name",
+        "Last Name",
+        "Email",
+        "Address",
+        "Phone",
+        "Joined Date",
+    ],
+    headerValue: [
+        "first_name",
+        "middle_name",
+        "last_name",
+        "email",
+        "address",
+        "phone",
+        "joined_date",
+    ],
     fileName: "staffList",
 });
 const formInputNames = {
@@ -373,7 +420,7 @@ const getFilterKey = (columnKey) => {
     return filterKey;
 };
 
-const dateFormatter = (row, column) => moment(row.date).format("MMMM Do, YYYY");
+const dateFormatter = (row, column) => moment(row.date).format("MMM Do, YYYY");
 //table pagination / search related
 const currentPage = $ref(1);
 const pageSize = $ref(100);
@@ -390,6 +437,14 @@ watch(
     () => {
         dataList = iPropsValue("staffList");
         changePage(currentPage);
+    }
+);
+watch(
+    () => isMobile,
+    () => {
+        viewableColumn = !isMobile
+            ? ["fullName", "email", "address", "account_status", "joined_date"]
+            : ["fullName", "account_status"];
     }
 );
 const changePageSize = (val) => {
@@ -414,6 +469,7 @@ const changePage = (val = 1) => {
                 let hasValue = false;
                 viewableColumn.forEach((value) => {
                     if (
+                        data[value] &&
                         data[value]
                             .toString()
                             .toLowerCase()
@@ -440,6 +496,7 @@ const searchFilter = () => {
         let hasValue = false;
         viewableColumn.forEach((value) => {
             if (
+                data[value] &&
                 data[value]
                     .toString()
                     .toLowerCase()
