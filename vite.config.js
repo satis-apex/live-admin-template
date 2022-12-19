@@ -40,7 +40,7 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
-                additionalData: `@use "~/sass/app.scss" as *;`,
+                additionalData: `@use "~/sass/element/index.scss" as *;`,
             },
         },
     },

@@ -1,4 +1,5 @@
 @import './custom.css';
+@import './dark.css';
 
 @tailwind base;
 @tailwind components;

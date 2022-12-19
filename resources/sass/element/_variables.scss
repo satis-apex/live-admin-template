@@ -1,0 +1,25 @@
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  	$sm: 576px,
+	$md: 768px,
+	$lg: 992px,
+	$xl: 1200px,
+  );
+  
+  :root{
+    --active-highlight: #ccc;
+    --primary-color: #009ef7;
+    --primary-light-color: #0AA9FF;
+    --menu-active-color: #c6e2ff;
+    --primary-dark-color: #0071AD;
+    --primary-lightest-color: #31B5FC;
+    --complementary_color: #FFBA00;
+    --body-bg:#F6F6F6;
+  }
+  html.dark{
+    --active-highlight: #e1e1e1;
+    --primary-color: #009ef7;
+    --menu-active-color: #1e1e1e;
+    --complementary_color: #FFBA00;
+    --body-bg:#121212;
+  }
+  
