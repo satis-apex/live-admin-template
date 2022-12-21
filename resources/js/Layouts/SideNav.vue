@@ -329,6 +329,14 @@ const toggleDesktopMenu = function () {
     isCollapse = !isCollapse;
     localStorage.collapseMenu = isCollapse;
 };
+window.addEventListener("resize", () => {
+    isCollapse =
+        localStorage.collapseMenu && localStorage.collapseMenu == "true"
+            ? true
+            : isScreenLg.value
+            ? true
+            : false;
+});
 defineExpose({
     showMenuDrawer,
     toggleDesktopMenu,

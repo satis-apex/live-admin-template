@@ -62,6 +62,10 @@ select:focus {
 {
   color: var(--primary-color);
 }
+.text-primary-dark
+{
+  color: var(--primary-dark-color);
+}
 
 .el-input__inner[type=number],.el-input__inner[type=number]:hover
 input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button

@@ -99,6 +99,7 @@ module.exports = {
 
     plugins: [
         require('@tailwindcss/forms'),
+        require('@tailwindcss/line-clamp'),
         plugin(function ({ addComponents, theme }) {
             const screens = theme("screens", {});
             addComponents([
