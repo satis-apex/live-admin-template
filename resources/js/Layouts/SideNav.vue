@@ -6,7 +6,7 @@
             :show-close="true"
             direction="ltr"
             :size="250"
-            custom-class="menu-drawer"
+            modal-class="menu-drawer"
         >
             <template #header>
                 <div class="logo">
@@ -442,7 +442,9 @@ defineExpose({
     border-radius: 100% !important;
     background: var(--el-menu-text-color);
 }
-
+.menu-drawer {
+    z-index: 100 !important;
+}
 .menu-drawer .el-drawer__body {
     padding: 0px;
 }

@@ -12,6 +12,7 @@ Live-Admin is an admin template created by integrating Laravel, Vue3 and Inertia
 -   Laravel Module Implemented
 -   Ability to create fully functional Demo Crud file from add Manage Menu UI dynamically
 -   Dark mode Compatible
+-   Notification bell integrated with laravel notification
 
 ## Requirement
 
