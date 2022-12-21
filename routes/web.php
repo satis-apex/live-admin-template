@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,8 @@ Route::get('/', function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
+    Route::patch('notification/mark-read', [NotificationController::class, 'markNotificationRead'])->name('markNotificationRead');
+    Route::patch('notification/mark-all-read', [NotificationController::class, 'markAllNotificationRead'])->name('markAllNotificationRead');
 });
 
 require __DIR__ . '/auth.php';

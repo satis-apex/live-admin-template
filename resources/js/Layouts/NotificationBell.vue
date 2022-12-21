@@ -4,13 +4,14 @@
     >
         <fa icon="bell" @click="notificationDrawer = true" />
         <div
+            v-if="unreadNotificationCount > 0"
             class="absolute top-2 right-2 status-badge w-2 h-2 block rounded-full bg-complementary"
         ></div>
     </div>
 
     <el-drawer
         v-model="notificationDrawer"
-        custom-class="notification-panel"
+        modal-class="notification-panel"
         direction="rtl"
         :append-to-body="true"
         :show-close="false"
@@ -27,7 +28,12 @@
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item :icon="Finished" @click="markAllRead"
+                        <el-dropdown-item
+                            :icon="Finished"
+                            :disabled="
+                                unreadNotificationCount > 0 ? false : true
+                            "
+                            @click="markAllRead"
                             >Mark all as read</el-dropdown-item
                         >
                         <el-dropdown-item :icon="Setting"
@@ -44,6 +50,7 @@
                 >
                     <div class="pl-4 w-full relative">
                         <el-tooltip
+                            v-if="notification.read_at === null"
                             class="box-item"
                             effect="dark"
                             content="Mark as read"
@@ -56,18 +63,26 @@
                         ></el-tooltip>
                         <div
                             @click="viewAnnouncement(notification)"
-                            class="font-semibold flex text-lg justify-between capitalize"
+                            class="flex text-base justify-between capitalize"
                         >
-                            {{ notification.name }}
-                        </div>
-                        <div class="absolute right-0 top-0 text-sm">
-                            {{ notification.date }}
+                            <span class="font-semibold">{{
+                                notification.data.title
+                            }}</span>
+                            <div
+                                class="text-sm flex justify-center items-center"
+                            >
+                                {{
+                                    moment(notification.created_at).format(
+                                        "MMM Do, YYYY"
+                                    )
+                                }}
+                            </div>
                         </div>
                         <div
                             @click="viewAnnouncement(notification)"
                             class="line-clamp-3 md:line-clamp-2 text-base"
                         >
-                            {{ notification.detail }}
+                            {{ notification.data.message }}
                         </div>
                     </div>
                 </div>
@@ -78,54 +93,65 @@
 </template>
 
 <script setup>
-import { ref } from "@vue/runtime-core";
+import { ref, watch } from "@vue/runtime-core";
 import { MoreFilled, Finished, Setting } from "@element-plus/icons-vue";
+import moment from "moment";
+import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
+import { useForm } from "@inertiajs/inertia-vue3";
+import { Inertia } from "@inertiajs/inertia";
+const { iPropsValue } = useInertiaPropsUtility();
 const notificationDrawer = ref(false);
 const markRead = (announcement) => {
-    console.log("markRead");
+    const formData = useForm({
+        id: announcement.id,
+    });
+    formData.patch(route("markNotificationRead"), {
+        preserveScroll: true,
+    });
 };
-const notifications = [
-    {
-        name: "test",
-        detail: "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like	 ",
-        date: "2022-12-6",
-    },
-    {
-        name: "test",
-        detail: "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like",
-        date: "2022-12-6",
-    },
-    {
-        name: "test",
-        detail: "dexcription",
-        date: "2022-12-6",
-    },
-    {
-        name: "test",
-        detail: "dexcription",
-        date: "2022-12-6",
-    },
-];
+const notifications = ref(iPropsValue("app_notification", "all_notification"));
+const unreadNotificationCount = ref(
+    iPropsValue("app_notification", "unread_count")
+);
+watch(
+    () => iPropsValue("app_notification"),
+    () => {
+        unreadNotificationCount.value = iPropsValue(
+            "app_notification",
+            "unread_count"
+        );
+        notifications.value = iPropsValue(
+            "app_notification",
+            "all_notification"
+        );
+    }
+);
 
 const viewAnnouncement = (announcement) => {
-    console.log("viewAnnouncement");
+    Inertia.get(
+        route("dashboard"),
+        {},
+        {
+            onStart: () => {
+                notificationDrawer.value = false;
+            },
+        }
+    );
 };
 const markAllRead = () => {
-    console.log("markAllRead");
+    const formData = useForm({});
+    formData.patch(route("markAllNotificationRead"), {
+        preserveScroll: true,
+    });
 };
 </script>
 
 <style lang="scss">
-.has-notification:after {
-    content: "";
-    height: 10px;
-    width: 10px;
-    background: red;
-    display: inline-block;
-    position: absolute;
-}
 .notification-panel {
-    min-width: 250px;
+    z-index: 100 !important;
+    .el-drawer {
+        min-width: 250px;
+    }
     .el-drawer__header {
         margin-bottom: 0;
         background: var(--primary-color);
