@@ -304,18 +304,18 @@
 </template>
 <script setup>
 import { SimpleBar } from "simplebar-vue3";
-import { watch, computed, onMounted } from "@vue/runtime-core";
+import { ref, watch, computed, onMounted } from "@vue/runtime-core";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 import { useAppUtility } from "@/Composables/appUtiility";
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 const { iPropsValue } = useInertiaPropsUtility();
 const { isScreenLg, hasMenuAccess } = useAppUtility();
 
-const menuDrawer = $ref();
-const currentActive = $ref("");
-const menuList = $ref(iPropsValue("app_menu"));
+const menuDrawer = ref();
+const currentActive = ref("");
+const menuList = ref(iPropsValue("app_menu"));
 
-const isCollapse = $ref(
+const isCollapse = ref(
     localStorage.collapseMenu && localStorage.collapseMenu == "true"
         ? true
         : isScreenLg.value
@@ -323,14 +323,14 @@ const isCollapse = $ref(
         : false
 );
 const showMenuDrawer = function () {
-    menuDrawer = true;
+    menuDrawer.value = true;
 };
 const toggleDesktopMenu = function () {
-    isCollapse = !isCollapse;
-    localStorage.collapseMenu = isCollapse;
+    isCollapse.value = !isCollapse.value;
+    localStorage.collapseMenu = isCollapse.value;
 };
 window.addEventListener("resize", () => {
-    isCollapse =
+    isCollapse.value =
         localStorage.collapseMenu && localStorage.collapseMenu == "true"
             ? true
             : isScreenLg.value

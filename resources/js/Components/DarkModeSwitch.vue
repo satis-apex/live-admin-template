@@ -1,6 +1,6 @@
 <script setup>
 import { Moon, Sunny } from "@element-plus/icons-vue";
-import { onMounted } from "@vue/runtime-core";
+import { onMounted, ref } from "@vue/runtime-core";
 import { useAppUtility } from "@/Composables/appUtiility";
 const { isDarkScheme, setDarkScheme, setLightScheme, setDefaultScheme } =
     useAppUtility();
@@ -22,7 +22,7 @@ onMounted(() => {
         setLightScheme();
     }
 });
-const darkMode = $ref(isDarkScheme());
+const darkMode = ref(isDarkScheme());
 </script>
 
 <template>

@@ -118,8 +118,10 @@ class HandleInertiaRequests extends Middleware
                 ? json_decode($menuObject)
                 : null,
             'app_notification' => [
-                'unread_count' => $request->user()->unreadNotifications->count(),
-                'all_notification' => $request->user()->notifications
+                'unread_count' => fn () => $request->user()
+                ? $request->user()->unreadNotifications->count() : null,
+                'all_notification' => fn () => $request->user()
+                ? $request->user()->notifications : null
             ],
             'flash' => $flashMessage,
             'page_exception' => $pageException

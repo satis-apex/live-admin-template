@@ -113,23 +113,23 @@ import {
 import DarkToggler from "@/Components/DarkModeSwitch.vue";
 import NotificationBell from "@/Layouts/NotificationBell.vue";
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-import { inject, onMounted, watch } from "@vue/runtime-core";
+import { ref, inject, onMounted, watch } from "@vue/runtime-core";
 import ChangeUserPassword from "@/Layouts/ChangeUserPassword.vue";
 import { useAppUtility } from "@/Composables/appUtiility";
 // import { set } from "@vueuse/shared";
 const { isScreenMd } = useAppUtility();
 const { iPropsValue } = useInertiaPropsUtility();
-const formVisible = $ref(false);
-const headDropdown = $ref();
-const breadcrumb = $ref(iPropsValue("breadcrumb"));
+const formVisible = ref(false);
+const headDropdown = ref();
+const breadcrumb = ref(iPropsValue("breadcrumb"));
 const closeForm = function () {
-    formVisible = false;
+    formVisible.value = false;
 };
 
 watch(
     () => iPropsValue("breadcrumb"),
     () => {
-        breadcrumb = iPropsValue("breadcrumb");
+        breadcrumb.value = iPropsValue("breadcrumb");
     }
 );
 const emit = defineEmits(["showMobileMenu", "toggleDesktopMenu"]);

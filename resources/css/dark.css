@@ -47,10 +47,10 @@ html.dark .el-button {
 	--el-button-divide-border-color:#626262;
 }
 /* Change the white to any color */
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
+html.dark input:-webkit-autofill,
+html.dark input:-webkit-autofill:hover, 
+html.dark input:-webkit-autofill:focus, 
+html.dark input:-webkit-autofill:active{
 	-webkit-box-shadow: 0 0 0 30px #121212 inset !important;
 }
 html.dark .dd-placeholder {
