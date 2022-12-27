@@ -1,44 +1,42 @@
 <template>
-    <div class="common-layout">
-        <el-container>
-            <side-nav ref="refSideNav" :key="navComponentKey"></side-nav>
-            <el-container class="bg-body">
-                <SimpleBar style="height: 100vh; overflow-y: auto; width: 100%">
-                    <el-affix :offset="0.1" style="width: 100%">
-                        <heads
-                            @showMobileMenu="showDrawer"
-                            @toggleDesktopMenu="toggleDesktopMenu"
-                        ></heads>
-                    </el-affix>
-                    <el-main class="main-container-wrapper">
-                        <div v-if="iPropsValue('auth', 'isImpersonator')">
-                            <div
-                                class="text-center p-2 mb-4 bg-gray-300 dark:bg-neutral-800 rounded-md"
+    <section class="el-container">
+        <side-nav ref="refSideNav" :key="navComponentKey"></side-nav>
+        <section class="el-container is-vertical bg-body">
+            <SimpleBar style="height: 100vh; overflow-y: auto; width: 100%">
+                <heads
+                    @showMobileMenu="showDrawer"
+                    @toggleDesktopMenu="toggleDesktopMenu"
+                ></heads>
+
+                <main class="el-main main-container-wrapper">
+                    <div v-if="iPropsValue('auth', 'isImpersonator')">
+                        <div
+                            class="text-center p-2 mb-4 bg-gray-300 dark:bg-neutral-800 rounded-md"
+                        >
+                            <fa icon="circle-info" />
+                            Your are Impersonating
+                            <strong>{{
+                                iPropsValue("auth", "user.fullName")
+                            }}</strong
+                            >.
+                            <span
+                                class="text-blue-500 cursor-pointer hover:underline"
+                                @click="leaveImpersonate()"
+                                ><fa icon="right-from-bracket" /> leave
+                                Impersonation.</span
                             >
-                                <fa icon="circle-info" />
-                                Your are Impersonating
-                                <strong>{{
-                                    iPropsValue("auth", "user.fullName")
-                                }}</strong
-                                >.
-                                <span
-                                    class="text-blue-500 cursor-pointer hover:underline"
-                                    @click="leaveImpersonate()"
-                                    ><fa icon="right-from-bracket" /> leave
-                                    Impersonation.</span
-                                >
-                            </div>
                         </div>
-                        <slot />
-                    </el-main>
-                    <el-footer
-                        >&copy; {{ moment().year() }},
-                        {{ iPropsValue("app_info", "title") }}
-                    </el-footer>
-                </SimpleBar>
-            </el-container>
-        </el-container>
-    </div>
+                    </div>
+                    <slot />
+                </main>
+                <footer class="el-footer">
+                    &copy; {{ moment().year() }},
+                    {{ iPropsValue("app_info", "title") }}
+                </footer>
+            </SimpleBar>
+        </section>
+    </section>
+
     <FlashMessage />
 </template>
 <script setup>
