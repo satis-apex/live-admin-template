@@ -22,16 +22,16 @@
         "unplugin-auto-import": "^0.10.1",
         "unplugin-vue-components": "^0.21.2",
         "vite": "^3.0.0",
-        "vue": "^3.2.31"
-    },
-    "dependencies": {
+        "vue": "^3.2.31",
         "@element-plus/icons-vue": "^2.0.9",
         "@fortawesome/fontawesome-svg-core": "^6.2.0",
         "@fortawesome/free-brands-svg-icons": "^6.2.0",
         "@fortawesome/free-regular-svg-icons": "^6.2.0",
         "@fortawesome/free-solid-svg-icons": "^6.2.0",
         "@fortawesome/vue-fontawesome": "^3.0.1",
-        "element-plus": "^2.2.11",
+        "element-plus": "^2.2.11"
+    },
+    "dependencies": {
         "file-saver": "^2.0.5",
         "moment": "^2.29.4",
         "simplebar": "^5.3.8",

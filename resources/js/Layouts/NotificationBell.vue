@@ -1,8 +1,9 @@
 <template>
     <div
+        @click="notificationDrawer = true"
         class="inline-block text-xl hover:bg-gray-200 dark:hover:bg-zinc-800 w-11 cursor-pointer h-11 flex justify-center rounded-full items-center mr-2 relative text-primary-dark"
     >
-        <fa icon="bell" @click="notificationDrawer = true" />
+        <fa icon="bell" />
         <div
             v-if="unreadNotificationCount > 0"
             class="absolute top-2 right-2 status-badge w-2 h-2 block rounded-full bg-complementary"
@@ -18,7 +19,15 @@
     >
         <template #header="{ close, titleId, titleClass }">
             <div :id="titleId" :class="titleClass" class="!text-xl font-bold">
-                Notifications
+                <div class="relative">
+                    Notifications
+                    <span
+                        v-if="unreadNotificationCount > 0"
+                        style="border: 1px solid"
+                        class="absolute top-0 text-sm ml-1 bg-primary-dark shadow-md px-2 rounded-full"
+                        >{{ unreadNotificationCount }}</span
+                    >
+                </div>
             </div>
             <el-dropdown trigger="click">
                 <div
@@ -63,13 +72,13 @@
                         ></el-tooltip>
                         <div
                             @click="viewAnnouncement(notification)"
-                            class="flex text-base justify-between capitalize"
+                            class="flex text-sm justify-between capitalize"
                         >
                             <span class="font-semibold">{{
                                 notification.data.title
                             }}</span>
                             <div
-                                class="text-sm flex justify-center items-center"
+                                class="text-xs flex justify-center items-center"
                             >
                                 {{
                                     moment(notification.created_at).format(
@@ -80,7 +89,7 @@
                         </div>
                         <div
                             @click="viewAnnouncement(notification)"
-                            class="line-clamp-3 md:line-clamp-2 text-base"
+                            class="line-clamp-3 md:line-clamp-2 text-sm"
                         >
                             {{ notification.data.message }}
                         </div>
