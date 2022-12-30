@@ -1,10 +1,10 @@
 <?php
 
-use Nwidart\Modules\Activators\FileActivator;
 use Nwidart\Modules\Commands;
+use App\Activators\DatabaseActivator;
+use Nwidart\Modules\Activators\FileActivator;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Module Namespace
@@ -271,7 +271,11 @@ return [
             'cache-key' => 'activator.installed',
             'cache-lifetime' => 604800,
         ],
+        'database' => [
+            'class' => DatabaseActivator::class,
+            'table' => 'modules',
+        ]
     ],
 
-    'activator' => 'file',
+    'activator' => 'database',
 ];

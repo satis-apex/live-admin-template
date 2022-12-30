@@ -13,11 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(NotificationSeeder::class);
-        // $this->call(
-        //     [
-
-        //     ]
-        // );
+        $this->call(
+            [
+                NotificationSeeder::class,
+                ModuleSeeder::class,
+            ]
+        );
     }
 }
