@@ -113,8 +113,9 @@ I'm a full stack developer...
 
 ## Roadmap
 
--   Multi tenent implementation
--   laravel Notification
+-   ✔ Integrate laravel Notification
+-   ✔ Intregrate [laravel Modules](https://github.com/nWidart/laravel-modules)
+-   Multi tenent implementation (i will implement if this feature is requested)
 -   Add more integrations
 
 ## License
