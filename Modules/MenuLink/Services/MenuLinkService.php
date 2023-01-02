@@ -232,8 +232,10 @@ class MenuLinkService
             if ($menu->type == 'parent-single') {
                 $existingLink[] = $menu->link;
             } else {
-                foreach ($menu->children as $subMenu) {
-                    $existingLink[] = $subMenu->link;
+                if (property_exists($menu, 'children')) {
+                    foreach ($menu->children as $subMenu) {
+                        $existingLink[] = $subMenu->link;
+                    }
                 }
             }
         }
