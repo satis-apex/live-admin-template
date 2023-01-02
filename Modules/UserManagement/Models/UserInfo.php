@@ -1,28 +1,19 @@
 <?php
-namespace Modules\Staff\Models;
+namespace Modules\UserManagement\Models;
 
+use Carbon\Carbon;
 use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Modules\Staff\Database\Factories\StaffFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\UserManagement\Models\User;
 
-class Staff extends Authenticatable implements HasMedia
+class UserInfo extends Authenticatable implements HasMedia
 {
-    use HasFactory,InteractsWithMedia;
-
-    protected static function newFactory()
-    {
-        return StaffFactory::new();
-    }
-    protected $table = 'staffs';
+    use HasFactory, InteractsWithMedia;
+    protected $hidden = ['created_at', 'updated_at'];
     protected $appends = ['fullName', 'avatar'];
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
+    protected $table = 'user_infos';
 
     public function account()
     {
@@ -34,6 +25,14 @@ class Staff extends Authenticatable implements HasMedia
         return $this->first_name . ' ' . ($this->middle_name ? $this->middle_name . ' ' : '') . $this->last_name;
     }
 
+    public function setJoinedDateAttribute()
+    {
+        return $this->joined_date = Carbon::now();
+    }
+
+    /**
+     * Single File uploading
+     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
@@ -41,6 +40,9 @@ class Staff extends Authenticatable implements HasMedia
             ->singleFile();
     }
 
+    /**
+     * @return mixed
+     */
     public function getAvatarAttribute()
     {
         if ($this->getFirstMedia('avatar') != null) {

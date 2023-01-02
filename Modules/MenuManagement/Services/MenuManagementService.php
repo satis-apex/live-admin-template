@@ -257,7 +257,7 @@ class MenuManagementService
             Permission::create(['name' => $permissionName]);
         }
         //updating permission list to json file
-        $targetPath = base_path('Modules/User/Database/Seeders/PermissionList.json');
+        $targetPath = base_path('Modules/UserManagement/Database/Seeders/PermissionList.json');
         if (file_exists($targetPath)) {
             $permissionListCurrent = File::get($targetPath);
             $permissionListArr = json_decode($permissionListCurrent);

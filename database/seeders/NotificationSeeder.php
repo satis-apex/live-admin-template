@@ -2,7 +2,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Support\Str;
-use Modules\User\Models\User;
+use Modules\UserManagement\Models\User;
 use Illuminate\Database\Seeder;
 
 class NotificationSeeder extends Seeder

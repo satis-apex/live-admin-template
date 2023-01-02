@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
-use Modules\User\Models\User;
+use Modules\UserManagement\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
