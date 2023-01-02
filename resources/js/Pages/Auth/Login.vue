@@ -76,7 +76,7 @@ export default {
         <el-form
             ref="refLoginForm"
             id="login-form"
-            @submit.prevent
+            @submit.prevent="submit"
             :rules="rules"
             :model="form"
         >
@@ -92,6 +92,7 @@ export default {
                     autofocus
                     autocomplete="username"
                     required
+                    v-on:keyup.enter="submit()"
                 />
             </el-form-item>
             <el-form-item label="" prop="password">
@@ -107,6 +108,7 @@ export default {
                     autocomplete="current-password"
                     required
                     show-password
+                    v-on:keyup.enter="submit()"
                 />
             </el-form-item>
             <div class="block mt-4">

@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Auth;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Modules\MenuLink\Models\Menu;
+use Modules\MenuManagement\Models\Menu;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;

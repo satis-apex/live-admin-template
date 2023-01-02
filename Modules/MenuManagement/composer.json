@@ -1,0 +1,21 @@
+{
+    "name": "liveAdmin/menumanagement",
+    "description": "",
+    "authors": [
+        {
+            "name": "Satish Maharjan",
+            "email": "satish.maharjan55@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\MenuManagement\\": ""
+        }
+    }
+}

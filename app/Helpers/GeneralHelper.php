@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use Modules\MenuLink\Models\MenuLink;
+use Modules\MenuManagement\Models\MenuLink;
 use Illuminate\Support\Facades\Storage;
 use Modules\AppSetting\Models\ApplicationInfo;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

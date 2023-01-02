@@ -5,7 +5,7 @@ use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 use Illuminate\Http\Request;
 use Modules\AppSetting\Models\ApplicationInfo;
-use Modules\MenuLink\Models\Menu;
+use Modules\MenuManagement\Models\Menu;
 use Illuminate\Support\Facades\Session;
 
 class HandleInertiaRequests extends Middleware

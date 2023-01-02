@@ -1,0 +1,14 @@
+{
+    "name": "MenuManagement",
+    "label": "MenuManagement",
+    "alias": "menumanagement",
+    "description": "manage all menumanagement",
+    "keywords": ["menumanagement"],
+    "priority": 0,
+    "providers": [
+        "Modules\\MenuManagement\\Providers\\MenuManagementServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
