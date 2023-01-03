@@ -236,7 +236,7 @@ const tableColumnNames = {
 const exportTableOption = reactive({
     header: ["Name", "Date"],
     headerValue: ["name", "date"],
-    fileName: "{moduleC}List",
+    fileName: "{Controller}List",
 });
 const formInputNames = {
     name: "",
@@ -282,11 +282,11 @@ const searchText = $ref("");
 const filterDataList = $ref();
 const indexMethod = (index) => (currentPage - 1) * pageSize + index + 1;
 const isViewableColumn = (columnName) => viewableColumn.includes(columnName);
-const dataList = $ref(iPropsValue("{moduleC}List"));
+const dataList = $ref(iPropsValue("{Controller}List"));
 watch(
-    () => iPropsValue("{moduleC}List"),
+    () => iPropsValue("{Controller}List"),
     () => {
-        dataList = iPropsValue("{moduleC}List");
+        dataList = iPropsValue("{Controller}List");
         changePage(currentPage);
     }
 );

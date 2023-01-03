@@ -1,6 +1,5 @@
 <?php
 namespace App\Console\Commands;
-
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
@@ -8,18 +7,22 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Nwidart\Modules\Facades\Module;
-
 #[AsCommand(name: 'make:module')]
 class MakeModuleCommand extends Command
 {
     protected $name = 'make:module';
     protected $description = 'Create starter CRUD module';
     protected $type = 'Module';
-
     public function handle()
     {
         $hasModel = $this->option('model');
+        $hasController = $this->option('controller');
         $this->container['name'] = ucwords($this->argument('name'));
+        if ($hasController) {
+            $this->container['controller'] = ucwords($this->argument('controller'));
+        } else {
+            $this->container['controller'] = ucwords($this->argument('name'));
+        }
         //check If Module Exists.
         $targetPath = base_path('Modules/' . $this->container['name']);
         $filesystem = new SymfonyFilesystem();
@@ -27,7 +30,7 @@ class MakeModuleCommand extends Command
             $this->info('Duplicate Module : ' . $this->container['name'] . '.');
             return false;
         }
-        $this->container['model'] = ucwords(Str::singular($this->container['name']));
+        $this->container['model'] = ucwords(Str::singular($this->container['controller']));
         $this->comment('Success!');
         $this->generate();
         $this->info($this->container['name'] . ' module installed successfully.');
@@ -38,16 +41,14 @@ class MakeModuleCommand extends Command
             $this->comment('To enable module run command php artisan module:enable ' . $this->container['name']);
         }
     }
-
     protected function generate()
     {
-        $module = $this->container['name'];
+        $Module = $this->container['name'];
         $model = $this->container['model'];
-        $Module = $module;
-        $module = strtolower($module);
+        $controller = $this->container['controller'];
+        $module = strtolower($Module);
         $Model = $model;
         $targetPath = base_path('Modules/' . $Module);
-
         //copy folders
         $this->copy(base_path('stubs/base-module/Config'), $targetPath . '/Config');
         $this->copy(base_path('stubs/base-module/Http'), $targetPath . '/Http');
@@ -72,15 +73,15 @@ class MakeModuleCommand extends Command
         $this->replaceInFile($targetPath . '/composer.json');
         $this->replaceInFile($targetPath . '/module.json');
         $this->replaceInFile($targetPath . '/vite.config.js');
-        $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/Index.vue');
-        $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/Components/AddEditForm.vue');
-        $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/Components/AddByExcelForm.vue');
-        $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/Components/ViewForm.vue');
+        $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/SubModule/Index.vue');
+        $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/SubModule/Components/AddEditForm.vue');
+        $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/SubModule/Components/AddByExcelForm.vue');
+        $this->replaceInFile($targetPath . '/Resources/assets/js/Pages/SubModule/Components/ViewForm.vue');
         //rename
-        $this->rename($targetPath . '/Http/Controllers/ModuleController.php', $targetPath . '/Http/Controllers/' . $Module . 'Controller.php');
-        $this->rename($targetPath . '/Services/ModuleService.php', $targetPath . '/Services/' . $Module . 'Service.php');
+        $this->rename($targetPath . '/Http/Controllers/ModuleController.php', $targetPath . '/Http/Controllers/' . $controller . 'Controller.php');
+        $this->rename($targetPath . '/Services/ModuleService.php', $targetPath . '/Services/' . $controller . 'Service.php');
         $this->rename($targetPath . '/Providers/ModuleServiceProvider.php', $targetPath . '/Providers/' . $Module . 'ServiceProvider.php');
-
+        $this->rename($targetPath . '/Resources/assets/js/Pages/SubModule', $targetPath . '/Resources/assets/js/Pages/' . $controller);
         if ($this->option('model')) {
             //copy folders
             $this->copy(base_path('stubs/base-module/Models'), $targetPath . '/Models');
@@ -89,17 +90,16 @@ class MakeModuleCommand extends Command
             $this->replaceInFile($targetPath . '/Database/Factories/ModelFactory.php');
             $this->replaceInFile($targetPath . '/Database/Migrations/create_module_table.php');
             $this->replaceInFile($targetPath . '/Database/Seeders/ModelDatabaseSeeder.php');
+            $this->replaceInFile($targetPath . '/Database/Seeders/ModelTableSeeder.php');
             $this->replaceInFile($targetPath . '/Models/Model.php');
             //rename
             $this->rename($targetPath . '/Database/Factories/ModelFactory.php', $targetPath . '/Database/Factories/' . $Model . 'Factory.php');
-            $this->rename($targetPath . '/Database/migrations/create_module_table.php', $targetPath . '/Database/migrations/create_' . Str::snake($Module) . 's_table.php', 'migration');
+            $this->rename($targetPath . '/Database/migrations/create_module_table.php', $targetPath . '/Database/migrations/create_' . Str::snake($controller) . 's_table.php', 'migration');
             $this->rename($targetPath . '/Database/Seeders/ModelDatabaseSeeder.php', $targetPath . '/Database/Seeders/' . $Module . 'DatabaseSeeder.php');
+            $this->rename($targetPath . '/Database/Seeders/ModelTableSeeder.php', $targetPath . '/Database/Seeders/' . $controller . 'Seeder.php');
             $this->rename($targetPath . '/Models/Model.php', $targetPath . '/Models/' . $Model . '.php');
         }
-
-        // $this->rename($targetPath . '/Tests/Feature/ModuleTest.php', $targetPath . '/Tests/Feature/' . $Module . 'Test.php');
     }
-
     protected function rename($path, $target, $type = null)
     {
         $filesystem = new SymfonyFilesystem();
@@ -114,7 +114,6 @@ class MakeModuleCommand extends Command
             }
         }
     }
-
     protected function copy($path, $target, $type = 'directory')
     {
         $filesystem = new SymfonyFilesystem();
@@ -126,41 +125,42 @@ class MakeModuleCommand extends Command
             }
         }
     }
-
     protected function replaceInFile($path)
     {
         $name = $this->container['name'];
         $model = $this->container['model'];
+        $controller = $this->container['controller'];
         $types = [
-            '{module_}' => Str::snake($name),
-            '{module-}' => Str::kebab($name),
+            // '{module_}' => Str::snake($name),
+            // '{module-}' => Str::kebab($name),
             '{Module}' => $name,
             '{module}' => strtolower($name),
             '{Model}' => $model,
             '{model}' => strtolower($model),
-            '{routeName}' => Str::camel($name),
-            '{moduleC}' => Str::camel($name)
+            '{Model_}' => Str::snake($model),
+            '{Controller}' => $controller,
+            '{Controller-}' => Str::kebab($controller),
+            '{routeName}' => Str::camel($controller),
         ];
-
         foreach ($types as $key => $value) {
             if (file_exists($path)) {
                 file_put_contents($path, str_replace($key, $value, file_get_contents($path)));
             }
         }
     }
-
     protected function getArguments()
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The name and root of the module.']
+            ['name', InputArgument::REQUIRED, 'The name and root of the module.'],
+            ['controller', InputArgument::OPTIONAL, 'The controller and other class name for the module.']
         ];
     }
-
     protected function getOptions()
     {
         return [
             ['model', 'm', InputOption::VALUE_NONE, 'Generate a resource controller for the given model'],
             ['enable', 'e', InputOption::VALUE_NONE, 'Enable module after creation'],
+            ['controller', 'c', InputOption::VALUE_NONE, 'The controller and other class name for the module.'],
         ];
     }
 }

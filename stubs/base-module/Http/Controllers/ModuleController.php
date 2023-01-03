@@ -7,20 +7,20 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
-use Facades\Modules\{Module}\Services\{Module}Service;
+use Facades\Modules\{Module}\Services\{Controller}Service;
 use Modules\{Module}\Models\{Model};
 
-class {Module}Controller extends Controller
+class {Controller}Controller extends Controller
 {
     protected $routeName = '{routeName}';
     public function __construct()
     {
-        $this->implementMethodPermission('{Module}');
+        $this->implementMethodPermission('{Controller}');
     }
 
     public function index()
     {
-        ${moduleC}List = [
+        ${Controller}List = [
             [
                 'date' => '2016-05-03',
                 'name' => 'Tom',
@@ -35,15 +35,15 @@ class {Module}Controller extends Controller
             ],
         ]; // {Model}::query()->get('name');
         return Inertia::render(
-			'{Module}::Index',
+			'{Module}::{Controller}/Index',
 			[
-				'breadcrumb' => getBreadcrumb() ?: readable('{Module}'),
-                '{moduleC}List' => ${moduleC}List,
+				'breadcrumb' => getBreadcrumb() ?: readable('{Controller}'),
+                '{Controller}List' => ${Controller}List,
 				'userCan' => [
-                    'massAdd' => true && request()->user()->hasPermissionTo('{Module}-create'),
-                    'create' => request()->user()->hasPermissionTo('{Module}-create'),
-                    'edit' => request()->user()->hasPermissionTo('{Module}-edit'),
-                    'delete' => request()->user()->hasPermissionTo('{Module}-delete'),
+                    'massAdd' => true && request()->user()->hasPermissionTo('{Controller}-create'),
+                    'create' => request()->user()->hasPermissionTo('{Controller}-create'),
+                    'edit' => request()->user()->hasPermissionTo('{Controller}-edit'),
+                    'delete' => request()->user()->hasPermissionTo('{Controller}-delete'),
                 ]
 			]
 		);
@@ -52,7 +52,7 @@ class {Module}Controller extends Controller
     public function store()
     {
 		try {
-           {Module}Service::add();
+           {Controller}Service::add();
         } catch (\Exception $e) {
             return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
         }
@@ -62,7 +62,7 @@ class {Module}Controller extends Controller
     public function massStore()
     {
 		try {
-           {Module}Service::massAdd();
+           {Controller}Service::massAdd();
         } catch (\Exception $e) {
             return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
         }
@@ -72,7 +72,7 @@ class {Module}Controller extends Controller
     public function update(int $id)
     {
 		 try {
-           {Module}Service::update($id);
+           {Controller}Service::update($id);
         } catch (\Exception $e) {
             return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
         }
@@ -82,7 +82,7 @@ class {Module}Controller extends Controller
     public function destroy(int $id)
     {
 		 try {
-            {Module}Service::remove($id);
+            {Controller}Service::remove($id);
         } catch (\Exception $e) {
             return Redirect::route($this->routeName.'.index')->with('error', $e->getMessage());
         }

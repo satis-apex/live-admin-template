@@ -2,7 +2,7 @@
     <el-dialog
         v-model="FormVisible"
         :before-close="closeForm"
-        title="Add {Module} from Excel"
+        title="Add {Controller} from Excel"
     >
         <template #default>
             <div class="flex justify-center">

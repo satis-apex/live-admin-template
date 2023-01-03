@@ -2,7 +2,7 @@
     <el-dialog
         v-model="FormVisible"
         :before-close="closeForm"
-        title="View {Module}"
+        title="View {Controller}"
     >
         <template #default> {{ viewData }}</template>
     </el-dialog>
