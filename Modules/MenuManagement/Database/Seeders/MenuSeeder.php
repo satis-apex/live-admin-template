@@ -13,7 +13,7 @@ class MenuSeeder extends Seeder
      */
     public function run()
     {
-        $sql = file_get_contents(base_path('Modules/MenuLink') . '/Database/Seeds/menus.sql');
+        $sql = file_get_contents(base_path('Modules/MenuManagement') . '/Database/Seeds/menus.sql');
 
         DB::statement($sql);
     }

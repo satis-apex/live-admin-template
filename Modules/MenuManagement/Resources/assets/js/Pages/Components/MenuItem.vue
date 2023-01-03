@@ -15,12 +15,36 @@
             class="flex-none m-1 text-black dark:text-white"
             ><fa :icon="menuItem.icon" />
         </el-icon>
-        <span
-            class="grow text-black dark:text-white"
+        <div
+            class="grow text-black dark:text-white flex items-center"
             :class="menuItem.type == 'child' ? 'pl-1' : ''"
         >
-            {{ menuItem.name }}</span
-        >
+            {{ menuItem.name }}
+            <template
+                v-if="
+                    menuItem.hasOwnProperty('module') &&
+                    disabled_module.includes(menuItem.module)
+                "
+            >
+                <el-tooltip
+                    :content="
+                        menuItem.module +
+                        ' Module is disabled. This menu will not be visible until ' +
+                        menuItem.module +
+                        ' Module is enabled'
+                    "
+                    placement="bottom"
+                    popper-style="max-width: 250px"
+                >
+                    <el-icon
+                        class="ml-1"
+                        :size="16"
+                        color="var(--el-color-danger)"
+                        ><RemoveFilled
+                    /></el-icon>
+                </el-tooltip>
+            </template>
+        </div>
         <div
             class="action flex-none"
             v-if="
@@ -74,13 +98,16 @@
 </template>
 <script setup>
 import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
-import { onMounted } from "@vue/runtime-core";
+import { onMounted, ref } from "@vue/runtime-core";
 import { useAppUtility } from "@/Composables/appUtiility";
+import { RemoveFilled } from "@element-plus/icons-vue";
 const { iPropsValue } = useInertiaPropsUtility();
 const { isDarkMode } = useAppUtility();
 const props = defineProps({
     menuItem: Object,
 });
+const disabled_module = ref(iPropsValue("app_disabled_module"));
+
 const menuItem = $ref(props.menuItem);
 const emit = defineEmits(["deleteMenu", "editMenu"]);
 </script>

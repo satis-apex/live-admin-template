@@ -13,7 +13,7 @@ class MenuLinkSeeder extends Seeder
      */
     public function run()
     {
-        $sql = file_get_contents(base_path('Modules/MenuLink') . '/Database/Seeds/menu_links.sql');
+        $sql = file_get_contents(base_path('Modules/MenuManagement') . '/Database/Seeds/menu_links.sql');
 
         DB::statement($sql);
     }

@@ -1,10 +1,10 @@
 <?php
 namespace Modules\MenuManagement\Services;
 
+use App\Activators\Module;
 use Illuminate\Support\Str;
 use Modules\MenuManagement\Models\Menu;
 use Spatie\Permission\Models\Role;
-use Nwidart\Modules\Facades\Module;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Modules\MenuManagement\Models\MenuLink;
@@ -24,16 +24,18 @@ class MenuManagementService
             $routeNameArray = explode('.', $routeLink);
             $routeName = reset($routeNameArray);
             $controllerName = Str::studly($routeName);
+            $module = request('module');
             if ($routeLink == 'auto-generate') {
-                $moduleName = request('moduleName');
-                $generatedRouteLink = SELF::generateFiles($moduleName);
-                $controllerName = Str::studly(class_basename($moduleName));
+                $controllerName = request('controllerName');
+                $generatedRouteLink = SELF::generateFiles($module, $controllerName);
+                // $controllerName = Str::studly(class_basename($moduleName));
                 $routeLink = $generatedRouteLink . '.index';
             }
             $generateOption = request('generateOption');
             if ($generateOption == 'files-only') {
                 return;
             }
+
             $createdMenu = MenuLink::create(
                 [
                     'name' => request('name'),
@@ -41,6 +43,7 @@ class MenuManagementService
                     'icon' => request('icon'),
                     'parent_id' => request('parentId'),
                     'permission_key' => $controllerName,
+                    'module' => $module,
                     'type' => request('type'),
                     'access' => implode(',', request('access')),
                     'default_menu' => false
@@ -55,6 +58,7 @@ class MenuManagementService
                 'type' => $createdMenu->type,
                 'access' => $createdMenu->access,
                 'parent_id' => $createdMenu->parent_id,
+                'module' => $createdMenu->module,
                 'default_menu' => $createdMenu->default_menu
             ];
             $menus = Menu::first();
@@ -107,6 +111,7 @@ class MenuManagementService
                 'icon' => request('icon'),
                 'parent_id' => request('parentId'),
                 'type' => request('type'),
+                'module' => request('module'),
                 'access' => implode(',', request('access')),
                 'permission_key' => request('link') ? $controllerName : null,
             ];
@@ -392,13 +397,17 @@ class MenuManagementService
         return $menus->save();
     }
 
-    public function generateFiles($moduleName)
+    public function generateFiles($moduleName, $controllerName)
     {
-        $controllerName = Str::studly(class_basename($moduleName));
-
+        // $controllerName = Str::studly(class_basename($moduleName));
+        $entity = Module::findByName($moduleName);
+        if ($entity) {
+            $generatedRouteName = Str::camel($controllerName);
+            Artisan::call('make:subModule ' . $moduleName . ' -c ' . $controllerName . ' -m');
+            return $generatedRouteName;
+        }
         $generatedRouteName = Str::camel($controllerName);
-        Artisan::call('make:module ' . $controllerName . ' -m');
-        Module::enable($controllerName);
+        Artisan::call('make:module ' . $moduleName . ' -c ' . $controllerName . ' -m -e');
         return $generatedRouteName;
     }
 }

@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\DataTable\Http\Controllers\DataTableController;
 
-Route::middleware(['auth'])->prefix('data-table')->group(function() {
+Route::middleware(['auth'])->prefix('data-table')->group(function () {
     Route::get('/', [DataTableController::class, 'index'])->name('dataTable.index');
     Route::post('create', [DataTableController::class, 'store'])->name('dataTable.store');
     Route::post('mass-create', [DataTableController::class, 'massStore'])->name('dataTable.massStore');

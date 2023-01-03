@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(
             [
-                NotificationSeeder::class,
                 ModuleSeeder::class,
             ]
         );

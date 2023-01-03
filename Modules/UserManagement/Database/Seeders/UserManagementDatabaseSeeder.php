@@ -1,16 +1,19 @@
 <?php
-
 namespace Modules\UserManagement\Database\Seeders;
 
+use Database\Seeders\NotificationSeeder;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 
 class UserManagementDatabaseSeeder extends Seeder
 {
     public function run()
     {
-        Model::unguard();
-
-        // $this->call("OthersTableSeeder");
+        $this->call(
+            [
+                RoleAndPermissionSeeder::class,
+                UserSeeder::class,
+                NotificationSeeder::class
+            ]
+        );
     }
 }

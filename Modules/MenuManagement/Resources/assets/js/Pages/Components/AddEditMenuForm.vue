@@ -49,6 +49,7 @@
                     prop="name"
                 >
                     <el-input
+                        placeholder="eg: Manage User"
                         v-model="formData.name"
                         :formatter="
                             (value) =>
@@ -110,15 +111,73 @@
                 <el-form-item
                     v-if="
                         FormType == 'Add' &&
+                        formData.type != 'parent' &&
+                        iPropsValue('userCan', 'generate')
+                    "
+                    :label-width="formLabelWidth"
+                    prop="module"
+                >
+                    <template #label>
+                        <p>
+                            Module Name
+                            <el-tooltip
+                                content="Module name must be generic name in studly Case. eg: MenuManagement, StudentManagement "
+                                placement="bottom"
+                                popper-style="max-width: 250px"
+                            >
+                                <el-icon color="var(--primary-dark-color)"
+                                    ><InfoFilled
+                                /></el-icon>
+                            </el-tooltip>
+                        </p>
+                    </template>
+                    <el-select
+                        @keydown.space.prevent
+                        v-model="formData.module"
+                        filterable
+                        :allow-create="
+                            formData.link == 'auto-generate' ? true : false
+                        "
+                        clearable
+                        default-first-option
+                        :reserve-keyword="false"
+                        placeholder="eg: UserManagement"
+                        @change="formatModule"
+                    >
+                        <el-option
+                            v-for="(module, key) in modules"
+                            :key="key"
+                            :label="module"
+                            :value="module"
+                        />
+                    </el-select>
+                </el-form-item>
+                <el-form-item
+                    v-if="
+                        FormType == 'Add' &&
                         formData.link == 'auto-generate' &&
                         iPropsValue('userCan', 'generate')
                     "
-                    label="Module Name"
                     :label-width="formLabelWidth"
-                    prop="moduleName"
+                    prop="controllerName"
                 >
+                    <template #label>
+                        <p>
+                            Controller Name
+                            <el-tooltip
+                                content="Controller name must be specific name in studly Case. eg: UserProfile, DataTable"
+                                placement="bottom"
+                                popper-style="max-width: 250px"
+                            >
+                                <el-icon color="var(--primary-dark-color)"
+                                    ><InfoFilled
+                                /></el-icon>
+                            </el-tooltip>
+                        </p>
+                    </template>
                     <el-input
-                        v-model="formData.moduleName"
+                        placeholder="eg: UserAccount"
+                        v-model="formData.controllerName"
                         @keydown.space.prevent
                         autocomplete="off"
                         :formatter="
@@ -236,8 +295,8 @@
 </style>
 <script setup>
 //library import
-import { reactive, markRaw, watch } from "@vue/runtime-core";
-import { Edit, Search } from "@element-plus/icons-vue";
+import { reactive, markRaw, watch, ref } from "@vue/runtime-core";
+import { Edit, Search, InfoFilled } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import debounce from "lodash/debounce";
 //composable import
@@ -246,7 +305,7 @@ import { useInertiaPropsUtility } from "@/Composables/inertiaPropsUtility";
 const FormVisible = $ref(false);
 const iconDialogVisible = $ref(false);
 const linkToParent = $ref(false);
-const formLabelWidth = "140px";
+const formLabelWidth = "150px";
 const menuIcon = $ref();
 const { iPropsValue } = useInertiaPropsUtility();
 const ruleFormRef = $ref();
@@ -254,6 +313,7 @@ const FormType = $ref("Add");
 const menuRoutes = $ref(iPropsValue("menuRoutes"));
 const parentLinks = $ref(iPropsValue("parentLinks"));
 const roles = $ref(iPropsValue("userRoles"));
+const modules = ref(iPropsValue("modules"));
 const menuLinkLists = $ref(iPropsValue("menuLinkLists"));
 const editFormData = $ref(); //default edit form data
 watch(
@@ -280,7 +340,10 @@ watch(
         formData.icon = value != "" ? value : null;
     }, 600)
 );
-
+const formatModule = (value) => {
+    const converted = value.charAt(0).toUpperCase() + value.slice(1);
+    formData.module = converted;
+};
 const formData = useForm({
     name: "",
     type: "parent",
@@ -288,7 +351,8 @@ const formData = useForm({
     link: "#",
     generateOption: null,
     icon: null,
-    moduleName: "",
+    module: "",
+    controllerName: "",
     access: ["Su-Admin"],
 });
 const validateExists = (rule, value, callback) => {
@@ -322,10 +386,17 @@ const rules = reactive({
             trigger: "change",
         },
     ],
-    moduleName: [
+    module: [
         {
             required: false,
             message: "Please Input Module Name",
+            trigger: "blur",
+        },
+    ],
+    controllerName: [
+        {
+            required: false,
+            message: "Please Input Controller Name",
             trigger: "blur",
         },
     ],
@@ -414,9 +485,11 @@ const changedMenuType = function () {
 };
 const checkGeneratorOption = function () {
     if (FormType == "Add" && formData.link == "auto-generate") {
-        rules.moduleName[0].required = true;
+        rules.module[0].required = true;
+        rules.controllerName[0].required = true;
     } else {
-        rules.moduleName[0].required = false;
+        rules.module[0].required = false;
+        rules.controllerName[0].required = false;
     }
     formData.generateOption = "";
     setTimeout(() => {
@@ -519,6 +592,7 @@ const showForm = function (formType, data = "") {
 const populateFormData = function (data) {
     formData.name = data.name;
     formData.type = data.type;
+    formData.module = data.module;
     formData.link = data.link;
     if (data.type == "child") {
         formData.parentId = data.parent_id;

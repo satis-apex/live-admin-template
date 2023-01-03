@@ -20,7 +20,11 @@ class RoleAndPermissionSeeder extends Seeder
         // create permissions
         $permissionList = File::get(base_path('Modules/UserManagement/Database/Seeders/PermissionList.json'));
         $permissions = json_decode($permissionList);
-
+        $permissions = [
+            'Impersonate-create',
+            'Impersonate-delete',
+            ...$permissions
+        ];
         foreach ($permissions as $permission) {
             Permission::create([
                 'name' => $permission

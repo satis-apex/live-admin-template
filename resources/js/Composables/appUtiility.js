@@ -91,6 +91,10 @@ export function useAppUtility() {
 	}
 	const hasMenuAccess = function (menu) {
 		const role = usePage().props.value.auth.user.account.role
+		const app_disabled_module = usePage().props.value.app_disabled_module
+
+		if (menu.hasOwnProperty('module') && app_disabled_module.includes(menu.module))
+			return false;
 		const accessList = menu.access?.split(",");
 		if (accessList.indexOf(role) != -1) {
 			return true;

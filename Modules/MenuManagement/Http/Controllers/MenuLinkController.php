@@ -1,6 +1,7 @@
 <?php
 namespace Modules\MenuManagement\Http\Controllers;
 
+use App\Activators\Module;
 use Inertia\Inertia;
 use Modules\MenuManagement\Models\Menu;
 use Spatie\Permission\Models\Role;
@@ -26,6 +27,7 @@ class MenuLinkController extends Controller
         $roleMenus = MenuManagementService::listRoleMenuPermission();
         $menuLinkLists = MenuLink::pluck('name')->toArray();
         $menuObject = Menu::pluck('menu_list')->first();
+        $modules = Module::pluck('name')->toArray();
         return Inertia::render(
             'MenuManagement::Index',
             [
@@ -33,6 +35,7 @@ class MenuLinkController extends Controller
                 'menuRoutes' => $menuRoutes,
                 'parentLinks' => $parentLinks,
                 'userRoles' => $userRoles,
+                'modules' => $modules,
                 'roleMenus' => $roleMenus,
                 'menuLinkLists' => $menuLinkLists,
                 'breadcrumb' => getBreadcrumb(),

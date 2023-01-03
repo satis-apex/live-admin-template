@@ -18,6 +18,7 @@ return new class() extends Migration {
             $table->boolean('default_menu')->nullable();
             $table->string('link')->nullable();
             $table->string('permission_key');
+            $table->string('module')->nullable();
             $table->string('icon')->nullable();
             $table->string('type');
             $table->string('parent_id')->nullable();

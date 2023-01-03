@@ -2,11 +2,12 @@
 namespace App\Http\Middleware;
 
 use Inertia\Middleware;
+use App\Activators\Module;
 use Tightenco\Ziggy\Ziggy;
 use Illuminate\Http\Request;
-use Modules\AppSetting\Models\ApplicationInfo;
-use Modules\MenuManagement\Models\Menu;
 use Illuminate\Support\Facades\Session;
+use Modules\MenuManagement\Models\Menu;
+use Modules\AppSetting\Models\ApplicationInfo;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -116,6 +117,9 @@ class HandleInertiaRequests extends Middleware
             'app_info' => ApplicationInfo::first(),
             'app_menu' => fn () => $request->user()
                 ? json_decode($menuObject)
+                : null,
+            'app_disabled_module' => fn () => $request->user()
+                ? Module::where('is_active', '!=', '1')->pluck('name')->toArray()
                 : null,
             'app_notification' => [
                 'unread_count' => fn () => $request->user()
