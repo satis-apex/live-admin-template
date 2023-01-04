@@ -35,14 +35,33 @@ class MakeMigrationCommand extends Command
             $this->components->error('.env not detected!.Please rename .env.example to .env and input all required information on .env file');
             return false;
         }
-        $this->info('Migrating database table...');
-        Artisan::call('migrate --seed');
-        $this->setEnv('MODULE_ACTIVATOR', 'database');
-        Artisan::call('config:cache');
-        Artisan::call('config:clear');
-        Artisan::call('module:migrate');
-        $this->info('Seeding database table...');
-        Artisan::call('module:seed');
+        try {
+            $this->info('Migrating database table...');
+            Artisan::call('migrate --seed');
+            $this->setEnv('MODULE_ACTIVATOR', 'database');
+            Artisan::call('config:cache');
+            Artisan::call('config:clear');
+            Artisan::call('module:migrate');
+            $this->info('Seeding database table...');
+            Artisan::call('module:seed AppManagement');
+            $this->line('');
+            $this->components->info('AppManagement module seeded successfully.');
+            Artisan::call('module:seed MenuManagement');
+            $this->line('');
+            $this->components->info('MenuManagement module seeded successfully.');
+            Artisan::call('module:seed UserManagement');
+            $this->line('');
+            $this->components->info('UserManagement module seeded successfully.');
+            Artisan::call('module:seed StaffManagement');
+            $this->line('');
+            $this->components->info('StaffManagement module seeded successfully.');
+            Artisan::call('module:seed DataTable');
+            $this->line('');
+            $this->components->info('DataTable module seeded successfully.');
+        } catch (\Exception $e) {
+            $this->components->error('Database error:');
+            dump($e->getMessage());
+        }
 
         $this->line('');
         $this->components->info('Database table migrated and seeded successfully.');

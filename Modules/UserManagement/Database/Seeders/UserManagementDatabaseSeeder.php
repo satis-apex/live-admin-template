@@ -1,7 +1,6 @@
 <?php
 namespace Modules\UserManagement\Database\Seeders;
 
-use Database\Seeders\NotificationSeeder;
 use Illuminate\Database\Seeder;
 
 class UserManagementDatabaseSeeder extends Seeder

@@ -1,5 +1,5 @@
 <?php
-namespace Database\Seeders;
+namespace Modules\UserManagement\Database\Seeders;
 
 use Illuminate\Support\Str;
 use Modules\UserManagement\Models\User;

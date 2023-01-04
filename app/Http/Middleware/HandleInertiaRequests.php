@@ -7,7 +7,7 @@ use Tightenco\Ziggy\Ziggy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Modules\MenuManagement\Models\Menu;
-use Modules\AppSetting\Models\ApplicationInfo;
+use Modules\AppManagement\Models\ApplicationInfo;
 
 class HandleInertiaRequests extends Middleware
 {

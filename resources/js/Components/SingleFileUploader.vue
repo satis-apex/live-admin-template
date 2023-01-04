@@ -2,6 +2,7 @@
     <el-upload
         ref="refLogoUpload"
         class="w-full"
+        v-model:file-list="fileList"
         :class="props.listType + '-uploader'"
         action="#"
         :accept="props.acceptExtension"
@@ -35,16 +36,18 @@
 <script setup>
 import { genFileId } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
+import { ref } from "@vue/reactivity";
 import { useAppUtility } from "@/Composables/appUtiility";
 const { isDarkMode } = useAppUtility();
 const props = defineProps({
     acceptExtension: { type: String, required: true },
     acceptSize: { type: Number, required: true },
     listType: { type: String, required: false, default: "list" },
+    fileList: { type: Object, required: false },
 });
 
 const emit = defineEmits(["uplodable", "clearUplodable"]);
-
+const fileList = ref([]);
 const refLogoUpload = $ref();
 const handleLogoExceed = (files) => {
     clearUploadFile();
@@ -142,7 +145,7 @@ const handlePictureCardPreview = (uploadFile) => {
     dialogVisible = true;
 };
 
-defineExpose({ clearUploadFile });
+defineExpose({ clearUploadFile, fileList });
 </script>
 
 <style>

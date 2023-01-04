@@ -1,0 +1,14 @@
+{
+    "name": "AppManagement",
+    "label": "AppManagement",
+    "alias": "appmanagement",
+    "description": "manage all appsetting",
+    "keywords": ["appmanagement"],
+    "priority": 0,
+    "providers": [
+        "Modules\\AppManagement\\Providers\\AppSettingServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

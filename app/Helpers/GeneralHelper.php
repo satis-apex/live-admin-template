@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Modules\MenuManagement\Models\MenuLink;
 use Illuminate\Support\Facades\Storage;
-use Modules\AppSetting\Models\ApplicationInfo;
+use Modules\AppManagement\Models\ApplicationInfo;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 if (!\function_exists('executeMax')) {
