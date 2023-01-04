@@ -1,5 +1,6 @@
 <?php
 
+use App\Activators\Module;
 use Illuminate\Support\Str;
 use Modules\UserManagement\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -289,5 +290,42 @@ if (!\function_exists('isAuthorized')) {
         }
 
         return false;
+    }
+}
+if (!\function_exists('getModuleRoutes')) {
+    function getModuleRoutes($moduleName, $baseModulesPath = 'Modules')
+    {
+        $routeCollection = Route::getRoutes();
+        $menuRoutes = [];
+
+        $routeCollection = collect(Route::getRoutes())
+        ->filter(
+            fn ($item) => isset($item->action['namespace']) && Str::startsWith($item->action['namespace'], "{$baseModulesPath}\\{$moduleName}")
+        )
+        ->values()
+        ->all();
+        foreach ($routeCollection as $value) {
+            if ($value->getActionMethod() == 'index' || $value->getActionMethod() == '__invoke') {
+                $menuRoutes[] = $value->getName();
+            }
+        }
+        return $menuRoutes;
+    }
+}
+if (!\function_exists('getRoutesModule')) {
+    function getRoutesModule($routeName)
+    {
+        $modules = Module::pluck('name')->all();
+        $routesModule = '';
+        foreach ($modules as $module) {
+            $moduleRoutes = getModuleRoutes($module);
+            foreach ($moduleRoutes as $moduleRoute) {
+                if ($moduleRoute == $routeName) {
+                    $routesModule = $module;
+                    break 2;
+                }
+            }
+        }
+        return $routesModule;
     }
 }

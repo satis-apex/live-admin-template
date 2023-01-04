@@ -111,7 +111,7 @@
                 <el-form-item
                     v-if="
                         FormType == 'Add' &&
-                        formData.type != 'parent' &&
+                        formData.link == 'auto-generate' &&
                         iPropsValue('userCan', 'generate')
                     "
                     :label-width="formLabelWidth"

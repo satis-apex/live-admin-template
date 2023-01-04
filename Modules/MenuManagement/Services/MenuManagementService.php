@@ -24,12 +24,15 @@ class MenuManagementService
             $routeNameArray = explode('.', $routeLink);
             $routeName = reset($routeNameArray);
             $controllerName = Str::studly($routeName);
-            $module = request('module');
             if ($routeLink == 'auto-generate') {
+                $module = request('module');
                 $controllerName = request('controllerName');
                 $generatedRouteLink = SELF::generateFiles($module, $controllerName);
                 // $controllerName = Str::studly(class_basename($moduleName));
                 $routeLink = $generatedRouteLink . '.index';
+            } else {
+                $link = request('link');
+                $module = getRoutesModule($link);
             }
             $generateOption = request('generateOption');
             if ($generateOption == 'files-only') {
@@ -399,7 +402,6 @@ class MenuManagementService
 
     public function generateFiles($moduleName, $controllerName)
     {
-        // $controllerName = Str::studly(class_basename($moduleName));
         $entity = Module::findByName($moduleName);
         if ($entity) {
             $generatedRouteName = Str::camel($controllerName);
