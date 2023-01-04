@@ -277,5 +277,5 @@ return [
         ]
     ],
 
-    'activator' => 'database',
+    'activator' => env('MODULE_ACTIVATOR', 'file'),
 ];

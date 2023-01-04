@@ -9,7 +9,7 @@ Live-Admin is an admin template created by integrating Laravel, Vue3 and Inertia
 -   Dynamic menu management with the recorder.
 -   Role Permission integrated with the menu
 -   Option to generate Controller, Model and Service class (all about personal preferences and coding standard)
--   Laravel Module Implemented
+-   Laravel Module Implemented with database activator
 -   Ability to create fully functional Demo Crud file from add Manage Menu UI dynamically
 -   Dark mode Compatible
 -   Notification bell integrated with laravel notification
@@ -48,6 +48,10 @@ npm run build
 form your root application folder rename [.env.example](https://github.com/laravel/laravel/blob/9.x/.env.example)
 to .env and update the corrersponding value to your need.
 
+Inside .env MODULE_ACTIVATOR must be set to "file" initially before table migration else an error occurs. (library-specific issue). After successful migration you can change it manually, or "php artisan live:migrate" will do this automatically for you )
+
+    MODULE_ACTIVATOR=file
+
 ```bash
 #generates key for session encryption
 php artisan key:generate
@@ -55,14 +59,8 @@ php artisan key:generate
 #create symlink in public folder
 php artisan storage:link
 
-#migrate database
-php artisan migrate
-php artisan db:seed
-#seeds database form module seeder
-php artisan module:seed
-
-#create dummy files for report generation
-php artisan load:dummyFiles
+#migrate database and seed data
+php artisan live:migrate
 ```
 
 ## Usage
