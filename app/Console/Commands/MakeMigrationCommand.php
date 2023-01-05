@@ -52,9 +52,9 @@ class MakeMigrationCommand extends Command
             Artisan::call('module:seed UserManagement');
             $this->line('');
             $this->components->info('UserManagement module seeded successfully.');
-            Artisan::call('module:seed StaffManagement');
+            Artisan::call('module:seed EmployeeManagement');
             $this->line('');
-            $this->components->info('StaffManagement module seeded successfully.');
+            $this->components->info('EmployeeManagement module seeded successfully.');
             Artisan::call('module:seed DataTable');
             $this->line('');
             $this->components->info('DataTable module seeded successfully.');

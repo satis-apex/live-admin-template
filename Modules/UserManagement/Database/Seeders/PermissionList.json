@@ -20,8 +20,8 @@
     "DataTable-create",
     "DataTable-edit",
     "DataTable-delete",
-    "Staff-access",
-    "Staff-create",
-    "Staff-edit",
-    "Staff-delete"
+    "Employee-access",
+    "Employee-create",
+    "Employee-edit",
+    "Employee-delete"
 ]

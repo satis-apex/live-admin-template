@@ -5,4 +5,4 @@ INSERT INTO `menu_links` (`id`, `name`,`default_menu`, `link`,`permission_key`,`
 	(4, 'App Information',1, 'appSetting.index','AppSetting', 'AppManagement',NULL, 'child', 3, 'Su-Admin,Admin', '2022-10-12 02:43:42', '2022-10-12 02:43:42'),
 	(5, 'Manage Role', 0, 'userRole.index', 'UserRole','UserManagement', NULL, 'child', '3', 'Su-Admin,Admin', '2022-11-28 06:48:02', '2022-11-28 06:48:02'),
 	(6, 'Server Side Table', 0, 'dataTable.index', 'DataTable','DataTable', 'table', 'parent-single', NULL, 'Su-Admin', '2022-11-30 08:59:18', '2022-11-30 08:59:18'),
-	(7, 'Manage Staff', 0, 'staff.index', 'Staff','StaffManagement', 'table', 'parent-single', NULL, 'Su-Admin', '2022-11-30 08:59:18', '2022-11-30 08:59:18');
+	(7, 'Manage Employee', 0, 'employee.index', 'Employee','EmployeeManagement', 'table', 'parent-single', NULL, 'Su-Admin', '2022-11-30 08:59:18', '2022-11-30 08:59:18');
