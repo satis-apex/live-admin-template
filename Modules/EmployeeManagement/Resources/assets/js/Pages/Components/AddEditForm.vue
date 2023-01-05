@@ -218,6 +218,7 @@ const formData = useForm({
     ...props.parentFormInput,
     account_create: false,
     role: "",
+    account_id: "",
     user_image: "",
     previous_role: "",
     id: "",
@@ -317,6 +318,7 @@ const showForm = function (formType, data = "") {
 };
 const populateFormData = function (data) {
     Object.assign(formData, data);
+    formData.account_id = data.account?.id;
     formData.role = formData.previous_role = data.account?.roles[0].name;
 };
 const submitForm = async (formEl) => {

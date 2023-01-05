@@ -51,12 +51,12 @@ class RoleAndPermissionSeeder extends Seeder
         foreach ($adminPermissions as $permission) {
             $adminRole->givePermissionTo($permission);
         }
-        $staffPermissions = [
+        $employeePermissions = [
             ...$permissions
         ];
-        $staffRole = Role::create(['name' => 'Staff']);
-        foreach ($staffPermissions as $permission) {
-            $staffRole->givePermissionTo($permission);
+        $employeeRole = Role::create(['name' => 'Employee']);
+        foreach ($employeePermissions as $permission) {
+            $employeeRole->givePermissionTo($permission);
         }
     }
 }

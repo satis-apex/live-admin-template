@@ -15,7 +15,7 @@ class EmployeeManagementDatabaseSeeder extends Seeder
             'email' => 'employee@employee.com',
             'joined_date' => Carbon::now(),
             'phone' => '0934234235',
-            'gender' => 'male'
+            'gender' => 'Male'
         ]);
 
         $user = $employeeInfo->account()->create([

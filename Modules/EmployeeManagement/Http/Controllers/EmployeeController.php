@@ -12,7 +12,7 @@ use Modules\EmployeeManagement\Http\Requests\UpdateEmployeeRequest;
 
 class EmployeeController extends Controller
 {
-    protected $routeName = 'Employee';
+    protected $routeName = 'employee';
 
     public function __construct()
     {
@@ -25,6 +25,7 @@ class EmployeeController extends Controller
         ->with(['account.roles' => function ($query) {
             $query->select('id', 'name');
         }])
+        ->with('account:id,profileable_id')
         ->latest()
         ->get();
         $userRole = request()->user()->roles[0]->name;

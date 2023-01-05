@@ -49,7 +49,7 @@ class EmployeeService
                         'password' => $accountPassword
                     ];
                     $subject = 'User Account Credential';
-                    Mail::send('employee::emails.mail', $templateData, function ($message) use ($to_name, $to_email, $subject) {
+                    Mail::send('EmployeeManagement::emails.mail', $templateData, function ($message) use ($to_name, $to_email, $subject) {
                         $message->to($to_email, $to_name)->subject($subject);
                         $message->from(env('MAIL_FROM_ADDRESS'), 'No-Reply');
                     });
@@ -156,12 +156,12 @@ class EmployeeService
                 ];
                 $subject = 'User Account Credential';
 
-                Mail::send('employee::emails.mail', $templateData, function ($message) use ($to_name, $to_email, $subject) {
+                Mail::send('employeemanagement::emails.mail', $templateData, function ($message) use ($to_name, $to_email, $subject) {
                     $message->to($to_email, $to_name)->subject($subject);
                     $message->from(env('MAIL_FROM_ADDRESS'), 'No-Reply');
                 });
                 DB::commit();
-                return $user->assignRole('employee');
+                return $user->assignRole('Employee');
             }
         } catch (QueryException $e) {
             //database related exception
@@ -190,7 +190,7 @@ class EmployeeService
                     'password' => $accountPassword
                 ];
                 $subject = 'User Account Credential';
-                Mail::send('employee::emails.mail', $templateData, function ($message) use ($to_name, $to_email, $subject) {
+                Mail::send('employeemanagement::emails.mail', $templateData, function ($message) use ($to_name, $to_email, $subject) {
                     $message->to($to_email, $to_name)->subject($subject);
                     $message->from(env('MAIL_FROM_ADDRESS'), 'No-Reply');
                 });

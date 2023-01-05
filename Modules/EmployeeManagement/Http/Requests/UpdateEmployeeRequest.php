@@ -18,7 +18,7 @@ class UpdateEmployeeRequest extends FormRequest
             'last_name' => ['required', 'max:255'],
             'gender' => ['required', 'in:Male,Female,Other'],
             'email' => [
-                'required', 'string', 'email', 'max:255', 'unique:users,email', 'unique:employees,email,' . request()->id
+                'required', 'string', 'email', 'max:255', 'unique:users,email,' . request()->account_id, 'unique:employees,email,' . request()->id
             ],
         ];
     }

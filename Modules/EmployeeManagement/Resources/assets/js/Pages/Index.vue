@@ -228,7 +228,11 @@
                                                         : false
                                                 "
                                                 @click="
-                                                    createAccount(scope.row)
+                                                    scope.row.account != null
+                                                        ? false
+                                                        : createAccount(
+                                                              scope.row
+                                                          )
                                                 "
                                             >
                                                 Create Account
@@ -240,7 +244,11 @@
                                                         : true
                                                 "
                                                 @click="
-                                                    resetPassword(scope.row)
+                                                    scope.row.account != null
+                                                        ? resetPassword(
+                                                              scope.row
+                                                          )
+                                                        : false
                                                 "
                                             >
                                                 Reset Password
@@ -253,9 +261,11 @@
                                                 "
                                                 divided
                                                 @click="
-                                                    impersonateAccount(
-                                                        scope.row
-                                                    )
+                                                    scope.row.account != null
+                                                        ? impersonateAccount(
+                                                              scope.row
+                                                          )
+                                                        : false
                                                 "
                                             >
                                                 Impersonate
