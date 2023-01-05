@@ -254,6 +254,12 @@
                                                 Reset Password
                                             </el-dropdown-item>
                                             <el-dropdown-item
+                                                v-if="
+                                                    iPropsValue(
+                                                        'userCan',
+                                                        'impersonate'
+                                                    )
+                                                "
                                                 :disabled="
                                                     scope.row.account != null
                                                         ? false

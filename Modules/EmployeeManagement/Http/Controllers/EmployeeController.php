@@ -30,7 +30,7 @@ class EmployeeController extends Controller
         ->get();
         $userRole = request()->user()->roles[0]->name;
         $role = Role::query();
-        if (strtolower($userRole) != 'su-admin') {
+        if (isAuthorized('su-admin')) {
             $role->whereNotIn('name', ['su-admin']);
         }
         $roleList = $role->get()->toArray();
@@ -45,6 +45,7 @@ class EmployeeController extends Controller
                     'create' => request()->user()->hasPermissionTo('Employee-create'),
                     'edit' => request()->user()->hasPermissionTo('Employee-edit'),
                     'delete' => request()->user()->hasPermissionTo('Employee-delete'),
+                    'impersonate' => isAuthorized('su-admin'),
                 ]
             ]
         );

@@ -282,16 +282,16 @@ if (!\function_exists('readable')) {
 }
 
 if (!\function_exists('isAuthorized')) {
-    function isAuthorized(array $roles)
+    function isAuthorized($role)
     {
         $userRole = Auth::user()->roles[0]->name;
-        if (\in_array($userRole, $roles)) {
-            return true;
+        if (\is_array($role)) {
+            return \in_array(strtolower($userRole), array_map('strtolower', $role));
         }
-
-        return false;
+        return strtolower($userRole) == strtolower($role);
     }
 }
+
 if (!\function_exists('getModuleRoutes')) {
     function getModuleRoutes($moduleName, $baseModulesPath = 'Modules')
     {
