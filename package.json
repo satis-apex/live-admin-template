@@ -5,6 +5,12 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@element-plus/icons-vue": "^2.0.9",
+        "@fortawesome/fontawesome-svg-core": "^6.2.0",
+        "@fortawesome/free-brands-svg-icons": "^6.2.0",
+        "@fortawesome/free-regular-svg-icons": "^6.2.0",
+        "@fortawesome/free-solid-svg-icons": "^6.2.0",
+        "@fortawesome/vue-fontawesome": "^3.0.1",
         "@inertiajs/inertia": "^0.11.0",
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@inertiajs/progress": "^0.2.7",
@@ -13,6 +19,7 @@
         "@vitejs/plugin-vue": "^3.0.0",
         "autoprefixer": "^10.4.2",
         "axios": "^0.27",
+        "element-plus": "^2.2.11",
         "laravel-vite-plugin": "^0.6.0",
         "lodash": "^4.17.19",
         "postcss": "^8.4.6",
@@ -22,18 +29,13 @@
         "unplugin-auto-import": "^0.10.1",
         "unplugin-vue-components": "^0.21.2",
         "vite": "^3.0.0",
-        "vue": "^3.2.31",
-        "@element-plus/icons-vue": "^2.0.9",
-        "@fortawesome/fontawesome-svg-core": "^6.2.0",
-        "@fortawesome/free-brands-svg-icons": "^6.2.0",
-        "@fortawesome/free-regular-svg-icons": "^6.2.0",
-        "@fortawesome/free-solid-svg-icons": "^6.2.0",
-        "@fortawesome/vue-fontawesome": "^3.0.1",
-        "element-plus": "^2.2.11"
+        "vue": "^3.2.31"
     },
     "dependencies": {
         "file-saver": "^2.0.5",
+        "laravel-echo": "^1.14.2",
         "moment": "^2.29.4",
+        "pusher-js": "^8.0.0",
         "simplebar": "^5.3.8",
         "simplebar-vue3": "^0.2.0",
         "xlsx": "^0.18.5"

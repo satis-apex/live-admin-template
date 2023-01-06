@@ -12,7 +12,7 @@ class MakeMigrationCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'live:migrate';
+    protected $signature = 'live:initialize';
 
     /**
      * The console command description.
@@ -36,6 +36,15 @@ class MakeMigrationCommand extends Command
             return false;
         }
         try {
+            $this->info('Updating .env file...');
+            //pusher variable configuring
+            $this->setEnv('PUSHER_APP_ID', substr(str_shuffle('0123456789'), 0, 6));
+            $this->setEnv('PUSHER_APP_KEY', substr(str_shuffle('0123456789abcdefghijklmnopqrstvwxyzABCDEFGHIJKLMNOPQRSTVWXYZ'), 0, 24));
+            $this->setEnv('PUSHER_APP_SECRET', substr(str_shuffle('0123456789abcdefghijklmnopqrstvwxyzABCDEFGHIJKLMNOPQRSTVWXYZ'), 0, 24));
+            $this->setEnv('PUSHER_HOST', '127.0.0.1');
+            $this->setEnv('PUSHER_PORT', '6001');
+            $this->setEnv('PUSHER_SCHEME', 'http');
+            //migrating and seeding database
             $this->info('Migrating database table...');
             Artisan::call('migrate --seed');
             $this->setEnv('MODULE_ACTIVATOR', 'database');

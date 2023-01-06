@@ -60,17 +60,36 @@ php artisan key:generate
 #create symlink in public folder
 php artisan storage:link
 
-#migrate database and seed data
-php artisan live:migrate
+#configure env file for laravel-websocket and migrate database and seed data
+php artisan live:initialize
+```
+
+### Enabling laravel Schelule
+
+laravel websocket package provides the artisan command "websockets:clean" to clean up old statistics from the websocket log in the database table, but needs to run the command manually. I have created a laravel schedule to run this command daily.You also need to add a cron entry to your server's crontab file to run the Laravel schedule every minute:
+
+```bash
+#linux/mac users only
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+
+#window/linux/mac user -manually runs untile server shutdowns
+php artisan schedule:work
 ```
 
 ## Usage
 
 ```bash
+#start local php server
 php artisan serve
 or
 php artisan serve --port=80
+#start local websocket server
+php artisan websockets:serve
 ```
+
+## Keeping the socket server running in production
+
+Please follow the official documentation [link](https://beyondco.de/docs/laravel-websockets/basic-usage/starting#keeping-the-socket-server-running-with-supervisord)
 
 ## Admin Login Infos / Demo Account
 
@@ -90,6 +109,7 @@ php artisan serve --port=80
 -   [vue3](https://vuejs.org) - An approachable, performant and versatile framework for building web user interfaces.
 -   [Element Plus](https://element-plus.org/en-US/) - A Vue 3 based component library for designers and developers.
 -   [Laravel Modules](https://github.com/nWidart/laravel-modules) - A package to manage your large Laravel app using modules.
+-   [Laravel Websockets](https://github.com/beyondcode/laravel-websockets) - A package to Bring the power of WebSockets to your Laravel application (Pusher replacement).
 
 ## Contributing
 
@@ -114,6 +134,7 @@ I'm a full stack developer...
 
 -   ✔ Integrate laravel Notification
 -   ✔ Intregrate [laravel Modules](https://github.com/nWidart/laravel-modules)
+-   Intregrate [laravel Websocket](https://github.com/beyondcode/laravel-websockets)
 -   Multi tenent implementation (i will implement if this feature is requested)
 -   Add more integrations
 
