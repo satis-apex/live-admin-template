@@ -5,7 +5,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
-class MakeMigrationCommand extends Command
+#[AsCommand(name: 'live:initialize')]
+class LiveInitializeCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -79,11 +80,20 @@ class MakeMigrationCommand extends Command
 
     protected function setEnv($key, $value)
     {
-        file_put_contents(app()->environmentFilePath(), str_replace(
-            $key . '=' . env($key),
+        $replaced = preg_replace(
+            $this->keyReplacementPattern($key, $value),
             $key . '=' . $value,
-            file_get_contents(app()->environmentFilePath())
-        ));
-        putenv("$key=$value");
+            $input = file_get_contents(app()->environmentFilePath())
+        );
+
+        file_put_contents(app()->environmentFilePath(), $replaced);
+
+        return true;
+    }
+
+    protected function keyReplacementPattern($key)
+    {
+        $escaped = preg_quote('=' . env($key), '/');
+        return "/^{$key}{$escaped}/m";
     }
 }

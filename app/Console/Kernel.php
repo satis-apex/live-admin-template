@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected $commands = [
-        \App\Console\Commands\MakeMigrationCommand::class,
+        \App\Console\Commands\LiveInitializeCommand::class,
     ];
 
     protected function schedule(Schedule $schedule)
