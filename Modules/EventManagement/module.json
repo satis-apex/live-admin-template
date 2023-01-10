@@ -1,0 +1,14 @@
+{
+    "name": "EventManagement",
+    "label": "EventManagement",
+    "alias": "eventmanagement",
+    "description": "manage all eventmanagement",
+    "keywords": ["eventmanagement"],
+    "priority": 0,
+    "providers": [
+        "Modules\\EventManagement\\Providers\\EventManagementServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
