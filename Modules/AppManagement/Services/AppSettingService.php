@@ -22,8 +22,11 @@ class AppSettingService
             if (request()->has('logo') && request('logo') != '') {
                 $appsetting->addMediaFromRequest('logo')->toMediaCollection('logo');
             }
-            if (request()->has('fav') && request('fav') != '') {
-                $appsetting->addMediaFromRequest('fav')->toMediaCollection('fav-icon');
+            if (request()->has('favLight') && request('favLight') != '') {
+                $appsetting->addMediaFromRequest('favLight')->toMediaCollection('fav-icon-light');
+            }
+            if (request()->has('favDark') && request('favDark') != '') {
+                $appsetting->addMediaFromRequest('favDark')->toMediaCollection('fav-icon-dark');
             }
             return $appsetting->save();
         } catch (QueryException $e) {

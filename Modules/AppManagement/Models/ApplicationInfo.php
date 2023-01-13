@@ -17,7 +17,7 @@ class ApplicationInfo extends Authenticatable implements HasMedia
         'created_at',
         'updated_at',
     ];
-    protected $appends = ['brandLogo', 'favIcon'];
+    protected $appends = ['brandLogo', 'favIconLight', 'favIconDark'];
 
     public function getBrandLogoAttribute()
     {
@@ -37,18 +37,36 @@ class ApplicationInfo extends Authenticatable implements HasMedia
         return null;
     }
 
-    public function getFavIconAttribute()
+    public function getFavIconLightAttribute()
     {
-        if ($this->getFirstMedia('fav-icon') != null) {
-            if ($this->getFirstMedia('fav-icon')->hasGeneratedConversion('thumb')) {
-                $fullPath = $this->getFirstMedia('fav-icon')->getPath('thumb');
+        if ($this->getFirstMedia('fav-icon-light') != null) {
+            if ($this->getFirstMedia('fav-icon-light')->hasGeneratedConversion('thumb')) {
+                $fullPath = $this->getFirstMedia('fav-icon-light')->getPath('thumb');
                 if (file_exists($fullPath)) {
-                    return $this->getFirstMedia('fav-icon')->getUrl('thumb');
+                    return $this->getFirstMedia('fav-icon-light')->getUrl('thumb');
                 }
             } else {
-                $fullPath = $this->getFirstMedia('fav-icon')->getPath();
+                $fullPath = $this->getFirstMedia('fav-icon-light')->getPath();
                 if (file_exists($fullPath)) {
-                    return $this->getFirstMedia('fav-icon')->getUrl();
+                    return $this->getFirstMedia('fav-icon-light')->getUrl();
+                }
+            }
+        }
+        return null;
+    }
+
+    public function getFavIconDarkAttribute()
+    {
+        if ($this->getFirstMedia('fav-icon-dark') != null) {
+            if ($this->getFirstMedia('fav-icon-dark')->hasGeneratedConversion('thumb')) {
+                $fullPath = $this->getFirstMedia('fav-icon-dark')->getPath('thumb');
+                if (file_exists($fullPath)) {
+                    return $this->getFirstMedia('fav-icon-dark')->getUrl('thumb');
+                }
+            } else {
+                $fullPath = $this->getFirstMedia('fav-icon-dark')->getPath();
+                if (file_exists($fullPath)) {
+                    return $this->getFirstMedia('fav-icon-dark')->getUrl();
                 }
             }
         }
@@ -60,7 +78,10 @@ class ApplicationInfo extends Authenticatable implements HasMedia
         $this->addMediaCollection('logo')
             ->acceptsMimeTypes(['image/jpeg', 'image/svg+xml', 'image/png'])
             ->singleFile();
-        $this->addMediaCollection('fav-icon')
+        $this->addMediaCollection('fav-icon-light')
+            ->acceptsMimeTypes(['image/jpeg', 'image/svg+xml', 'image/png'])
+            ->singleFile();
+        $this->addMediaCollection('fav-icon-dark')
             ->acceptsMimeTypes(['image/jpeg', 'image/svg+xml', 'image/png'])
             ->singleFile();
     }

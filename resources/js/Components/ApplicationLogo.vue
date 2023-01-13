@@ -7,10 +7,14 @@
     >
         Brand Logo
     </template>
-    <template v-else-if="showMnemonic && iPropsValue('app_info', 'favIcon')">
-        <img :src="iPropsValue('app_info', 'favIcon')" alt="Brand Logo" />
+    <template
+        v-else-if="showMnemonic && iPropsValue('app_info', 'favIconLight')"
+    >
+        <img :src="iPropsValue('app_info', 'favIconLight')" alt="Brand Logo" />
     </template>
-    <template v-else-if="showMnemonic && !iPropsValue('app_info', 'favIcon')">
+    <template
+        v-else-if="showMnemonic && !iPropsValue('app_info', 'favIconLight')"
+    >
         B
     </template>
 </template>

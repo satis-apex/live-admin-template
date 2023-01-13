@@ -23,7 +23,7 @@
         </template>
         <template #tip>
             <div class="el-upload__tip text-red">
-                {{ props.acceptExtension }} files with a size less than
+                {{ props.acceptExtension }} files. less than
                 {{ props.acceptSize }}KB.
             </div>
         </template>

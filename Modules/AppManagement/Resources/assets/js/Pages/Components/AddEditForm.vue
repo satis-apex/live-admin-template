@@ -7,42 +7,10 @@
         ref="formRef"
     >
         <el-row :gutter="20">
-            <el-col :xs="24" :sm="8" class="mb-3 sm:m-0">
-                <el-card class="box-card sm:h-full">
-                    <el-form-item
-                        label="Application Logo"
-                        class="!mb-0"
-                        prop="title"
-                    >
-                        <SingleFileUploader
-                            ref="refLogoUpload"
-                            :acceptExtension="'.jpg, .jpeg, .svg, .png'"
-                            :acceptSize="2048"
-                            :listType="'picture'"
-                            @uplodable="uplodableLogo"
-                            @clearUplodable="uplodableLogo"
-                        />
-                    </el-form-item>
-                    <el-divider class="!mt-0 !mb-4" />
-                    <el-form-item
-                        label="Application Nemonic / Fav Icon"
-                        prop="title"
-                    >
-                        <SingleFileUploader
-                            ref="refFavUpload"
-                            :acceptExtension="'.png, .svg'"
-                            :acceptSize="150"
-                            :listType="'picture'"
-                            @uplodable="uplodableFavIcon"
-                            @clearUplodable="uplodableFavIcon"
-                        />
-                    </el-form-item>
-                </el-card>
-            </el-col>
-            <el-col :xs="24" :sm="16">
+            <el-col :xs="24" :sm="24">
                 <el-card class="box-card h-full">
                     <el-row :gutter="20" class="mb-6">
-                        <el-col :sm="24" :md="12">
+                        <el-col :xs="24" :sm="12" :md="12">
                             <el-form-item
                                 label="Organization / Company Name"
                                 prop="title"
@@ -50,17 +18,17 @@
                                 <el-input v-model="formData.title" />
                             </el-form-item>
                         </el-col>
-                        <el-col :sm="24" :md="12">
+                        <el-col :xs="24" :sm="12" :md="12">
                             <el-form-item label="Address" prop="address">
                                 <el-input v-model="formData.address" />
                             </el-form-item>
                         </el-col>
-                        <el-col :sm="24" :md="12">
+                        <el-col :xs="24" :sm="12" :md="12">
                             <el-form-item label="Email" prop="email">
                                 <el-input v-model="formData.email" />
                             </el-form-item>
                         </el-col>
-                        <el-col :sm="24" :md="12">
+                        <el-col :xs="24" :sm="12" :md="12">
                             <el-form-item label="Contact" prop="contact">
                                 <el-input
                                     type="number"
@@ -68,7 +36,7 @@
                                 />
                             </el-form-item>
                         </el-col>
-                        <el-col :sm="24" :md="24">
+                        <el-col :xs="24" :sm="12" :md="24">
                             <el-form-item label="Brand Color" prop="color">
                                 <div
                                     class="grow grid grid-cols-1 sm:grid-cols-2"
@@ -103,6 +71,53 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
+                    <el-divider class="!mt-0 !mb-4" />
+                    <el-row :gutter="20" class="mb-6">
+                        <el-col :sm="24" :md="8">
+                            <el-form-item
+                                label="Application Logo"
+                                class="!mb-0"
+                                prop="title"
+                            >
+                                <SingleFileUploader
+                                    ref="refLogoUpload"
+                                    :acceptExtension="'.jpg, .jpeg, .svg, .png'"
+                                    :acceptSize="2048"
+                                    :listType="'picture'"
+                                    @uplodable="uplodableLogo"
+                                    @clearUplodable="uplodableLogo"
+                                /> </el-form-item
+                        ></el-col>
+                        <el-col :sm="24" :md="8"
+                            ><el-form-item
+                                label="Fav Icon (Light Themed)"
+                                prop="title"
+                            >
+                                <SingleFileUploader
+                                    ref="refFavLightUpload"
+                                    :acceptExtension="'.png, .svg'"
+                                    :acceptSize="150"
+                                    :listType="'picture'"
+                                    @uplodable="uplodableFavIconLight"
+                                    @clearUplodable="uplodableFavIconLight"
+                                /> </el-form-item
+                        ></el-col>
+                        <el-col :sm="24" :md="8">
+                            <el-form-item
+                                label="Fav Icon (Dark Themed)"
+                                prop="title"
+                            >
+                                <SingleFileUploader
+                                    ref="refFavDarkUpload"
+                                    :acceptExtension="'.png, .svg'"
+                                    :acceptSize="150"
+                                    :listType="'picture'"
+                                    @uplodable="uplodableFavIconDark"
+                                    @clearUplodable="uplodableFavIconDark"
+                                />
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                     <span class="card-footer">
                         <el-button
                             type="primary"
@@ -134,7 +149,7 @@
 <script setup>
 //library import
 import { reactive, markRaw, watch, onMounted } from "@vue/runtime-core";
-import { Edit, Search } from "@element-plus/icons-vue";
+import { Edit } from "@element-plus/icons-vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { genFileId } from "element-plus";
 import SingleFileUploader from "@/Components/SingleFileUploader.vue";
@@ -149,23 +164,24 @@ let formRef = $ref();
 let FormType = $ref("Add");
 let editFormData = $ref(); //default edit form data
 const refLogoUpload = $ref(null);
-const refFavUpload = $ref(null);
-
-const props = defineProps({
-    parentDefaultData: Object,
-});
-const defaultData = $ref(props.parentDefaultData);
+const refFavLightUpload = $ref(null);
+const refFavDarkUpload = $ref(null);
+const defaultData = $ref(iPropsValue("appInfo"));
 watch(
-    () => props.parentDefaultData,
+    () => iPropsValue("appInfo"),
     () => {
-        defaultData = props.parentDefaultData;
+        defaultData = iPropsValue("appInfo");
     }
 );
+
 const uplodableLogo = (file) => {
     formData.logo = file;
 };
-const uplodableFavIcon = (file) => {
-    formData.fav = file;
+const uplodableFavIconLight = (file) => {
+    formData.favLight = file;
+};
+const uplodableFavIconDark = (file) => {
+    formData.favDark = file;
 };
 const formData = useForm({
     _method: "PATCH",
@@ -175,7 +191,8 @@ const formData = useForm({
     address: "",
     contact: "",
     logo: "",
-    fav: "",
+    favLight: "",
+    favDark: "",
     primaryColor: "",
     primaryLightColor: "",
     primaryDarkColor: "",
@@ -209,10 +226,13 @@ const submitForm = async (formEl) => {
 const resetForm = (formEl) => {
     if (!formEl) return;
     refLogoUpload.clearUploadFile();
-    refFavUpload.clearUploadFile();
+    refFavLightUpload.clearUploadFile();
+    refFavDarkUpload.clearUploadFile();
     formEl.resetFields();
     formData.reset();
-    populateFormData(defaultData);
+    setTimeout(() => {
+        populateFormData(defaultData);
+    }, 300);
 };
 const closeForm = () => {
     resetForm(formRef);
@@ -257,19 +277,40 @@ let populateFormData = function (data) {
     formData.primaryDarkColor = data.primary_dark_color;
     formData.complementaryColor = data.complementary_color;
     const logo = getObjectRow(data.media, "collection_name", "logo");
-    const fav = getObjectRow(data.media, "collection_name", "fav-icon");
-    refLogoUpload.fileList = [
-        {
-            name: logo[0].file_name,
-            url: logo[0].original_url,
-        },
-    ];
-    refFavUpload.fileList = [
-        {
-            name: fav[0].file_name,
-            url: fav[0].original_url,
-        },
-    ];
+    const fav_light = getObjectRow(
+        data.media,
+        "collection_name",
+        "fav-icon-light"
+    );
+    const fav_dark = getObjectRow(
+        data.media,
+        "collection_name",
+        "fav-icon-dark"
+    );
+    if (logo.length > 0) {
+        refLogoUpload.fileList = [
+            {
+                name: logo[0].file_name,
+                url: logo[0].original_url,
+            },
+        ];
+    }
+    if (fav_light.length > 0) {
+        refFavLightUpload.fileList = [
+            {
+                name: fav_light[0].file_name,
+                url: fav_light[0].original_url,
+            },
+        ];
+    }
+    if (fav_dark.length > 0) {
+        refFavDarkUpload.fileList = [
+            {
+                name: fav_dark[0].file_name,
+                url: fav_dark[0].original_url,
+            },
+        ];
+    }
 };
 
 onMounted(() => {
