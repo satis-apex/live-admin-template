@@ -1,12 +1,7 @@
 <template>
     <div>
         <AddEditForm ref="refAddEditForm" :parentFormInput="formInputNames" />
-        <AddByExcelForm
-            v-if="iPropsValue('userCan', 'massAdd')"
-            ref="refAddByExcelForm"
-            :parentFormInput="formInputNames"
-            @export-template="exportTemplate"
-        />
+
         <el-row class="mb-3 justify-between" :gutter="20">
             <el-col :xs="12" :sm="12" :md="10">
                 <el-row :gutter="20">
@@ -78,120 +73,7 @@
         <el-row :gutter="20">
             <el-col :span="24">
                 <el-card>
-                    <div class="mb-4 flex">
-                        <el-checkbox-group
-                            v-model="viewableColumn"
-                            size="small"
-                            @change="searchFilter"
-                        >
-                            <template
-                                :key="key"
-                                v-for="(inputName, key) in tableColumnNames"
-                            >
-                                <el-checkbox :label="key" border class="!mr-2">
-                                    {{ inputName }}
-                                </el-checkbox>
-                            </template>
-                        </el-checkbox-group>
-                    </div>
-                    <el-table
-                        id="printTable"
-                        :data="filterDataList"
-                        style="width: 100%"
-                        ref="refTable"
-                        table-layout="auto"
-                        border
-                        max-height="70vh"
-                    >
-                        <el-table-column v-if="isScreenMd" type="expand">
-                            <template #default="props">
-                                <div class="ml-28">
-                                    <p class="mb-2">
-                                        Full Name: {{ props.row.name }}
-                                    </p>
-                                    <p class="mb-2">
-                                        date: {{ props.row.date }}
-                                    </p>
-                                    <p class="mb-2">
-                                        Address: {{ props.row.address }}
-                                    </p>
-                                    <p class="mb-2">
-                                        Status: {{ props.row.status }}
-                                    </p>
-                                </div>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            type="index"
-                            :index="indexMethod"
-                            fixed="left"
-                            width="50px"
-                        />
-                        <el-table-column
-                            :label="tableColumnNames.name"
-                            sortable
-                            prop="name"
-                            v-if="isViewableColumn('name')"
-                        />
-                        <el-table-column
-                            :label="tableColumnNames.date"
-                            prop="date"
-                            :formatter="dateFormatter"
-                            v-if="isViewableColumn('date')"
-                        />
-                        <el-table-column
-                            :label="tableColumnNames.address"
-                            v-if="isViewableColumn('address')"
-                            prop="address"
-                        />
-                        <el-table-column
-                            :label="tableColumnNames.status"
-                            prop="status"
-                            v-if="isViewableColumn('status')"
-                            :filters="getFilterKey('status')"
-                            :filter-method="filterStatus"
-                            filter-placement="bottom-end"
-                        >
-                            <template #default="scope">
-                                <el-tag
-                                    :type="
-                                        scope.row.status === 'Active'
-                                            ? 'success'
-                                            : 'danger'
-                                    "
-                                    disable-transitions
-                                    >{{ scope.row.status }}</el-tag
-                                >
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            align="right"
-                            fixed="right"
-                            width="140px"
-                            label="Action"
-                        >
-                            <template #default="scope">
-                                <ActionButton
-                                    @edit="editForm"
-                                    @delete="deleteForm"
-                                    @view="viewForm"
-                                    :rowData="scope.row"
-                                />
-                            </template>
-                        </el-table-column>
-                    </el-table>
-
-                    <el-pagination
-                        class="mt-5 !p-0"
-                        v-model:currentPage="currentPage"
-                        v-model:page-size="pageSize"
-                        :total="totalSize"
-                        :page-sizes="[100, 200, 300, 400]"
-                        background
-                        layout="total, sizes, prev, pager, next, jumper"
-                        @size-change="changePageSize"
-                        @current-change="changePage"
-                    />
+                    <AcademicCalender />
                 </el-card>
             </el-col>
         </el-row>
@@ -207,6 +89,7 @@ import { useAppUtility } from "@/Composables/appUtiility";
 import { markRaw, onMounted, reactive, watch, ref } from "@vue/runtime-core";
 import { useForm } from "@inertiajs/inertia-vue3";
 //Component imports
+import AcademicCalender from "./Components/AcademicCalender.vue";
 import AddEditForm from "./Components/AddEditForm.vue";
 import AddByExcelForm from "./Components/AddByExcelForm.vue";
 import ActionButton from "./Components/ActionButton.vue";
@@ -232,6 +115,7 @@ const tableColumnNames = {
     address: "Address",
     date: "Date",
 };
+
 //export table column refrence
 const exportTableOption = reactive({
     header: ["Name", "Date"],

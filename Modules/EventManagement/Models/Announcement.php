@@ -1,5 +1,4 @@
 <?php
-
 namespace Modules\EventManagement\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;

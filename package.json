@@ -32,6 +32,12 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.0.2",
+        "@fullcalendar/daygrid": "^6.0.2",
+        "@fullcalendar/interaction": "^6.0.2",
+        "@fullcalendar/list": "^6.0.2",
+        "@fullcalendar/timegrid": "^6.0.2",
+        "@fullcalendar/vue3": "^6.0.2",
         "file-saver": "^2.0.5",
         "laravel-echo": "^1.14.2",
         "moment": "^2.29.4",

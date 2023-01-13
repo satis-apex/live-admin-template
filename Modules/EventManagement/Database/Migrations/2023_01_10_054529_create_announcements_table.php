@@ -9,7 +9,14 @@ return new class() extends Migration {
     {
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('title');
+            $table->text('detail')->nullable();
+            $table->string('start');
+            $table->string('end');
+            $table->boolean('allDay');
+            $table->boolean('holiday');
+            $table->string('notify');
+            $table->string('viewer')->nullable();
             $table->timestamps();
         });
     }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Modules\{Module}\Models\{Model};
 use Illuminate\Database\QueryException;
 
-class {Module}Service
+class {Controller}Service
 {
 	public function add()
     {

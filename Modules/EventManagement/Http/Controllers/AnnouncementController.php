@@ -2,10 +2,12 @@
 namespace Modules\EventManagement\Http\Controllers;
 
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
-use Facades\Modules\EventManagement\Services\AnnouncementService;
 use Modules\EventManagement\Models\Announcement;
+use Modules\EventManagement\Http\Resources\AnnouncementResource;
+use Facades\Modules\EventManagement\Services\AnnouncementService;
 
 class AnnouncementController extends Controller
 {
@@ -18,12 +20,14 @@ class AnnouncementController extends Controller
 
     public function index()
     {
-        $AnnouncementList = Announcement::latest()->get();
+        $announcementList = Announcement::latest()->get();
+        $roleList = Role::where('name', '!=', 'Su-Admin')->pluck('name')->toArray();
         return Inertia::render(
             'EventManagement::Announcement/Index',
             [
                 'breadcrumb' => getBreadcrumb() ?: readable('Announcement'),
-                'AnnouncementList' => $AnnouncementList,
+                'announcementList' => AnnouncementResource::collection($announcementList)->toJson(),
+                'roleList' => $roleList,
                 'userCan' => [
                     'massAdd' => true && request()->user()->hasPermissionTo('Announcement-create'),
                     'create' => request()->user()->hasPermissionTo('Announcement-create'),

@@ -69,7 +69,6 @@ const FormVisible = $ref(false);
 const formLabelWidth = "140px";
 let { iPropsValue } = useInertiaPropsUtility();
 const { filterObject, resetObjectKey } = useObjectUtility();
-let formRef = $ref();
 let FormType = $ref("Add");
 let editFormData = $ref(); //default edit form data
 let tableData = $ref([]);
@@ -81,7 +80,7 @@ const props = defineProps({
 const formData = useForm({
     massRecord: [],
 });
-const resetForm = (formEl) => {
+const resetForm = () => {
     tableData = [];
     tableHeader = [];
     refExcelUpload.clearFiles();
@@ -89,7 +88,7 @@ const resetForm = (formEl) => {
 };
 const closeForm = () => {
     FormVisible = false;
-    resetForm(formRef);
+    resetForm();
     formData.reset();
 };
 const create = async function () {

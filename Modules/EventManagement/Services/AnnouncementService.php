@@ -1,21 +1,26 @@
 <?php
-
 namespace Modules\EventManagement\Services;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Modules\EventManagement\Models\Announcement;
 use Illuminate\Database\QueryException;
 
-class EventManagementService
+class AnnouncementService
 {
-	public function add()
+    public function add()
     {
         try {
             $insertData = [
-                'name' => request('name')
+                'title' => request('title'),
+                'detail' => request('detail'),
+                'start' => request('start'),
+                'end' => request('end'),
+                'allDay' => request('allDay'),
+                'private' => request('private'),
+                'holiday' => request('holiday'),
+                'viewer' => \is_array(request('viewer')) ? implode(',', request('viewer')) : '',
+                'notify' => request('notify'),
             ];
-			return Announcement::create($insertData);
+            return Announcement::create($insertData);
         } catch (QueryException $e) {
             return throw new  \Exception($e->errorInfo[2]);
         } catch (\Exception $e) {
@@ -23,7 +28,7 @@ class EventManagementService
         }
     }
 
-	public function massAdd()
+    public function massAdd()
     {
         try {
             $insertData = request('massRecord');
@@ -40,8 +45,19 @@ class EventManagementService
     public function update($id)
     {
         try {
-            $announcement = Announcement::find($id); 
-            $announcement->name = request('name');
+            $announcement = Announcement::find($id);
+            $announcement->title = request('title');
+            $announcement->detail = request('detail');
+            $announcement->start = request('start');
+            $announcement->end = request('end');
+            $announcement->private = request('private');
+            $announcement->allDay = request('allDay');
+            $announcement->holiday = request('holiday');
+            $announcement->viewer = \is_array(request('viewer')) ? implode(',', request('viewer')) : '';
+            if (request('notify') == true) {
+                $announcement->notify = request('notify');
+            }
+
             return $announcement->save();
         } catch (QueryException $e) {
             return throw new  \Exception($e->errorInfo[2]);
