@@ -3,3 +3,4 @@ INSERT INTO `modules` (`id`, `name`, `description`, `keywords`, `is_active`, `cr
 (3, 'AppManagement', NULL, 'system', 1, '2022-12-29 11:28:37', '2022-12-29 11:32:01'),
 (4, 'UserManagement', NULL, 'system', 1, NULL, NULL),
 (6, 'DataTable', NULL, NULL, 1, NULL, NULL);
+(6, 'EventManagement', NULL, NULL, 1, NULL, NULL);

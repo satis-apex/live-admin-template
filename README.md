@@ -13,7 +13,9 @@ Live-Admin is an admin template created by integrating Laravel, Vue3 and Inertia
 -   Laravel Module Implemented with database activator
 -   Ability to create fully functional Demo Crud file from add Manage Menu UI dynamically
 -   Dark mode Compatible
--   Notification bell integrated with laravel notification
+-   Notification bell integrated with laravel notification (database,broadcast)
+-   Event Announcement integrated with Full calender library
+-   Broadcast Event Announcement using Laravel-websockets
 
 ## Requirement
 
@@ -110,6 +112,7 @@ Please follow the official documentation [link](https://beyondco.de/docs/laravel
 -   [Element Plus](https://element-plus.org/en-US/) - A Vue 3 based component library for designers and developers.
 -   [Laravel Modules](https://github.com/nWidart/laravel-modules) - A package to manage your large Laravel app using modules.
 -   [Laravel Websockets](https://github.com/beyondcode/laravel-websockets) - A package to Bring the power of WebSockets to your Laravel application (Pusher replacement).
+-   [Full Calender](https://fullcalendar.io) - Highly customizable Full-sized event calendar.
 
 ## Contributing
 
@@ -134,7 +137,9 @@ I'm a full stack developer...
 
 -   ✔ Integrate laravel Notification
 -   ✔ Intregrate [laravel Modules](https://github.com/nWidart/laravel-modules)
--   Intregrate [laravel Websocket](https://github.com/beyondcode/laravel-websockets)
+-   ✔ Intregrate [laravel Websocket](https://github.com/beyondcode/laravel-websockets)
+-   ✔ Intregrate [Full Calender](https://github.com/fullcalendar/fullcalendar)
+-   Intregrate [Laravel webpush](https://github.com/laravel-notification-channels/webpush)
 -   Multi tenent implementation (i will implement if this feature is requested)
 -   Add more integrations
 

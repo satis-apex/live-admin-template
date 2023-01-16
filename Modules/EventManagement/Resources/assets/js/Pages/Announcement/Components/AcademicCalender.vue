@@ -80,7 +80,7 @@
                 </el-row>
                 <el-row :gutter="10">
                     <el-col :xs="12" :sm="6">
-                        <el-form-item v-show="true" prop="allDay">
+                        <el-form-item prop="allDay">
                             <el-checkbox
                                 v-model="formData.allDay"
                                 label="All Day"
@@ -513,14 +513,15 @@ const clearServerValidationError = () => {
 const populateFormData = (info) => {
     formData.title = info.title;
     formData.detail = info.extendedProps.detail;
-    formData.holiday = info.extendedProps.holiday;
-    formData.private = info.extendedProps.private;
-    formData.notify = info.extendedProps.notify;
+    formData.holiday = info.extendedProps.holiday == 1 ? true : false;
+    formData.private = info.extendedProps.private == 1 ? true : false;
+    formData.notify = info.extendedProps.notify == 1 ? true : false;
     formData.viewer = viewableRole(info);
     formData.start = info.startStr;
     formData.end = info.endStr;
     formData.allDay = info.allDay;
     formData.id = info.id;
+    console.log(formData);
 };
 const handleEventEdit = (clickInfo) => {
     FormVisible.value = true;
@@ -561,6 +562,10 @@ const handleEventCancel = (clickInfo) => {
 };
 
 const handleEventChange = (data) => {
+    if (!iPropsValue("userCan", "edit")) {
+        data.revert();
+        return;
+    }
     ElMessageBox.confirm("You are trying to edit. Continue?", "Warning", {
         type: "warning",
         icon: markRaw(Edit),

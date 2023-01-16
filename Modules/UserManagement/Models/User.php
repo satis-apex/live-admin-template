@@ -40,4 +40,9 @@ class User extends Authenticatable
     {
         return 'web';
     }
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'announcement.' . $this->id;
+    }
 }

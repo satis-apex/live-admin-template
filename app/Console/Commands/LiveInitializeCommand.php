@@ -45,6 +45,7 @@ class LiveInitializeCommand extends Command
             $this->setEnv('PUSHER_HOST', '127.0.0.1');
             $this->setEnv('PUSHER_PORT', '6001');
             $this->setEnv('PUSHER_SCHEME', 'http');
+            $this->setEnv('BROADCAST_DRIVER', 'pusher');
             //migrating and seeding database
             $this->info('Migrating database table...');
             Artisan::call('migrate --seed');

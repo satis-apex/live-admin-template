@@ -131,6 +131,7 @@ const handleSuccess = function ({ results, header }) {
     tableHeader = keys;
 };
 
+const emit = defineEmits(["exportTemplate"]);
 defineExpose({
     showForm,
 });

@@ -137,8 +137,14 @@ watch(
 );
 
 const viewAnnouncement = (announcement) => {
+    if (
+        !announcement.data.hasOwnProperty("link") ||
+        announcement.data?.link == ""
+    )
+        return false;
+    markRead(announcement);
     Inertia.get(
-        route("dashboard"),
+        announcement.data.link,
         {},
         {
             onStart: () => {
@@ -153,6 +159,18 @@ const markAllRead = () => {
         preserveScroll: true,
     });
 };
+
+Echo.private("announcement." + iPropsValue("auth", "user.id")).notification(
+    (notification) => {
+        setTimeout(() => {
+            Inertia.reload({
+                preserveState: true,
+                preserveScroll: true,
+                only: ["app_notification"], // only refresh the shared data for the `app_notification` key
+            });
+        }, 1000);
+    }
+);
 </script>
 
 <style lang="scss">

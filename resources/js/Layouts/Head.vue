@@ -140,6 +140,7 @@ import { useAppUtility } from "@/Composables/appUtiility";
 const { isScreenMd } = useAppUtility();
 const { iPropsValue } = useInertiaPropsUtility();
 const formVisible = ref(false);
+const notifications = ref(false);
 const headDropdown = ref();
 const breadcrumb = ref(iPropsValue("breadcrumb"));
 const closeForm = function () {

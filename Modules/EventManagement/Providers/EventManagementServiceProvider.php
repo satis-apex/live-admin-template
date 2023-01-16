@@ -1,8 +1,9 @@
 <?php
-
 namespace Modules\EventManagement\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\EventManagement\Models\Announcement;
+use Modules\EventManagement\Observers\AnnouncementObserver;
 
 class EventManagementServiceProvider extends ServiceProvider
 {
@@ -11,6 +12,7 @@ class EventManagementServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        Announcement::observe(AnnouncementObserver::class);
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
@@ -28,7 +30,8 @@ class EventManagementServiceProvider extends ServiceProvider
             module_path($this->moduleName, 'Config/config.php') => config_path($this->moduleNameLower . '.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            module_path($this->moduleName, 'Config/config.php'), $this->moduleNameLower
+            module_path($this->moduleName, 'Config/config.php'),
+            $this->moduleNameLower
         );
     }
 
