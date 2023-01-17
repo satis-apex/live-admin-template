@@ -87,5 +87,5 @@ createInertiaApp({
 });
 
 InertiaProgress.init({
-    color: 'var(--complementary_color)'
+    color: 'var(--complementary-color)'
 });

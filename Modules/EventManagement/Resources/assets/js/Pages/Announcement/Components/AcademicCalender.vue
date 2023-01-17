@@ -521,7 +521,6 @@ const populateFormData = (info) => {
     formData.end = info.endStr;
     formData.allDay = info.allDay;
     formData.id = info.id;
-    console.log(formData);
 };
 const handleEventEdit = (clickInfo) => {
     FormVisible.value = true;
@@ -636,7 +635,7 @@ const calendarOptions = {
     }
 }
 .fc-daygrid-day-frame:has(.isholiday) {
-    background: var(--el-color-danger-light-5);
+    background: var(--el-color-danger-light-7);
 }
 .fc-list-event-title {
     .el-tooltip__trigger {
@@ -656,5 +655,8 @@ const calendarOptions = {
     .fc-event-title {
         display: inline;
     }
+}
+
+.fc-theme-standard .fc-list-day-cushion {
 }
 </style>

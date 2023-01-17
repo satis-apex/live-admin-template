@@ -70,7 +70,7 @@ const setAppThemeColor = function () {
     setCssProp("--primary-color", appInfo.primary_color);
     setCssProp("--primary-light-color", appInfo.primary_light_color);
     setCssProp("--primary-dark-color", appInfo.primary_dark_color);
-    setCssProp("--complementary_color", appInfo.complementary_color);
+    setCssProp("--complementary-color", appInfo.complementary_color);
 };
 const leaveImpersonate = () => {
     ElMessageBox.confirm(

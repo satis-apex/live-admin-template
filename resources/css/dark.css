@@ -56,3 +56,11 @@ html.dark input:-webkit-autofill:active{
 html.dark .dd-placeholder {
 	background: #2e2e2e;
 }
+
+html.dark .fc-theme-standard .fc-list-day-cushion {
+	background: #161616;
+}
+html.dark .fc .fc-list-event:hover td
+{
+	background: #2b2b2b;
+}

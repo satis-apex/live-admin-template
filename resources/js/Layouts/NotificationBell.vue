@@ -110,11 +110,11 @@ import { useForm } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 const { iPropsValue } = useInertiaPropsUtility();
 const notificationDrawer = ref(false);
-const markRead = (announcement) => {
+const markRead = async (announcement) => {
     const formData = useForm({
         id: announcement.id,
     });
-    formData.patch(route("markNotificationRead"), {
+    await formData.patch(route("markNotificationRead"), {
         preserveScroll: true,
     });
 };
@@ -136,14 +136,16 @@ watch(
     }
 );
 
-const viewAnnouncement = (announcement) => {
+const viewAnnouncement = async (announcement) => {
     if (
         !announcement.data.hasOwnProperty("link") ||
         announcement.data?.link == ""
     )
         return false;
-    markRead(announcement);
-    Inertia.get(
+    if (announcement.read_at == null) {
+        await markRead(announcement);
+    }
+    await Inertia.get(
         announcement.data.link,
         {},
         {
@@ -161,14 +163,15 @@ const markAllRead = () => {
 };
 
 Echo.private("announcement." + iPropsValue("auth", "user.id")).notification(
-    (notification) => {
-        setTimeout(() => {
-            Inertia.reload({
-                preserveState: true,
-                preserveScroll: true,
-                only: ["app_notification"], // only refresh the shared data for the `app_notification` key
-            });
-        }, 1000);
+    (announcement) => {
+        const notification = ref({
+            id: announcement.id,
+            data: announcement.notification.data,
+            created_at: moment(),
+            read_at: null,
+        });
+        unreadNotificationCount.value += 1;
+        notifications.value = [notification.value, ...notifications.value];
     }
 );
 </script>

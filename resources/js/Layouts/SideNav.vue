@@ -392,14 +392,20 @@ defineExpose({
     line-height: 1.5;
     text-transform: capitalize;
 }
-.el-menu-item a.link-icon {
-    width: unset;
-    padding: unset;
-    margin-top: -2px;
-}
 .el-menu-item {
     height: 44px;
     line-height: 1.5;
+    a {
+        height: 100%;
+        vertical-align: middle;
+        display: flex;
+        align-items: center;
+        &.link-icon {
+            width: unset;
+            padding: unset;
+            margin-top: -2px;
+        }
+    }
 }
 .el-sub-menu .el-menu-item {
     height: 36px;

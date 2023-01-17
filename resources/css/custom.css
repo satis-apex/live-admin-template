@@ -52,7 +52,7 @@ select:focus {
 }
 .bg-complementary
 {
-  background-color: var(--complementary_color);
+  background-color: var(--complementary-color);
 }
 .bg-body
 {

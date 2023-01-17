@@ -17,14 +17,14 @@
     --menu-active-color: #c6e2ff;
     --primary-dark-color: #0071AD;
     --primary-lightest-color: #31B5FC;
-    --complementary_color: #FFBA00;
+    --complementary-color: #FFBA00;
     --body-bg:#F6F6F6;
   }
   html.dark{
     --active-highlight: #e1e1e1;
     --primary-color: getCssVar('color-primary');
     --menu-active-color: #1e1e1e;
-    --complementary_color: #FFBA00;
+    --complementary-color: #FFBA00;
     --body-bg:#121212;
   }
   
