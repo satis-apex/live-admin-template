@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\LandingPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,15 +26,17 @@ use App\Http\Controllers\Admin\NotificationController;
 //     'verify' => false,
 // ]);
 
-Route::get('/', function () {
-    return Redirect::to('/dashboard');
-    // return Inertia::render('Welcome', [
-    //     'canLogin' => Route::has('login'),
-    //     'canRegister' => Route::has('register'),
-    //     'laravelVersion' => Application::VERSION,
-    //     'phpVersion' => PHP_VERSION,
-    // ]);
-});
+// Route::get('/', function () {
+//     // return Redirect::to('/dashboard');
+//     // return Inertia::render('Welcome', [
+//     //     'canLogin' => Route::has('login'),
+//     //     'canRegister' => Route::has('register'),
+//     //     'laravelVersion' => Application::VERSION,
+//     //     'phpVersion' => PHP_VERSION,
+//     // ]);
+// });
+
+Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
     Route::patch('notification/mark-read', [NotificationController::class, 'markNotificationRead'])->name('markNotificationRead');

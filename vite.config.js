@@ -9,7 +9,10 @@ const projectRootDir = resolve(__dirname);
 export default defineConfig({
     plugins: [
         laravel({
-            input: 'resources/js/app.js',
+            input: [
+                'resources/js/admin.js',
+                'resources/js/app.js',
+            ],
             refresh: true,
         }),
         vue({

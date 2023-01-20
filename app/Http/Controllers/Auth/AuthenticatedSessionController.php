@@ -20,6 +20,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
+        Inertia::setRootView('adminApp');
         if (Auth::check()) {
             return Redirect::to('/dashboard');
         }
