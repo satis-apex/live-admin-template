@@ -202,10 +202,12 @@
                 >
                     <el-input v-model="menuIcon" autocomplete="off">
                         <template #prepend>
-                            <el-button
-                                :icon="Search"
-                                @click="iconDialogVisible = true"
-                            />
+                            <el-tooltip class="box-item" content="Pick an Icon">
+                                <el-button
+                                    :icon="Search"
+                                    @click="iconDialogVisible = true"
+                                />
+                            </el-tooltip>
                         </template>
                         <template #append>
                             <el-icon v-if="formData.icon !== null"
@@ -253,8 +255,28 @@
                 width="30%"
                 title="Icons"
                 append-to-body
+                class="icon-dialog"
             >
-                <ul class="grid icon-picker grid-cols-8 overflow-auto">
+                <el-alert type="success" show-icon :closable="false">
+                    <template #default>
+                        <p class="text-justify break-normal">
+                            Following Icons as hand picked from
+                            <a
+                                href="https://fontawesome.com/search?o=r&m=free"
+                                target="#fontawesome"
+                                ><b>Font Awesome</b></a
+                            >
+                            icon library. You can add icon manually that you can
+                            find in
+                            <a
+                                href="https://fontawesome.com/search?o=r&m=free"
+                                target="#fontawesome"
+                                ><b>link</b></a
+                            >
+                        </p>
+                    </template>
+                </el-alert>
+                <ul class="grid icon-picker grid-cols-8 overflow-auto mt-3">
                     <li
                         class="icon"
                         v-for="(icon, key) in iconList"
@@ -625,5 +647,10 @@ li.icon:hover {
 ul.icon-picker {
     border-top: 1px solid var(--el-border-color);
     border-left: 1px solid var(--el-border-color);
+}
+</style>
+<style>
+.icon-dialog .el-dialog__body {
+    padding-top: 0;
 }
 </style>

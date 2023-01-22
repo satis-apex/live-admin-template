@@ -113,6 +113,7 @@ Please follow the official documentation [link](https://beyondco.de/docs/laravel
 -   [Laravel Modules](https://github.com/nWidart/laravel-modules) - A package to manage your large Laravel app using modules.
 -   [Laravel Websockets](https://github.com/beyondcode/laravel-websockets) - A package to Bring the power of WebSockets to your Laravel application (Pusher replacement).
 -   [Full Calender](https://fullcalendar.io) - Highly customizable Full-sized event calendar.
+-   [landing Page](https://github.com/tailwindtoolbox/Landing-Page) - A generic landing page template for Tailwind CSS
 
 ## Contributing
 
