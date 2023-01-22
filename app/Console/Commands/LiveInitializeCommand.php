@@ -69,13 +69,12 @@ class LiveInitializeCommand extends Command
             Artisan::call('module:seed DataTable');
             $this->line('');
             $this->components->info('DataTable module seeded successfully.');
+            $this->line('');
+            $this->components->info('Database table migrated and seeded successfully.');
         } catch (\Exception $e) {
             $this->components->error('Database error:');
             dump($e->getMessage());
         }
-
-        $this->line('');
-        $this->components->info('Database table migrated and seeded successfully.');
         return true;
     }
 
