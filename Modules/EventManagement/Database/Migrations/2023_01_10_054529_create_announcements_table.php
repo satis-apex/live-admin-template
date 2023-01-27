@@ -15,6 +15,7 @@ return new class() extends Migration {
             $table->string('end');
             $table->boolean('allDay');
             $table->boolean('holiday');
+            $table->boolean('private')
             $table->string('notify');
             $table->string('viewer')->nullable();
             $table->timestamps();
